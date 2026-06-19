@@ -192,6 +192,49 @@ System.out.println("Status: " + (active ? "Active" : "Inactive"));
 
 ---
 
+## Day 1 Exercise 03 - CourseOffering Class
+
+### Why is `CourseOffering` more useful than using only `Course` when building a real web application?
+
+A `Course` is a **template** — it describes what is being taught (title, level, category, duration). It does not change between runs.
+
+A `CourseOffering` is a **scheduled instance** of that course — it has specific dates, an assigned instructor, a capacity limit, and a delivery mode. The same course can run many times, each as a separate offering.
+
+In a real web application this separation matters because:
+
+- **One course can have many offerings.** For example, "Java Fundamentals" can run in June, September, and January, each with different instructors, different capacities, and different start/end dates. If you stored all of that inside `Course`, the class would become cluttered and reusing the same course for a new intake would mean duplicating or overwriting data.
+- **Students enrol in an offering, not a course.** A student signs up for "Java Fundamentals - June 2026 Intake", not "Java Fundamentals" in general. The offering tracks who is in which run.
+- **Scheduling and capacity belong to the offering, not the course.** A course does not have a start date — an offering does. A course does not have 25 seats — a specific run does.
+- **It maps directly to a database collection.** In MongoDB, `CourseOffering` becomes its own document with a reference to the `Course` document. This avoids duplicating course data and makes queries like "show all upcoming offerings for this course" straightforward.
+
+In short: `Course` answers *what* is being taught. `CourseOffering` answers *when, where, by whom, and for how many people*.
+
+### `CourseOffering.java`
+
+```java
+public class CourseOffering {
+    private String offeringId;
+    private String offeringName;
+    private Course course;
+    private Instructor instructor;
+    private String startDate;
+    private String endDate;
+    private int capacity;
+    private String deliveryMode; // Physical, Online, or Hybrid
+    ...
+}
+```
+
+### Sample Output
+
+![Exercise 3 Output](screenshots/Exercise_3.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day1](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day1)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
