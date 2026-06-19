@@ -152,6 +152,46 @@ The `this.` keyword inside the constructor was initially confusing. The AI expla
 
 ---
 
+## Day 1 Exercise 02 - Improve Course Class
+
+### What changed in `Course.java`
+
+Two new private fields were added to the `Course` class:
+
+```java
+private String category;
+private boolean active;
+```
+
+The constructor was updated to accept these two new values:
+
+```java
+public Course(String courseId, String title, int durationHours, String level, String category, boolean active) {
+    ...
+    this.category = category;
+    this.active = active;
+}
+```
+
+Two new getter methods were added — `getCategory()` and `isActive()` (Java convention uses `is` instead of `get` for booleans).
+
+`printSummary()` was updated to display the new fields. The `active` boolean is converted to friendly text using a ternary operator instead of printing `true` or `false` directly:
+
+```java
+System.out.println("Category: " + category);
+System.out.println("Status: " + (active ? "Active" : "Inactive"));
+```
+
+### Updated Course Output
+
+![Exercise 2 Output](screenshots/Exercise_2.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day1](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day1)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

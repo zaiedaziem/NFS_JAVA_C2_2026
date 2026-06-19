@@ -5,7 +5,7 @@ public class Main {
 
         Instructor instructor1 = new Instructor("I001", "Ahmad Razif", "Java & Spring Boot");
 
-        Course course1 = new Course("C001", "Full-Stack Java Development", 140, "Intermediate");
+        Course course1 = new Course("C001", "Full-Stack Java Development", 140, "Intermediate", "Programming", true);
         course1.setInstructor(instructor1);
 
         Student student1 = new Student("S001", "Zaied Aziem", "zaied@example.com");
