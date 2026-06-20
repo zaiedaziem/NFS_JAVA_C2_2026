@@ -62,9 +62,9 @@ public class CourseServiceDemo {
             System.out.println(course.getCourseId() + " - " + course.getTitle());
         }
 
-        // Assign instructor to course for testing
+        // Assign instructor to course using service
         Instructor instructor1 = new Instructor("I001", "Alice Johnson", "Java Development");
-        service.getAllCourses().get(0).setInstructor(instructor1);
+        service.assignInstructor("C001", instructor1);
 
         System.out.println("\n=== Search by Instructor Name: alice ===");
         for (Course course : service.searchByInstructorName("alice")) {

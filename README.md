@@ -201,6 +201,25 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 2 Assignment 03.5 - Assign Instructor and Search by Instructor
+
+### What was done
+
+- Added `assignInstructor()` method to `CourseService.java` — finds course by ID, assigns instructor, saves and returns updated course
+- Added `Instructor` import to `CourseService.java`
+- `searchByInstructorName()` was already completed in Exercise 3.4
+- Updated `CourseServiceDemo.java` to use `assignInstructor()` instead of direct `setInstructor()`
+
+### Output Screenshot
+
+![Day 2 Assignment 03.5 Output](screenshots/D2_Exercise3.5.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
