@@ -133,6 +133,35 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 2 Assignment 03.1 - Create the CourseService Structure
+
+`CourseService.java` was already provided from the trainer's merge. It contains a private final `CourseRepository` field and a constructor that receives a `CourseRepository` — no business methods yet.
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2)
+
+---
+
+## Day 2 Assignment 03.2 - Create and List Courses
+
+### What was done
+
+- Created `CourseServiceDemo.java` to demonstrate the service layer
+- Used `CourseService` with `InMemoryCourseRepository` to create and list courses
+- `createCourse()` saves a course through the service into the repository
+- `getAllCourses()` retrieves and prints all saved courses
+
+### Output Screenshot
+
+![Day 2 Assignment 03.2 Output](screenshots/D2_Exercise3.2.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
