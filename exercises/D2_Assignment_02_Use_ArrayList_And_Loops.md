@@ -1,4 +1,4 @@
-# Day 2 Assignment 03 - Use ArrayList and Loops
+# Day 2 Assignment 02 - Use ArrayList and Loops
 
 ## Goal
 
