@@ -12,8 +12,6 @@ public class Course {
         setTitle(title);
         setDurationHours(durationHours);
         setLevel(level);
-<<<<<<< Updated upstream
-=======
     }
 
     private static String requireText(String value, String fieldName) {
@@ -21,7 +19,6 @@ public class Course {
             throw new IllegalArgumentException(fieldName + " is required.");
         }
         return value.trim();
->>>>>>> Stashed changes
     }
 
     public String getCourseId() {
@@ -37,11 +34,7 @@ public class Course {
     }
 
     public void setTitle(String title) {
-<<<<<<< Updated upstream
-        this.title = requireText(title, "Course Title");
-=======
         this.title = requireText(title, "Title");
->>>>>>> Stashed changes
     }
 
     public int getDurationHours() {
@@ -60,11 +53,7 @@ public class Course {
     }
 
     public void setLevel(String level) {
-<<<<<<< Updated upstream
-        this.level = requireText(level, "Course Level");
-=======
         this.level = requireText(level, "Level");
->>>>>>> Stashed changes
     }
 
     public Instructor getInstructor() {
@@ -87,12 +76,5 @@ public class Course {
             System.out.println("Instructor: " + instructor.getInstructorName());
         }
         System.out.println("----------------------------");
-    }
-
-    private static String requireText(String value, String fieldName) {
-        if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException(fieldName + " is required.");
-        }
-        return value.trim();
     }
 }

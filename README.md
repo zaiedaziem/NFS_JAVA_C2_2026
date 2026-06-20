@@ -115,6 +115,24 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 2 Assignment 02 - Use ArrayList and Loops
+
+### What changed in `Main.java`
+
+- Added `import java.util.ArrayList` and `import com.fullstack.demo.model.CourseOffering`
+- Replaced individual object variables with `ArrayList` collections for courses, instructors, students, and course offerings
+- Used enhanced `for` loops to print all records from each list
+
+### Output Screenshot
+
+![Day 2 Assignment 02 Output](screenshots/D2_Exercise2.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

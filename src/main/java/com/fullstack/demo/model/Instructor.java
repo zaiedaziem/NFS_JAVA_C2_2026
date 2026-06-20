@@ -9,8 +9,6 @@ public class Instructor {
         setInstructorId(instructorId);
         setInstructorName(instructorName);
         setExpertise(expertise);
-<<<<<<< Updated upstream
-=======
     }
 
     private static String requireText(String value, String fieldName) {
@@ -18,7 +16,6 @@ public class Instructor {
             throw new IllegalArgumentException(fieldName + " is required.");
         }
         return value.trim();
->>>>>>> Stashed changes
     }
 
     public String getInstructorId() {
@@ -45,21 +42,10 @@ public class Instructor {
         this.expertise = requireText(expertise, "Expertise");
     }
 
-<<<<<<< Updated upstream
-    public void getProfile() {
-=======
     public void printProfile() {
->>>>>>> Stashed changes
         System.out.println("Instructor ID: " + instructorId);
         System.out.println("Name: " + instructorName);
         System.out.println("Expertise: " + expertise);
         System.out.println("----------------------------");
-    }
-
-    private static String requireText(String value, String fieldName) {
-        if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException(fieldName + " is required.");
-        }
-        return value.trim();
     }
 }
