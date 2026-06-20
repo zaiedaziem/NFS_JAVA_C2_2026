@@ -2,6 +2,7 @@ package com.fullstack.demo.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.fullstack.demo.repository.CourseRepository;
 import com.fullstack.demo.exception.CourseNotFoundException;
@@ -64,6 +65,31 @@ public class CourseService {
 
     private boolean isBlank(String value) {
         return value == null || value.isBlank();
+    }
+
+    public List<Course> searchByTitle(String keyword) {
+        String search = keyword == null ? "" : keyword.toLowerCase();
+        return courseRepository.findAll()
+                .stream()
+                .filter(course -> course.getTitle().toLowerCase().contains(search))
+                .collect(Collectors.toList());
+    }
+
+    public List<Course> filterByLevel(String level) {
+        String search = level == null ? "" : level.toLowerCase();
+        return courseRepository.findAll()
+                .stream()
+                .filter(course -> course.getLevel().equalsIgnoreCase(search))
+                .collect(Collectors.toList());
+    }
+
+    public List<Course> searchByInstructorName(String instructorName) {
+        String safeInstructorName = instructorName == null ? "" : instructorName.toLowerCase();
+        return courseRepository.findAll()
+                .stream()
+                .filter(course -> course.getInstructor() != null)
+                .filter(course -> course.getInstructor().getInstructorName().toLowerCase().contains(safeInstructorName))
+                .collect(Collectors.toList());
     }
 }
 

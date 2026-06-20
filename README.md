@@ -182,6 +182,25 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 2 Assignment 03.4 - Search and Filter Courses
+
+### What was done
+
+- Added `searchByTitle()` to `CourseService.java` — searches courses by keyword, case-insensitive
+- Added `filterByLevel()` to `CourseService.java` — filters courses by level, case-insensitive
+- Added `searchByInstructorName()` to `CourseService.java` — searches courses by instructor name, skips courses with no instructor
+- Updated `CourseServiceDemo.java` to test all three methods
+
+### Output Screenshot
+
+![Day 2 Assignment 03.4 Output](screenshots/D2_Exercise3.4.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
