@@ -1,10 +1,46 @@
+# Java
 target/
-.idea/
-*.iml
-*.log
+build/
 *.class
 *.jar
 .java-version
+
+# IDE-specific files
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Visual Studio Code
 .vscode/
-.DS_Store
-.env
+
+# User-specific files
+# IntelliJ IDEA
+.idea/workspace.xml
+.idea/.xml
+.idea/.generated
+
+# Eclipse
+.metadata/
+.plugins/
+
+# Binary files
+*.exe
+*.dll
+*.so
+*.mp3
+*.jpg
+*.zip
+
+# Large files
+# !bin/
+# !tmp/
+
+# Platform-specific files
+.bat
+.sh
+.ps1
