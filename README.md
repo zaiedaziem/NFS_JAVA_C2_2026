@@ -162,6 +162,26 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 2 Assignment 03.3 - Add Course Validation
+
+### What was done
+
+- Added `validateCourse()` method to `CourseService.java` with 5 validation rules
+- Added `isBlank()` helper method to check for null or empty strings
+- Added `import` for `InvalidCourseException` in `CourseService.java`
+- Updated `CourseServiceDemo.java` to test 1 valid course and 4 invalid courses
+- Invalid cases tested: empty ID, empty title, duration 0, empty level
+
+### Output Screenshot
+
+![Day 2 Assignment 03.3 Output](screenshots/D2_Exercise3.3.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
