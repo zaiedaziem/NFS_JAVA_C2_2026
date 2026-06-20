@@ -98,5 +98,21 @@ public class CourseService {
                 .filter(course -> course.getInstructor().getInstructorName().toLowerCase().contains(safeInstructorName))
                 .collect(Collectors.toList());
     }
+
+    public Course updateDuration(String courseId, int newDuration) {
+        if (newDuration <= 0) {
+            throw new InvalidCourseException("Course duration must be greater than zero.");
+        }
+        Course course = getCourseById(courseId);
+        course.setDurationHours(newDuration);
+        return courseRepository.save(course);
+    }
+
+    public void deleteCourse(String courseId) {
+        if (!courseRepository.existsById(courseId)) {
+            throw new CourseNotFoundException(courseId);
+        }
+        courseRepository.deleteById(courseId);
+    }
 }
 

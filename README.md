@@ -220,6 +220,24 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 2 Assignment 03.6 - Update and Delete Courses
+
+### What was done
+
+- Added `updateDuration()` to `CourseService.java` — finds course by ID, validates new duration, updates and saves
+- Added `deleteCourse()` to `CourseService.java` — checks course exists before deleting, throws `CourseNotFoundException` if not found
+- Updated `CourseServiceDemo.java` to test update, delete, remaining courses, find deleted course, and invalid duration
+
+### Output Screenshot
+
+![Day 2 Assignment 03.6 Output](screenshots/D2_Exercise3.6.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

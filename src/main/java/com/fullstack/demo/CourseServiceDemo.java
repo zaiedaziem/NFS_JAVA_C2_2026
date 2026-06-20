@@ -5,70 +5,48 @@ import com.fullstack.demo.model.Course;
 import com.fullstack.demo.repository.InMemoryCourseRepository;
 import com.fullstack.demo.service.CourseService;
 import com.fullstack.demo.model.Instructor;
+import com.fullstack.demo.exception.CourseNotFoundException;
 
 public class CourseServiceDemo {
     public static void main(String[] args) {
 
         CourseService service = new CourseService(new InMemoryCourseRepository());
 
-        System.out.println("=== Valid Course Test ===");
-        try {
-            service.createCourse(new Course("C001", "Java Fundamentals", 14, "Beginner"));
-            service.createCourse(new Course("C002", "Advanced Java Backend", 21, "Intermediate"));
-            service.createCourse(new Course("C003", "MongoDB Basics", 14, "Beginner"));
-            service.createCourse(new Course("C004", "React Frontend Development", 21, "Intermediate"));
-            System.out.println("Courses saved successfully.");
-        } catch (InvalidCourseException | IllegalArgumentException e) {
-            System.out.println("Validation error: " + e.getMessage());
-        }
+        // Create courses
+        service.createCourse(new Course("C001", "Java Fundamentals", 14, "Beginner"));
+        service.createCourse(new Course("C002", "React Frontend Development", 21, "Intermediate"));
+        service.createCourse(new Course("C003", "MongoDB Basics", 14, "Beginner"));
 
-        System.out.println("\n=== Invalid Course Tests ===");
+        // Update duration
+        System.out.println("=== Update Duration ===");
+        service.updateDuration("C001", 20);
+        System.out.println("C001 duration updated to 20 hours");
 
-        // Invalid: empty course ID
-        try {
-            service.createCourse(new Course("", "Java Fundamentals", 14, "Beginner"));
-        } catch (InvalidCourseException | IllegalArgumentException e) {
-            System.out.println("Validation error: " + e.getMessage());
-        }
+        // Delete course
+        System.out.println("\n=== Delete Course ===");
+        service.deleteCourse("C003");
+        System.out.println("C003 deleted successfully");
 
-        // Invalid: empty title
-        try {
-            service.createCourse(new Course("C005", "", 14, "Beginner"));
-        } catch (InvalidCourseException | IllegalArgumentException e) {
-            System.out.println("Validation error: " + e.getMessage());
-        }
-
-        // Invalid: duration is 0
-        try {
-            service.createCourse(new Course("C006", "MongoDB Basics", 0, "Beginner"));
-        } catch (InvalidCourseException | IllegalArgumentException e) {
-            System.out.println("Validation error: " + e.getMessage());
-        }
-
-        // Invalid: empty level
-        try {
-            service.createCourse(new Course("C007", "React Development", 21, ""));
-        } catch (InvalidCourseException | IllegalArgumentException e) {
-            System.out.println("Validation error: " + e.getMessage());
-        }
-
-        System.out.println("\n=== Search by Title: java ===");
-        for (Course course : service.searchByTitle("java")) {
+        // Print remaining
+        System.out.println("\n=== Remaining Courses ===");
+        for (Course course : service.getAllCourses()) {
             System.out.println(course.getCourseId() + " - " + course.getTitle());
         }
 
-        System.out.println("\n=== Filter by Level: Beginner ===");
-        for (Course course : service.filterByLevel("Beginner")) {
-            System.out.println(course.getCourseId() + " - " + course.getTitle());
+        // Find deleted course
+        System.out.println("\n=== Find Deleted Course ===");
+        try {
+            service.getCourseById("C003");
+        } catch (CourseNotFoundException e) {
+            System.out.println("Course not found error: " + e.getMessage());
         }
 
-        // Assign instructor to course using service
-        Instructor instructor1 = new Instructor("I001", "Alice Johnson", "Java Development");
-        service.assignInstructor("C001", instructor1);
-
-        System.out.println("\n=== Search by Instructor Name: alice ===");
-        for (Course course : service.searchByInstructorName("alice")) {
-            System.out.println(course.getCourseId() + " - " + course.getTitle());
+        // Invalid duration
+        System.out.println("\n=== Invalid Duration Test ===");
+        try {
+            service.updateDuration("C001", 0);
+        } catch (InvalidCourseException e) {
+            System.out.println("Validation error: " + e.getMessage());
         }
     }
 }
