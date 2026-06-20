@@ -84,6 +84,37 @@ By the end of this programme, participants will be able to:
 
 
 
+## Day 2 Assignment 01 - Clean Up the Model Classes
+
+### What changed
+
+**Course.java**
+- Constructor now calls setters instead of assigning fields directly with `this.x = x`
+- Added `setCourseId()`, `setTitle()`, `setLevel()` with blank validation
+- `setDurationHours()` now rejects values of 0 or below
+- `printSummary()` now ends with a separator line `----------------------------`
+- Added private `requireText()` helper method for reuse across setters
+
+**Instructor.java**
+- Constructor now calls setters with validation
+- Added `setInstructorId()`, `setInstructorName()`, `setExpertise()` with blank validation
+- Renamed `getProfile()` to `printProfile()` (wrong name before)
+- Added separator line to `printProfile()`
+
+**Student.java**
+- Constructor now calls setters with validation
+- Added `setStudentId()`, `setStudentName()`, `setEmail()` with blank validation
+
+### Output Screenshot
+
+![Day 2 Assignment 01 Output](screenshots/D2_Exercise1.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day2)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

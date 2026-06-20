@@ -9,6 +9,16 @@ public class Student {
         setStudentId(studentId);
         setStudentName(studentName);
         setEmail(email);
+<<<<<<< Updated upstream
+=======
+    }
+
+    private static String requireText(String value, String fieldName) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException(fieldName + " is required.");
+        }
+        return value.trim();
+>>>>>>> Stashed changes
     }
 
     public String getStudentId() {
