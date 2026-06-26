@@ -100,6 +100,22 @@ Because different callers handle errors differently. A console app prints a frie
 
 ---
 
+## Day 3 Exercise 02 - Interface and Repository Storage Practice
+
+### Why is InMemoryCourseRepository temporary storage? What would replace it later?
+
+`InMemoryCourseRepository` stores data in a `LinkedHashMap` in RAM. When the program stops, all data is gone — nothing is saved to disk or a database. It is temporary by nature. Later when we connect MongoDB, a `MongoCourseRepository` would replace it. Because `CourseRepository` is an interface, `CourseService` does not need to change at all — only the implementation is swapped.
+
+### Output Screenshot
+
+![Day 3 Exercise 02 Output](screenshots/day3_exercise2.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
