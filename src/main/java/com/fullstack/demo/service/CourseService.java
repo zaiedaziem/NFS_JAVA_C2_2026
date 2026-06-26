@@ -7,6 +7,7 @@ import com.fullstack.demo.model.Course;
 import com.fullstack.demo.model.Instructor;
 import com.fullstack.demo.repository.CourseRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseService {
@@ -27,14 +28,14 @@ public class CourseService {
     }
 
     public Course getCourseById(String courseId) {
-        // public Course getCourseById(String courseId) {
-        //     Optional<Course> optionalCourse = courseRepository.findById(courseId);
-        //     if (optionalCourse.isPresent()) {
-        //         return optionalCourse.get();
-        //     } else {
-        //         throw new CourseNotFoundException(courseId);
-        //     }
-        // }
+    // public Course getCourseById(String courseId) {
+    //     Optional<Course> optionalCourse = courseRepository.findById(courseId);
+    //     if (optionalCourse.isPresent()) {
+    //         return optionalCourse.get();
+    //     } else {
+    //         throw new CourseNotFoundException(courseId);
+    //     }
+    // }
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException(courseId));
     }
@@ -53,10 +54,21 @@ public class CourseService {
         // }
         String safeKeyword = keyword == null ? "" : keyword.toLowerCase();
 
-        return courseRepository.findAll()
-                .stream()
-                .filter(course -> course.getTitle().toLowerCase().contains(safeKeyword))
-                .toList();
+        return courseRepository.findAll()   // gets all courses
+                .stream()                   // starts processing the list of courses
+                .filter(course -> course.getTitle().toLowerCase().contains(safeKeyword))    // keeps only matching results
+                .toList();                  // collects the results into a new list
+    }
+    public List<Course> searchByTitleUsingLoop(String keyword) {
+        String safeKeyword = keyword == null ? "" : keyword.trim().toLowerCase();
+        List<Course> results = new ArrayList<>();
+
+        for (Course course : courseRepository.findAll()) {
+            if (course.getTitle().toLowerCase().contains(safeKeyword)) {
+                results.add(course);
+            }
+        }
+        return results;
     }
 
     public List<Course> filterByLevel(String level) {
