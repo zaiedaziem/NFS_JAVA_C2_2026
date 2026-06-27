@@ -136,6 +136,40 @@ React uses arrow functions everywhere — in event handlers, inside `.map()` and
 
 ---
 
+## Day 4 Exercise 04 - Practise JavaScript Array Methods
+
+Run `js/student-array-methods.js` to run this exercise.
+
+### Files created
+
+- `student-array-methods.js` — creates an array of 3 students and practises 8 array methods: `forEach` to print names, `filter` to get active students, `find` to find one student by ID, `map` to extract emails, `push` to add to the end, `pop` to remove from the end, `unshift` to add to the beginning, and `shift` to remove from the beginning.
+
+### 1. What is the difference between filter, find, and map?
+
+`filter` keeps only items where the condition is true and returns a new array. `find` returns only the first item that matches the condition — one object, not an array. `map` does not filter anything — it transforms every item and returns a new array with the transformed values.
+
+### 2. Which four array methods change the original array?
+
+`push`, `pop`, `unshift`, and `shift`.
+
+### 3. What does push return?
+
+The new length of the array after the item is added.
+
+### 4. What does pop return?
+
+The item that was removed from the end of the array.
+
+### 5. What is the difference between shift and unshift?
+
+`shift` removes the first item from the array. `unshift` adds a new item to the beginning of the array.
+
+### Output Screenshot
+
+![Day 4 Exercise 04 Output](screenshots/day4_exercise4.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
