@@ -82,7 +82,23 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 4 Exercise 01 - Create a JavaScript Student Object
 
+Run `js/student-object.js` to run this exercise.
+
+### Files created
+
+- `student-object.js` — creates a JavaScript object literal with four properties: `studentId`, `studentName`, `email`, and `status`. Prints the whole object, then prints each property individually using dot notation and bracket notation.
+
+### What is one difference between a Java object and a JavaScript object?
+
+In Java, you must define a class first with declared fields and types before you can create an object. In JavaScript, you can create an object directly using `{}` without any class — just write the property names and values inline. Java is strictly typed, JavaScript is not.
+
+### Output Screenshot
+
+![Day 4 Exercise 01 Output](screenshots/day4_exercise1.png)
+
+---
 
 ## AI-Assisted Learning Guidelines
 
