@@ -84,22 +84,6 @@ By the end of this programme, participants will be able to:
 
 
 
-## Day 3 Exercise 04 - Object Relationships and Composition
-
-### Why is CourseOffering a better design than putting start date, end date, and capacity directly inside Course?
-
-Because a `Course` represents the content — what is taught. `CourseOffering` represents one specific run of that course — when, where, how many seats, and who teaches it. The same `Course` can have many offerings at different dates, different capacities, and different instructors. If you put `startDate`, `endDate`, and `capacity` inside `Course`, you could only run it once and the course data would be mixed with scheduling data. Keeping them separate follows the single responsibility principle.
-
-### Output Screenshot
-
-![Day 3 Exercise 04 Output](screenshots/day3_exercise4.png)
-
-### GitHub Commit
-
-[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
-
----
-
 ## Day 3 Exercise 01 - Build and Trace the Code Flow
 
 ### When getCourseById("C004") is called, which file does the request go to first, second, and third?
@@ -116,22 +100,6 @@ First it goes to `CourseService.java` — the demo class calls `courseService.ge
 
 ---
 
-## Day 3 Exercise 03 - Exception Practice with CourseService
-
-### Why is throwing CourseNotFoundException better than printing inside CourseService?
-
-Because different callers handle errors differently. A console app prints a friendly message, a Spring Boot REST controller returns a `404` HTTP response, and a frontend app shows a popup. If `CourseService` printed the error directly, it would only work for one type of caller. By throwing the exception, the service just reports what went wrong — and each caller decides how to display it.
-
-### Output Screenshot
-
-![Day 3 Exercise 03 Output](screenshots/day3_exercise1.png)
-
-### GitHub Commit
-
-[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
-
----
-
 ## Day 3 Exercise 02 - Interface and Repository Storage Practice
 
 ### Why is InMemoryCourseRepository temporary storage? What would replace it later?
@@ -141,6 +109,38 @@ Because different callers handle errors differently. A console app prints a frie
 ### Output Screenshot
 
 ![Day 3 Exercise 02 Output](screenshots/day3_exercise2.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
+
+---
+
+## Day 3 Exercise 03 - Exception Practice with CourseService
+
+### Why is throwing CourseNotFoundException better than printing inside CourseService?
+
+Because different callers handle errors differently. A console app prints a friendly message, a Spring Boot REST controller returns a `404` HTTP response, and a frontend app shows a popup. If `CourseService` printed the error directly, it would only work for one type of caller. By throwing the exception, the service just reports what went wrong — and each caller decides how to display it.
+
+### Output Screenshot
+
+![Day 3 Exercise 03 Output](screenshots/day3_exercise3.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
+
+---
+
+## Day 3 Exercise 04 - Object Relationships and Composition
+
+### Why is CourseOffering a better design than putting start date, end date, and capacity directly inside Course?
+
+Because a `Course` represents the content — what is taught. `CourseOffering` represents one specific run of that course — when, where, how many seats, and who teaches it. The same `Course` can have many offerings at different dates, different capacities, and different instructors. If you put `startDate`, `endDate`, and `capacity` inside `Course`, you could only run it once and the course data would be mixed with scheduling data. Keeping them separate follows the single responsibility principle.
+
+### Output Screenshot
+
+![Day 3 Exercise 04 Output](screenshots/day3_exercise4.png)
 
 ### GitHub Commit
 
