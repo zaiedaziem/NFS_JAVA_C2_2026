@@ -118,6 +118,24 @@ Both can store multiple objects, grow dynamically, and be looped through with an
 
 ---
 
+## Day 4 Exercise 03 - Write Functions and Arrow Functions for Student Data
+
+Run `js/student-functions.js` to run this exercise.
+
+### Files created
+
+- `student-functions.js` — creates one student object then writes three types of functions: a normal function that formats the student into a readable string, an arrow function that returns the email, and a short arrow function that returns the status in a single line with no `return` keyword.
+
+### Why are arrow functions important before learning React?
+
+React uses arrow functions everywhere — in event handlers, inside `.map()` and `.filter()` to render lists, and when defining functional components. If you are not comfortable with arrow function syntax, React code will look confusing. Learning arrow functions now means the syntax will feel familiar when you start writing React components.
+
+### Output Screenshot
+
+![Day 4 Exercise 03 Output](screenshots/day4_exercise3.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
