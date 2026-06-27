@@ -212,6 +212,42 @@ When the Search button is clicked, the input value is read and converted to lowe
 
 ---
 
+## Day 4 Exercise 07 - Load Students from a JSON File Using Fetch
+
+Run `student-fetch-json/index.html` using Live Server to run this exercise.
+
+### Files created
+
+- `student-fetch-json/students.json` — contains 4 student records in JSON format.
+- `student-fetch-json/index.html` — HTML page with a status message and an empty `div` for student cards.
+- `student-fetch-json/script.js` — uses an `async` function to fetch `students.json`, waits for the response using `await`, converts it to JavaScript objects, and renders student cards. Uses `try/catch` to handle errors.
+
+### 1. What does async mean?
+
+`async` marks a function as asynchronous — meaning it is allowed to wait for tasks that take time to finish, like loading a file or calling an API.
+
+### 2. What does await do?
+
+`await` pauses the function at that line until the task finishes before moving to the next line. Without it, JavaScript would continue running before the data is ready.
+
+### 3. What does fetch do?
+
+`fetch` sends a request to load data from a file or an API URL. It returns a response that needs to be converted into usable data using `.json()`.
+
+### 4. Why do we use fetch before connecting to a real backend API?
+
+Because the idea is the same. `fetch("students.json")` loads from a local file. `fetch("http://localhost:8080/api/students")` loads from a Spring Boot backend. Practising with a local JSON file first makes the switch to a real API easier to understand.
+
+### 5. Why should this exercise be run using Live Server?
+
+`fetch()` is blocked by the browser when opening files directly from `file:///` because the browser treats local files as untrusted. Live Server runs a local web server at `http://127.0.0.1:5500` which allows `fetch()` to work correctly.
+
+### Output Screenshot
+
+![Day 4 Exercise 07 Output](screenshots/day4_exercise7.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
