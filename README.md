@@ -100,6 +100,24 @@ In Java, you must define a class first with declared fields and types before you
 
 ---
 
+## Day 4 Exercise 02 - Store Instructors in an Array and Loop Through Them
+
+Run `js/instructor-array.js` to run this exercise.
+
+### Files created
+
+- `instructor-array.js` — creates an array of 4 instructor objects, loops through them using `for...of`, prints each instructor in a readable format, and prints the total count using `.length`.
+
+### How is a JavaScript array similar to Java ArrayList?
+
+Both can store multiple objects, grow dynamically, and be looped through with an enhanced for loop. In Java you write `new ArrayList<>()` and use `.size()` for the count. In JavaScript you write `[]` and use `.length`. The idea is the same — a list that can hold many items.
+
+### Output Screenshot
+
+![Day 4 Exercise 02 Output](screenshots/day4_exercise2.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
