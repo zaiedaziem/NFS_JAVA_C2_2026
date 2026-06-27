@@ -192,6 +192,26 @@ The DOM (Document Object Model) allows JavaScript to read and change the content
 
 ---
 
+## Day 4 Exercise 06 - Add Search to the Student List
+
+Run `student-search-ui/index.html` in a browser to run this exercise.
+
+### Files created
+
+- `student-search-ui/index.html` — HTML page with a search input, a Search button, a Reset button, and an empty `div` with `id="student-list"`.
+- `student-search-ui/script.js` — creates an array of 4 students and a `renderStudents()` function that clears the list and renders cards. The Search button filters students by name using `filter` and re-renders the results. The Reset button clears the input and renders all students again.
+
+### How is JavaScript filter used in a search feature?
+
+When the Search button is clicked, the input value is read and converted to lowercase. `filter` then goes through every student and keeps only the ones whose name contains the keyword. The result is a new array of matching students which is passed to `renderStudents()` to display on screen.
+
+### Output Screenshot
+
+![Day 4 Exercise 06 Before Search](screenshots/day4_exercise6_1.png)
+![Day 4 Exercise 06 After Search](screenshots/day4_exercise6_2.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
