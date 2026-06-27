@@ -170,6 +170,25 @@ The item that was removed from the end of the array.
 
 ---
 
+## Day 4 Exercise 05 - Render Student Cards in HTML
+
+Run `student-dom-rendering/index.html` in a browser to run this exercise.
+
+### Files created
+
+- `student-dom-rendering/index.html` — HTML page with a heading and an empty `div` with `id="student-list"` where the cards will be injected. Links `script.js` at the bottom.
+- `student-dom-rendering/script.js` — creates an array of 4 students, selects the `student-list` div using `document.getElementById`, loops through students with `forEach`, creates a card div for each student using `document.createElement`, fills it with `innerHTML`, and adds it to the page using `appendChild`.
+
+### What does the DOM allow JavaScript to do?
+
+The DOM (Document Object Model) allows JavaScript to read and change the content of an HTML page after it has loaded. Without the DOM, JavaScript can only run logic — it cannot touch anything on screen. With the DOM, JavaScript can create new elements, update text, change styles, and respond to user actions like clicks.
+
+### Output Screenshot
+
+![Day 4 Exercise 05 Output](screenshots/day4_exercise5.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
