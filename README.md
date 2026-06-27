@@ -84,6 +84,22 @@ By the end of this programme, participants will be able to:
 
 
 
+## Day 3 Exercise 01 - Build and Trace the Code Flow
+
+### When getCourseById("C004") is called, which file does the request go to first, second, and third?
+
+First it goes to `CourseService.java` — the demo class calls `courseService.getCourseById("C004")`. Second it goes to `CourseRepository` (the interface) — `CourseService` calls `courseRepository.findById("C004")`. Third it goes to `InMemoryCourseRepository.java` — the actual implementation that looks up the course in the `LinkedHashMap` and returns it wrapped in an `Optional`.
+
+### Output Screenshot
+
+![Day 3 Exercise 01 Output](screenshots/day3_exercise1.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
+
+---
+
 ## Day 3 Exercise 03 - Exception Practice with CourseService
 
 ### Why is throwing CourseNotFoundException better than printing inside CourseService?
