@@ -148,6 +148,26 @@ Because a `Course` represents the content — what is taught. `CourseOffering` r
 
 ---
 
+## Day 3 Exercise 05 - Loop Search Then Stream Search
+
+### Which version is easier to understand: loop or stream? Why?
+
+The loop version is easier to understand because it follows a step-by-step flow that reads like plain instructions — create an empty list, go through each course, check the condition, add it if it matches, return the list. The stream version is shorter but requires knowing what `stream()`, `filter()`, and `toList()` mean before it makes sense.
+
+### What does filter() do in a stream?
+
+`filter()` goes through every item in the stream and keeps only the ones where the condition inside is `true`. Items that do not match are removed. It is the same as the `if` check inside a loop — just written in a different style.
+
+### Output Screenshot
+
+![Day 3 Exercise 05 Output](screenshots/day3_exercise5.png)
+
+### GitHub Commit
+
+[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
