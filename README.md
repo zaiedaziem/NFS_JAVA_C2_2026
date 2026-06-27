@@ -88,6 +88,10 @@ By the end of this programme, participants will be able to:
 
 Run `CodeFlowPractice.java` to run this exercise.
 
+### Files created
+
+- `CodeFlowPractice.java` — demo class that creates a repository and service, adds course C004, retrieves it by ID, and prints the result. Comments inside explain how the request flows through each layer.
+
 ### When getCourseById("C004") is called, which file does the request go to first, second, and third?
 
 First it goes to `CourseService.java` — the demo class calls `courseService.getCourseById("C004")`. Second it goes to `CourseRepository` (the interface) — `CourseService` calls `courseRepository.findById("C004")`. Third it goes to `InMemoryCourseRepository.java` — the actual implementation that looks up the course in the `LinkedHashMap` and returns it wrapped in an `Optional`.
@@ -101,6 +105,10 @@ First it goes to `CourseService.java` — the demo class calls `courseService.ge
 ## Day 3 Exercise 02 - Interface and Repository Storage Practice
 
 Run `RepositoryPractice.java` to run this exercise.
+
+### Files created
+
+- `RepositoryPractice.java` — demo class that uses `CourseRepository` interface directly to save three courses, loop through all of them, find one by ID using `Optional`, and check if a course exists using `existsById`.
 
 ### Why is InMemoryCourseRepository temporary storage? What would replace it later?
 
@@ -116,6 +124,10 @@ Run `RepositoryPractice.java` to run this exercise.
 
 Run `ExceptionPractice.java` to run this exercise.
 
+### Files created
+
+- `ExceptionPractice.java` — demo class that sets up `CourseService`, adds two courses, finds an existing course by ID, then tries to find two missing IDs. Uses try-catch to handle `CourseNotFoundException` and print a friendly message instead of crashing.
+
 ### Why is throwing CourseNotFoundException better than printing inside CourseService?
 
 Because different callers handle errors differently. A console app prints a friendly message, a Spring Boot REST controller returns a `404` HTTP response, and a frontend app shows a popup. If `CourseService` printed the error directly, it would only work for one type of caller. By throwing the exception, the service just reports what went wrong — and each caller decides how to display it.
@@ -130,6 +142,10 @@ Because different callers handle errors differently. A console app prints a frie
 
 Run `ObjectRelationshipPractice.java` to run this exercise.
 
+### Files created
+
+- `ObjectRelationshipPractice.java` — demo class that creates two instructors, two courses, assigns instructors to courses, then creates two `CourseOffering` objects that each hold a `Course` and an `Instructor`. Shows composition — one object has another object inside it.
+
 ### Why is CourseOffering a better design than putting start date, end date, and capacity directly inside Course?
 
 Because a `Course` represents the content — what is taught. `CourseOffering` represents one specific run of that course — when, where, how many seats, and who teaches it. The same `Course` can have many offerings at different dates, different capacities, and different instructors. If you put `startDate`, `endDate`, and `capacity` inside `Course`, you could only run it once and the course data would be mixed with scheduling data. Keeping them separate follows the single responsibility principle.
@@ -143,6 +159,11 @@ Because a `Course` represents the content — what is taught. `CourseOffering` r
 ## Day 3 Exercise 05 - Loop Search Then Stream Search
 
 Run `SearchPractice.java` to run this exercise.
+
+### Files created
+
+- `CourseService.java` — `searchByLevelUsingLoop()` method added. Creates an empty `ArrayList`, loops through all courses, checks if the level matches using `equalsIgnoreCase()`, and adds matching courses to the results list.
+- `SearchPractice.java` — demo class that adds four courses with different levels, calls `searchByLevelUsingLoop("Beginner")`, and prints only the matching results.
 
 ### Which version is easier to understand: loop or stream? Why?
 
@@ -161,6 +182,14 @@ The loop version is easier to understand because it follows a step-by-step flow 
 ## Day 3 Exercise 06 - Build StudentService Using the Same Pattern as CourseService
 
 Run `Day3_Assignment06_StudentServicePractice.java` to run this exercise.
+
+### Files created
+
+- `StudentRepository.java` — interface that defines what actions are available: save, findById, findAll, existsById. No storage logic here, only method signatures.
+- `InMemoryStudentRepository.java` — implements `StudentRepository`. Stores students in a `LinkedHashMap` in memory. All the actual storage logic lives here.
+- `StudentNotFoundException.java` — custom exception that extends `RuntimeException`. Thrown when a student ID is not found. Uses `super()` to pass the error message to `RuntimeException`.
+- `StudentService.java` — business logic layer. Depends on `StudentRepository` to save and retrieve students. Validates input, checks for duplicates, and throws `StudentNotFoundException` when needed.
+- `Day3_Assignment06_StudentServicePractice.java` — demo class that wires everything together. Creates the repository and service, registers students, finds by ID, searches by name, and handles a missing student with a try-catch.
 
 ### How is StudentService similar to CourseService?
 
