@@ -2,7 +2,7 @@
 
 ## What You Just Learned
 
-The trainer showed how to store many courses inside a JavaScript array.
+The instructor showed how to store many courses inside a JavaScript array.
 
 Now you will apply the same idea to instructors.
 

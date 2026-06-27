@@ -2,7 +2,7 @@
 
 ## What You Just Learned
 
-The trainer showed:
+The instructor showed:
 
 ```text
 normal function
@@ -75,7 +75,7 @@ Active
 
 ## Important Rule
 
-Do not only copy the trainer's `formatCourse` function. You must change property names correctly for `Student`.
+Do not only copy the instructor's `formatCourse` function. You must change property names correctly for `Student`.
 
 ## Submission
 

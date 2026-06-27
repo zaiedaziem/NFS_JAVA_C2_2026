@@ -2,7 +2,7 @@
 
 ## What You Just Learned
 
-The trainer showed how a JavaScript object can represent one course.
+The instructor showed how a JavaScript object can represent one course.
 
 In Java, you needed a class such as `Course.java`.
 
@@ -58,7 +58,7 @@ Status: Active
 
 ## Important Rule
 
-Do not create a `Course` object. The trainer already showed `Course`. You must apply the same idea to `Student`.
+Do not create a `Course` object. The instructor already showed `Course`. You must apply the same idea to `Student`.
 
 ## Submission
 
