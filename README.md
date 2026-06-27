@@ -166,7 +166,10 @@ The item that was removed from the end of the array.
 
 ### Output Screenshot
 
-![Day 4 Exercise 04 Output](screenshots/day4_exercise4.png)
+![Day 4 Exercise 04 Output 1](screenshots/day4_exercise4_1.png)
+![Day 4 Exercise 04 Output 2](screenshots/day4_exercise4_2.png)
+![Day 4 Exercise 04 Output 3](screenshots/day4_exercise4_3.png)
+![Day 4 Exercise 04 Output 4](screenshots/day4_exercise4_4.png)
 
 ---
 
