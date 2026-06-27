@@ -158,6 +158,24 @@ The loop version is easier to understand because it follows a step-by-step flow 
 
 ---
 
+## Day 3 Exercise 06 - Build StudentService Using the Same Pattern as CourseService
+
+Run `Day3_Assignment06_StudentServicePractice.java` to run this exercise.
+
+### How is StudentService similar to CourseService?
+
+Both follow the same pattern — a service class depends on a repository interface, uses it to save and retrieve data, and throws a custom exception when something is not found. The only difference is the model they work with: `CourseService` uses `Course` and `CourseRepository`, while `StudentService` uses `Student` and `StudentRepository`.
+
+### Which file stores students temporarily while the program is running?
+
+`InMemoryStudentRepository.java` — it stores students in a `LinkedHashMap` in memory. When the program stops, all data is lost.
+
+### Output Screenshot
+
+![Day 3 Exercise 06 Output](screenshots/day3_exercise6.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
