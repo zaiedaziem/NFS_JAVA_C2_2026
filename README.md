@@ -86,6 +86,8 @@ By the end of this programme, participants will be able to:
 
 ## Day 3 Exercise 01 - Build and Trace the Code Flow
 
+Run `CodeFlowPractice.java` to run this exercise.
+
 ### When getCourseById("C004") is called, which file does the request go to first, second, and third?
 
 First it goes to `CourseService.java` — the demo class calls `courseService.getCourseById("C004")`. Second it goes to `CourseRepository` (the interface) — `CourseService` calls `courseRepository.findById("C004")`. Third it goes to `InMemoryCourseRepository.java` — the actual implementation that looks up the course in the `LinkedHashMap` and returns it wrapped in an `Optional`.
@@ -94,13 +96,11 @@ First it goes to `CourseService.java` — the demo class calls `courseService.ge
 
 ![Day 3 Exercise 01 Output](screenshots/day3_exercise1.png)
 
-### GitHub Commit
-
-[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
-
 ---
 
 ## Day 3 Exercise 02 - Interface and Repository Storage Practice
+
+Run `RepositoryPractice.java` to run this exercise.
 
 ### Why is InMemoryCourseRepository temporary storage? What would replace it later?
 
@@ -110,13 +110,11 @@ First it goes to `CourseService.java` — the demo class calls `courseService.ge
 
 ![Day 3 Exercise 02 Output](screenshots/day3_exercise2.png)
 
-### GitHub Commit
-
-[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
-
 ---
 
 ## Day 3 Exercise 03 - Exception Practice with CourseService
+
+Run `ExceptionPractice.java` to run this exercise.
 
 ### Why is throwing CourseNotFoundException better than printing inside CourseService?
 
@@ -126,13 +124,11 @@ Because different callers handle errors differently. A console app prints a frie
 
 ![Day 3 Exercise 03 Output](screenshots/day3_exercise3.png)
 
-### GitHub Commit
-
-[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
-
 ---
 
 ## Day 3 Exercise 04 - Object Relationships and Composition
+
+Run `ObjectRelationshipPractice.java` to run this exercise.
 
 ### Why is CourseOffering a better design than putting start date, end date, and capacity directly inside Course?
 
@@ -142,13 +138,11 @@ Because a `Course` represents the content — what is taught. `CourseOffering` r
 
 ![Day 3 Exercise 04 Output](screenshots/day3_exercise4.png)
 
-### GitHub Commit
-
-[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
-
 ---
 
 ## Day 3 Exercise 05 - Loop Search Then Stream Search
+
+Run `SearchPractice.java` to run this exercise.
 
 ### Which version is easier to understand: loop or stream? Why?
 
@@ -161,10 +155,6 @@ The loop version is easier to understand because it follows a step-by-step flow 
 ### Output Screenshot
 
 ![Day 3 Exercise 05 Output](screenshots/day3_exercise5.png)
-
-### GitHub Commit
-
-[https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3](https://github.com/zaiedaziem/NFS_JAVA_C2_2026/tree/day3)
 
 ---
 
