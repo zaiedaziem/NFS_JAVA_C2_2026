@@ -1,0 +1,38 @@
+### 1. Health check 200 means successful read
+GET http://localhost:8081/api/health
+
+
+### 2, Get all course offerings
+GET http://localhost:8081/api/course-offerings
+
+
+### 3. Get a specific course offering
+GET http://localhost:8081/api/course-offerings/C001
+
+
+### 4. Get a course that doesn't exist
+GET http://localhost:8081/api/course-offerings/C999
+
+
+### 5. Create a new course offering 201 means successful creation
+POST http://localhost:8081/api/course-offerings
+Content-Type: application/json
+
+{
+  "courseTitle": "Spring Boot Fundamentals",
+  "instructorName": "Mr Fernando",
+  "startDate": "2026-08-15",
+  "capacity": 25
+}
+
+
+### 6. Create an invalid course 400 means bad request
+POST http://localhost:8081/api/course-offerings
+Content-Type: application/json
+
+{
+  "courseTitle": "",
+  "instructorName": "",
+  "startDate": "",
+  "capacity": 0
+}

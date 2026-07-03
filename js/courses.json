@@ -1,0 +1,26 @@
+[
+  {
+    "courseId": "C001",
+    "title": "Java Fundamentals",
+    "durationHours": 14,
+    "level": "Beginner"
+  },
+  {
+    "courseId": "C002",
+    "title": "React Frontend Development",
+    "durationHours": 21,
+    "level": "Intermediate"
+  },
+  {
+    "courseId": "C003",
+    "title": "MongoDB Basics",
+    "durationHours": 10,
+    "level": "Beginner"
+  },
+  {
+    "courseId": "C004",
+    "title": "Spring Boot API Development",
+    "durationHours": 18,
+    "level": "Intermediate"
+  }
+]
