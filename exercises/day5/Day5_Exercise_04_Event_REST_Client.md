@@ -1,4 +1,4 @@
-# Day 5 Exercise 3: Build an Event API Client
+# Day 5 Exercise 4: Build an Event API Client
 
 ## Objective
 
