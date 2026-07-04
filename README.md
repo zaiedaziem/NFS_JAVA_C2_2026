@@ -138,6 +138,42 @@ After this exercise, I understand better that REST is not just about getting dat
 
 ---
 
+## Day 5 Exercise 02 - REST API Design
+
+This is a design-only exercise — no code was written.
+
+### API Specification Table
+
+| Resource | Method | Endpoint | Purpose | Request Body Needed? | Success Status | Possible Error Status |
+|---|---|---|---|---|---:|---:|
+| Events | GET | /api/events | View all available events | No | 200 | 500 |
+| Events | GET | /api/events/{eventId} | View details of one event | No | 200 | 404 |
+| Bookings | POST | /api/bookings | Create a new booking | Yes | 201 | 400, 404 |
+| Bookings | GET | /api/bookings | View all bookings | No | 200 | 500 |
+| Bookings | GET | /api/bookings/{bookingId} | View one booking | No | 200 | 404 |
+| Bookings | DELETE | /api/bookings/{bookingId} | Cancel a booking | No | 200 | 404, 409 |
+
+### Request Body Planning
+
+| Endpoint | Request Body Description |
+|---|---|
+| POST /api/bookings | Should contain eventId, attendee name, and number of seats requested |
+
+### Error Planning
+
+| Error Case | Related Endpoint | Suitable Status Code | Explanation |
+|---|---|---:|---|
+| Event does not exist | POST /api/bookings | 404 | The eventId in the request body does not match any existing event |
+| Booking already cancelled | DELETE /api/bookings/{bookingId} | 409 | The booking exists but is already cancelled, so cancelling it again is a conflict, not a valid action |
+| Missing required field | POST /api/bookings | 400 | The request body is missing eventId or attendee name |
+| Event fully booked | POST /api/bookings | 400 | There are no available seats left for that event |
+
+### Why these endpoint names follow REST principles
+
+Each endpoint name is a noun representing a resource (`/events`, `/bookings`), not a verb describing an action. The HTTP method itself tells you the action — `GET` to read, `POST` to create, `DELETE` to remove. This avoids duplication like `/createBooking` where both the URL and the method say "create."
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
