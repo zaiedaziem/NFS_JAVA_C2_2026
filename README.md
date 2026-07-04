@@ -194,6 +194,22 @@ Run `event-preview/index.html` in a browser to run this exercise.
 
 ---
 
+## Day 5 Exercise 04 - Build an Event API Client
+
+Run `event-rest-client/index.html` using Live Server to run this exercise. Requires the mock server to be running (`node rest-basics/mock-api.js`).
+
+### Files created
+
+- `event-rest-client/index.html` — HTML page with a status text, an empty `div` for the event list, and a search section with an input and a Find Event button.
+- `event-rest-client/app.js` — `loadEvents()` fetches all events from `GET /api/events` and displays them, updating the status message before and after loading, with a `try/catch` to show an error message if the request fails. `findEventById()` fetches one event from `GET /api/events/{id}` and displays it, or shows a "not found" message if the response is not OK.
+
+### Output Screenshot
+
+![Day 5 Exercise 04 Output 1](screenshots/day5_exercise4_1.png)
+![Day 5 Exercise 04 Output 2](screenshots/day5_exercise4_2.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
