@@ -11,4 +11,4 @@ GET http://localhost:8080/api/assets
 GET http://localhost:8080/api/assets/A002
 
 ### Get one asset that doesn't exist
-GET http://localhost:8080/api/assets/X031
+GET http://localhost:8080/api/assets/23232

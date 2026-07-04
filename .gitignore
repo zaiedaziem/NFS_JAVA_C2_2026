@@ -137,6 +137,7 @@ jacoco.exec
 .springBeans
 .sts4-cache/
 .factorypath
+.zed
 
 # ---------------------------------------------------------
 # VS Code Java / language server
