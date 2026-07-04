@@ -1,2 +1,14 @@
 ### Health check
 GET http://localhost:8080/api/health
+
+### About check
+GET http://localhost:8080/api/about
+
+### GET all assets
+GET http://localhost:8080/api/assets
+
+### Get one asset
+GET http://localhost:8080/api/assets/A002
+
+### Get one asset that doesn't exist
+GET http://localhost:8080/api/assets/X031
