@@ -12,3 +12,16 @@ GET http://localhost:8080/api/assets/A002
 
 ### Get one asset that doesn't exist
 GET http://localhost:8080/api/assets/23232
+
+### Create a valid asset
+POST http://localhost:8080/api/assets
+Content-Type: application/json
+
+{
+    "assetTag": "",
+    "name": "",
+    "category": "",
+    "serialNumber": "",
+    "status": "",
+    "location": ""
+  }

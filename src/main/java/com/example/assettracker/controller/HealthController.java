@@ -5,24 +5,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-
-@RestController // Tells Spring this class is a Controller, Handles HTTP requests
+/*
+ * Simple health check controller.
+ * - @RestController: a specialization of @Controller that assumes
+ *   every method returns a domain object rather than a view.
+ * - This endpoint is useful for students to quickly verify the app is running.
+ */
+@RestController
 public class HealthController {
-    @GetMapping("/api/health")  // maps a GET request to a Java method
+
+    @GetMapping("/api/health")
     public Map<String, String> health() {
+        // Returning a small JSON object. Spring MVC converts Map -> JSON automatically.
         return Map.of(
-            "status", "UP",
-            "service", "asset-tracker-api"
-        );
-    }
-
-
-    @GetMapping("/api/about")
-    public Map<String, String> about() {
-        return Map.of(
-            "name", "Asset Tracker API",
-            "version", "1.0.0",
-            "description", "API for tracking assets"
+                "status", "UP",
+                "service", "asset-tracker-api"
         );
     }
 }

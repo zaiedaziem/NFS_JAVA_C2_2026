@@ -1,5 +1,13 @@
 package com.example.assettracker.dto;
 
+/*
+ * AssetResponse
+ * -------------
+ * Simple DTO returned by controller endpoints. DTOs separate the internal
+ * model/storage from the JSON contract the API exposes. Keeping DTOs simple
+ * and focused helps when changing internal storage later (for example,
+ * replacing in-memory lists with a real database).
+ */
 public class AssetResponse {
 
     private String id;

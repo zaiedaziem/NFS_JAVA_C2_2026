@@ -2,6 +2,13 @@ package com.example.assettracker.dto;
 
 import java.util.List;
 
+/*
+ * ApiErrorResponse
+ * ----------------
+ * Standard shape for error responses returned by the API. Keeping a common
+ * error format makes it easier for front-end code (and students) to handle
+ * errors consistently.
+ */
 public class ApiErrorResponse {
 
     private String message;

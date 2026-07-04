@@ -2,6 +2,15 @@ package com.example.assettracker.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
+/*
+ * CreateAssetRequest
+ * ------------------
+ * DTO (Data Transfer Object) used to capture incoming JSON for creating
+ * a new Asset. Validation annotations (from Jakarta Bean Validation)
+ * such as @NotBlank are used to ensure required fields are provided.
+ * When @Valid is used in a controller, Spring will automatically validate
+ * the incoming request and throw MethodArgumentNotValidException on failure.
+ */
 public class CreateAssetRequest {
 
     @NotBlank(message = "Asset tag is required")
@@ -19,6 +28,7 @@ public class CreateAssetRequest {
     @NotBlank(message = "Location is required")
     private String location;
 
+    // Standard getters and setters are required for Jackson to bind JSON -> object.
     public String getAssetTag() {
         return assetTag;
     }
