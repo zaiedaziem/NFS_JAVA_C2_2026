@@ -116,6 +116,25 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
 
 ---
 
+## Day 6 Exercise 03 - Ticket by ID and 404 Handling
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
+
+### Files created
+
+- `ResourceNotFoundException.java` — a custom exception extending `RuntimeException`, thrown when a ticket ID is not found.
+- `ApiErrorResponse.java` — a simple DTO holding an error message, returned as JSON when an exception is caught.
+- `GlobalExceptionHandler.java` — a `@RestControllerAdvice` that catches `ResourceNotFoundException` anywhere in the app and converts it into a `404 Not Found` response with the error message.
+- `TicketService.java` — added `getTicketById(String id)` which searches the ticket list using a stream and throws `ResourceNotFoundException` if no match is found.
+- `TicketController.java` — added `GET /api/tickets/{id}` which reads the ID from the URL using `@PathVariable` and delegates the lookup to the service.
+
+### Output Screenshot
+
+![Day 6 Exercise 03 Output 1](screenshots/day6_exercise3_1.png)
+![Day 6 Exercise 03 Output 2](screenshots/day6_exercise3_2.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
