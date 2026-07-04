@@ -84,6 +84,22 @@ By the end of this programme, participants will be able to:
 
 
 
+## Day 6 Exercise 01 - Health and About Endpoints
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
+
+### Files created
+
+- `support-desk-api/` — new Spring Boot project generated from Spring Initializr with group `com.example`, artifact `support-desk-api`, package `com.example.supportdesk`, and the Spring Web dependency.
+- `HealthController.java` — a `@RestController` with two `GET` endpoints: `/api/health` returns a status and service name, `/api/about` returns app name, version, and description. Both return a `Map<String, String>` which Spring automatically converts into JSON.
+
+### Output Screenshot
+
+![Day 6 Exercise 01 Output 1](screenshots/day6_exercise1_1.png)
+![Day 6 Exercise 01 Output 2](screenshots/day6_exercise1_2.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
