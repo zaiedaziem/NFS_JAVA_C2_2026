@@ -88,13 +88,18 @@ By the end of this programme, participants will be able to:
 
 Run `node rest-basics/mock-api.js` to start the mock server, then open `rest-basics/requests.http` with the REST Client extension to run this exercise.
 
+### Note
+
+The original `requests.http` request #3 used `C001`, which does not exist in the mock data (the real IDs are `CO001` and `CO002`) — that request returned `404`. I changed it to `GET /api/course-offerings/CO001` so it matches an existing record and returns `200` with the actual course offering data.
+
 ### Investigation Table
 
 | Method | URL | Status Code | Response Type | What Happened? |
 |---|---|---:|---|---|
 | GET | /api/health | 200 | Single object | Server responded confirming the API is up and running |
 | GET | /api/course-offerings | 200 | List | Returned an array of all existing course offerings |
-| GET | /api/course-offerings/C001 | 404 | Error object | No course offering exists with ID `C001` (real IDs are `CO001`, `CO002`), so the server returned a not-found message |
+| GET | /api/course-offerings/CO001 | 200 | Single object | Returned the course offering matching ID `CO001` |
+| GET | /api/course-offerings/C999 | 404 | Error object | No course offering exists with ID `C999`, so the server returned a not-found message |
 | POST | /api/course-offerings (valid data) | 201 | Single object | A new course offering was created and returned with a generated ID and status `OPEN` |
 | POST | /api/course-offerings (empty data) | 400 | Error object | Validation failed because required fields were empty, server returned a list of field-level errors |
 
@@ -104,7 +109,7 @@ Run `node rest-basics/mock-api.js` to start the mock server, then open `rest-bas
 
 ### 2. Which request returned a not-found response?
 
-`GET /api/course-offerings/C001` — returned status `404` because that ID does not exist in the data.
+`GET /api/course-offerings/C999` — returned status `404` because that ID does not exist in the data.
 
 ### 3. Which request returned a validation error?
 
