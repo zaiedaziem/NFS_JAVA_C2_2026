@@ -7,7 +7,7 @@ GET http://localhost:8081/api/course-offerings
 
 
 ### 3. Get a specific course offering
-GET http://localhost:8081/api/course-offerings/C001
+GET http://localhost:8081/api/course-offerings/CO001
 
 
 ### 4. Get a course that doesn't exist

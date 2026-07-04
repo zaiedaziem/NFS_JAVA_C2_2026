@@ -84,6 +84,55 @@ By the end of this programme, participants will be able to:
 
 
 
+## Day 5 Exercise 01 - HTTP Investigation
+
+Run `node rest-basics/mock-api.js` to start the mock server, then open `rest-basics/requests.http` with the REST Client extension to run this exercise.
+
+### Investigation Table
+
+| Method | URL | Status Code | Response Type | What Happened? |
+|---|---|---:|---|---|
+| GET | /api/health | 200 | Single object | Server responded confirming the API is up and running |
+| GET | /api/course-offerings | 200 | List | Returned an array of all existing course offerings |
+| GET | /api/course-offerings/C001 | 404 | Error object | No course offering exists with ID `C001` (real IDs are `CO001`, `CO002`), so the server returned a not-found message |
+| POST | /api/course-offerings (valid data) | 201 | Single object | A new course offering was created and returned with a generated ID and status `OPEN` |
+| POST | /api/course-offerings (empty data) | 400 | Error object | Validation failed because required fields were empty, server returned a list of field-level errors |
+
+### 1. Which request returned a successful list response?
+
+`GET /api/course-offerings` — returned status `200` with an array of course offerings.
+
+### 2. Which request returned a not-found response?
+
+`GET /api/course-offerings/C001` — returned status `404` because that ID does not exist in the data.
+
+### 3. Which request returned a validation error?
+
+`POST /api/course-offerings` with empty fields — returned status `400` with a list of field errors.
+
+### 4. What is the difference between a successful response and an error response?
+
+A successful response returns a status code in the `2xx` range along with the data that was requested or created. An error response returns a status code in the `4xx` or `5xx` range along with a message explaining what went wrong, instead of the actual data.
+
+### 5. Why is the status code important for frontend developers?
+
+The status code tells the frontend how to react without needing to read the whole response body first. A `200` or `201` means the frontend can display the data or confirm success. A `404` means it should show a "not found" message. A `400` means it should show validation errors next to the form fields. Frontend code branches its behaviour based on the status code.
+
+### Reflection
+
+After this exercise, I understand better that REST is not just about getting data back — the status code itself carries meaning. A `404` and a `400` both look like "it failed," but they mean completely different things: one says the resource does not exist, the other says the request itself was invalid. Reading the status code first tells you what kind of problem you're dealing with before even looking at the response body.
+
+### Output Screenshots
+
+![Day 5 Exercise 01 Output 1](screenshots/day5_exercise1_1.png)
+![Day 5 Exercise 01 Output 2](screenshots/day5_exercise1_2.png)
+![Day 5 Exercise 01 Output 3](screenshots/day5_exercise1_3.png)
+![Day 5 Exercise 01 Output 4](screenshots/day5_exercsise1_4.png)
+![Day 5 Exercise 01 Output 5](screenshots/day5_exercise1_5.png)
+![Day 5 Exercise 01 Output 6](screenshots/day5_exercise1_6.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
