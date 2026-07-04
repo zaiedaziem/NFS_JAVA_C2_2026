@@ -1,0 +1,6 @@
+### 1. Health check
+GET http://localhost:8080/api/health
+
+
+### 2. About the API
+GET http://localhost:8080/api/about
