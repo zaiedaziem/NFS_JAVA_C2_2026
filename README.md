@@ -174,6 +174,26 @@ Each endpoint name is a noun representing a resource (`/events`, `/bookings`), n
 
 ---
 
+## Day 5 Exercise 03 - Display Event JSON on a Webpage
+
+Run `event-preview/index.html` in a browser to run this exercise.
+
+### Files created
+
+- `event-preview/index.html` — starter HTML page with a status text and an empty `<ul>` with `id="eventList"`.
+- `event-preview/app.js` — selects the list and status elements, loops through the `events` array using `forEach`, creates an `<li>` for each event showing title, date, venue, and available seats, flags events with fewer than 50 seats as "Limited seats", and updates the status text with the total number of events displayed.
+
+### Bugs fixed
+
+- Typo `event.availableSeatts` (extra `t`) meant the property never matched the real `availableSeats` field, so the "Limited seats" challenge task never triggered. Fixed by correcting the property name.
+- The status text update line was missing entirely, so the page always showed "Events not displayed yet." Added `statusText.textContent = \`${events.length} event(s) displayed.\`;` at the end of the script.
+
+### Output Screenshot
+
+![Day 5 Exercise 03 Output](screenshots/day5_exercise3.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
