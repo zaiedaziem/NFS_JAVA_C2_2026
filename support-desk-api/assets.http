@@ -4,3 +4,7 @@ GET http://localhost:8080/api/health
 
 ### 2. About the API
 GET http://localhost:8080/api/about
+
+
+### 3. Get all support tickets
+GET http://localhost:8080/api/tickets

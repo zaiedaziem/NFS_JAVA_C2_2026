@@ -100,6 +100,22 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
 
 ---
 
+## Day 6 Exercise 02 - Build the Ticket Read API
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
+
+### Files created
+
+- `TicketResponse.java` — a DTO holding ticket fields (id, title, description, category, priority, status, createdBy, createdAt) with getters. Shapes what gets returned as JSON.
+- `TicketService.java` — a `@Service` bean that holds a hardcoded list of 3 tickets and exposes `getAllTickets()` to return them.
+- `TicketController.java` — a `@RestController` that depends on `TicketService` through constructor injection and exposes `GET /api/tickets`, returning the ticket list as a JSON array.
+
+### Output Screenshot
+
+![Day 6 Exercise 02 Output](screenshots/day6_exercise2.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
