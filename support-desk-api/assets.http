@@ -8,3 +8,11 @@ GET http://localhost:8080/api/about
 
 ### 3. Get all support tickets
 GET http://localhost:8080/api/tickets
+
+
+### 4. Get existing ticket
+GET http://localhost:8080/api/tickets/T001
+
+
+### 5. Get missing ticket
+GET http://localhost:8080/api/tickets/T999

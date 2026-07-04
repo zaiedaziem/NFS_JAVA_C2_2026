@@ -3,6 +3,7 @@ package com.example.supportdesk.controller;
 import com.example.supportdesk.dto.TicketResponse;
 import com.example.supportdesk.service.TicketService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,5 +23,11 @@ public class TicketController {
     @GetMapping("/api/tickets")
     public List<TicketResponse> getAllTickets() {
         return ticketService.getAllTickets();
+    }
+
+    // {id} in the URL is captured by @PathVariable and passed to the service to find one ticket
+    @GetMapping("/api/tickets/{id}")
+    public TicketResponse getTicketById(@PathVariable String id) {
+        return ticketService.getTicketById(id);
     }
 }

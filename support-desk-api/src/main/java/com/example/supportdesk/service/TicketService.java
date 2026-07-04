@@ -1,6 +1,7 @@
 package com.example.supportdesk.service;
 
 import com.example.supportdesk.dto.TicketResponse;
+import com.example.supportdesk.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,5 +31,13 @@ public class TicketService {
     // Returns the full ticket list to whoever calls this service (the controller)
     public List<TicketResponse> getAllTickets() {
         return tickets;
+    }
+
+    // Searches the ticket list for a matching ID, throws if none is found
+    public TicketResponse getTicketById(String id) {
+        return tickets.stream()
+                .filter(ticket -> ticket.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket " + id + " was not found"));
     }
 }
