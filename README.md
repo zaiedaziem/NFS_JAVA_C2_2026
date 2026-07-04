@@ -210,6 +210,40 @@ Run `event-rest-client/index.html` using Live Server to run this exercise. Requi
 
 ---
 
+## Day 5 Final Exercise - Add Booking Endpoints to the Mock API
+
+Run `node rest-basics/mock-api.js` to start the mock server, then open `rest-basics/requests.http` with the REST Client extension to run this exercise.
+
+### Files updated
+
+- `mock-api.js` — added a `bookings` array, a `validateBooking()` function, and 4 endpoints: `GET /api/bookings` (list all), `GET /api/bookings/{id}` (find one), `POST /api/bookings` (create, with validation, event existence check, and seat availability check), and `DELETE /api/bookings/{id}` (optional task — cancels a booking, sets status to `CANCELLED`, and returns the seats back to the event).
+- `requests.http` — added test requests 7 through 15 covering all bookings scenarios: empty list, valid creation, get one, missing fields, invalid event ID, too many seats, seat reduction check, cancellation, and seat restoration check.
+
+### What was completed
+
+- `GET /api/bookings` and `GET /api/bookings/{id}` work correctly
+- `POST /api/bookings` creates a booking and returns `201`
+- Missing fields return `400` with field-level errors
+- Unknown event ID returns `404`
+- Booking more seats than available returns `400`
+- Available seats reduce on the event after a successful booking
+- Optional `DELETE /api/bookings/{id}` cancels a booking and restores the seats
+
+### Output Screenshots
+
+![Booking list before any booking](screenshots/day5_exercise5_0booking.png)
+![Available seats before booking](screenshots/day5_exercise5_avavailable seats before make booking.png)
+![Create a valid booking](screenshots/day5_exercise5_make booking.png)
+![Available seats after booking](screenshots/day5_exercise5_availabe seats after make booking.png)
+![Get one booking by ID](screenshots/day5_exercise5_get one booking id.png)
+![Create a booking with missing fields](screenshots/day5_exercise5_Create a booking with missing fields 400 means bad request.png)
+![Create a booking with invalid event ID](screenshots/day5_exercise5_Create a booking with an invalid event ID 404 means not found.png)
+![Create a booking with too many seats](screenshots/day5_exercise5_Create a booking with too many seats 400 means bad request.png)
+![Delete a booking](screenshots/day5_exercise5_delete booking.png)
+![Get all bookings after delete](screenshots/day5_exercise5_get all bookig after delete booking.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

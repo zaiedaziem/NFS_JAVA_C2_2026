@@ -36,3 +36,71 @@ Content-Type: application/json
   "startDate": "",
   "capacity": 0
 }
+
+
+### 7. Get all bookings - should be empty array at first
+GET http://localhost:8081/api/bookings
+
+
+### 8. Create a valid booking 201 means successful creation
+POST http://localhost:8081/api/bookings
+Content-Type: application/json
+
+{
+  "eventId": "EV001",
+  "participantName": "Rahim Gonzalez",
+  "participantEmail": "rahim@example.com",
+  "seats": 2
+}
+
+
+### 9. Get one booking by ID
+GET http://localhost:8081/api/bookings/BK001
+
+
+### 10. Create a booking with missing fields 400 means bad request
+POST http://localhost:8081/api/bookings
+Content-Type: application/json
+
+{
+  "eventId": "",
+  "participantName": "",
+  "participantEmail": "",
+  "seats": 0
+}
+
+
+### 11. Create a booking with an invalid event ID 404 means not found
+POST http://localhost:8081/api/bookings
+Content-Type: application/json
+
+{
+  "eventId": "EV999",
+  "participantName": "Rahim Gonzalez",
+  "participantEmail": "rahim@example.com",
+  "seats": 2
+}
+
+
+### 12. Create a booking with too many seats 400 means bad request
+POST http://localhost:8081/api/bookings
+Content-Type: application/json
+
+{
+  "eventId": "EV002",
+  "participantName": "Rahim Gonzalez",
+  "participantEmail": "rahim@example.com",
+  "seats": 100
+}
+
+
+### 13. Check available seats reduced after booking
+GET http://localhost:8081/api/events
+
+
+### 14. Cancel a booking - status becomes CANCELLED and seats are returned
+DELETE http://localhost:8081/api/bookings/BK001
+
+
+### 15. Check seats are returned to the event after cancelling
+GET http://localhost:8081/api/events
