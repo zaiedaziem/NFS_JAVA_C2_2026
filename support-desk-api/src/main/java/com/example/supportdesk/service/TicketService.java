@@ -1,6 +1,7 @@
 package com.example.supportdesk.service;
 
 import com.example.supportdesk.dto.TicketResponse;
+import com.example.supportdesk.dto.CreateTicketRequest;
 import com.example.supportdesk.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,22 @@ public class TicketService {
                 .filter(ticket -> ticket.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket " + id + " was not found"));
+    }
+
+    public TicketResponse createTicket(CreateTicketRequest request){
+        String newId = "T00" + (tickets.size() + 1); // Simple ID generation for demonstration
+
+        TicketResponse newTicket = new TicketResponse(
+                newId,
+                request.getTitle(),
+                request.getDescription(),
+                request.getCategory(),
+                request.getPriority(),
+                "OPEN", // Default status for new tickets
+                request.getCreatedBy(),
+                java.time.LocalDate.now().toString() // Current date as string
+        );
+        tickets.add(newTicket);
+        return newTicket;
     }
 }

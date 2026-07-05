@@ -135,6 +135,26 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
 
 ---
 
+## Day 6 Exercise 04 - Create Ticket with Validation
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
+
+### Files created
+
+- `CreateTicketRequest.java` — a request DTO with `@NotBlank` validation on all 5 required fields (title, description, category, priority, createdBy).
+- `FieldErrorDetail.java` — pairs a field name with its validation error message.
+- `ApiErrorResponse.java` — updated to hold both a `message` and a list of `FieldErrorDetail`, so validation failures return field-level detail instead of just a generic message.
+- `TicketService.java` — added `createTicket()` which generates a new ID, sets status to `OPEN`, sets the current date, and adds the ticket to the in-memory list.
+- `TicketController.java` — added `POST /api/tickets` using `@Valid @RequestBody`, returning `201 Created` on success.
+- `GlobalExceptionHandler.java` — added a handler for `MethodArgumentNotValidException` that collects all field errors and returns them in a `400 Bad Request` response.
+
+### Output Screenshot
+
+![Day 6 Exercise 04 Valid Ticket](screenshots/day6_exercise4_valid ticket.png)
+![Day 6 Exercise 04 Invalid Ticket](screenshots/day6_exercise4_invalidticket.png)
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

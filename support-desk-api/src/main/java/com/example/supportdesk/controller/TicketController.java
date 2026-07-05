@@ -6,6 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.supportdesk.dto.CreateTicketRequest;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 import java.util.List;
 
 @RestController
@@ -29,5 +36,11 @@ public class TicketController {
     @GetMapping("/api/tickets/{id}")
     public TicketResponse getTicketById(@PathVariable String id) {
         return ticketService.getTicketById(id);
+    }
+
+    @PostMapping("/api/tickets")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TicketResponse createTicket(@Valid @RequestBody CreateTicketRequest request) {
+        return ticketService.createTicket(request);
     }
 }
