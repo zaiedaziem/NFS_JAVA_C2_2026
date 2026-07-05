@@ -165,6 +165,46 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
 
 ---
 
+## Day 6 Exercise 05 - Create an HTTP Test File
+
+Open `requests/day06-tickets.http` with the REST Client extension to run this exercise. Requires `support-desk-api` to be running (`mvn spring-boot:run`).
+
+### Files created
+
+- `requests/day06-tickets.http` — consolidated `.http` test file covering all 7 required tests: health, about, get all tickets, get one existing ticket, get one missing ticket, create a valid ticket, and create an invalid ticket.
+
+### Which endpoints worked
+
+All 7 requests returned the expected status codes, already verified in Exercises 1-4:
+
+| Test | Expected Status | Result |
+|---|---:|---|
+| Health | 200 | Pass |
+| About | 200 | Pass |
+| Get all tickets | 200 | Pass |
+| Get existing ticket | 200 | Pass |
+| Get missing ticket | 404 | Pass |
+| Create valid ticket | 201 | Pass |
+| Create invalid ticket | 400 | Pass |
+
+### Example successful response
+
+`POST /api/tickets` with valid data returns `201 Created` with the new ticket, ID, and status `OPEN` (see screenshot below).
+
+### Example error response
+
+`GET /api/tickets/T999` returns `404 Not Found` with `{"message": "Ticket T999 was not found"}` (see screenshot below).
+
+### Output Screenshot
+
+![Day 6 Exercise 05 Valid Ticket](screenshots/day6_exercise4_validticket.png)
+*Example successful response - POST /api/tickets returns 201 Created*
+
+![Day 6 Exercise 05 Missing Ticket](screenshots/day6_exercise3_2.png)
+*Example error response - GET /api/tickets/T999 returns 404 Not Found*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
