@@ -150,7 +150,7 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
 
 ### Output Screenshot
 
-![Day 6 Exercise 04 Valid Ticket](screenshots/day6_exercise4_valid ticket.png)
+![Day 6 Exercise 04 Valid Ticket](screenshots/day6_exercise4_validticket.png)
 ![Day 6 Exercise 04 Invalid Ticket](screenshots/day6_exercise4_invalidticket.png)
 
 ---
