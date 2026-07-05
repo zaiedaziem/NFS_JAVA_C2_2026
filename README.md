@@ -96,7 +96,10 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
 ### Output Screenshot
 
 ![Day 6 Exercise 01 Output 1](screenshots/day6_exercise1_1.png)
+*GET /api/health response*
+
 ![Day 6 Exercise 01 Output 2](screenshots/day6_exercise1_2.png)
+*GET /api/about response*
 
 ---
 
@@ -113,6 +116,7 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
 ### Output Screenshot
 
 ![Day 6 Exercise 02 Output](screenshots/day6_exercise2.png)
+*GET /api/tickets response showing the hardcoded ticket list*
 
 ---
 
@@ -131,7 +135,10 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
 ### Output Screenshot
 
 ![Day 6 Exercise 03 Output 1](screenshots/day6_exercise3_1.png)
+*GET /api/tickets/T001 - existing ticket returns 200 OK*
+
 ![Day 6 Exercise 03 Output 2](screenshots/day6_exercise3_2.png)
+*GET /api/tickets/T999 - missing ticket returns 404 Not Found*
 
 ---
 
@@ -151,7 +158,10 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
 ### Output Screenshot
 
 ![Day 6 Exercise 04 Valid Ticket](screenshots/day6_exercise4_validticket.png)
+*POST /api/tickets with valid data - returns 201 Created*
+
 ![Day 6 Exercise 04 Invalid Ticket](screenshots/day6_exercise4_invalidticket.png)
+*POST /api/tickets with blank fields - returns 400 Bad Request with field-level errors*
 
 ---
 
