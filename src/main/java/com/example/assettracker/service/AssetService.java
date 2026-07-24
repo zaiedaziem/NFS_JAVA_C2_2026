@@ -3,97 +3,121 @@ package com.example.assettracker.service;
 import com.example.assettracker.dto.AssetResponse;
 import com.example.assettracker.dto.CreateAssetRequest;
 import com.example.assettracker.exception.ResourceNotFoundException;
+import com.example.assettracker.exception.DuplicateResourceException;
+import com.example.assettracker.model.Asset;
+import com.example.assettracker.repository.AssetRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /*
  * AssetService
  * ------------
- * Services contain business logic. They are simple POJOs annotated with
- * @Service so Spring will detect and manage them (as beans) during startup.
- *
- * This example uses an in-memory list to keep the example simple for students.
- * In production you would typically talk to a database via a Repository.
+ * Services contain business logic. This Day 8 version uses AssetRepository
+ * to query MongoDB documents, add filtering, add pagination/sorting, and log
+ * important service operations.
  */
 @Service
 public class AssetService {
 
-    // In-memory data store used for teaching/demo purposes only
-    private final List<AssetResponse> assets = new ArrayList<>();
+    private static final Logger logger = LoggerFactory.getLogger(AssetService.class);
 
-    public AssetService() {
-        // Seed with example data so the app has something to return right away.
-        assets.add(new AssetResponse(
-                "A001",
-                "LAP-2026-001",
-                "Dell Latitude 5440",
-                "Laptop",
-                "SN-LAP-001",
-                "AVAILABLE",
-                "HQ Level 3",
-                null
-        ));
+    private final AssetRepository assetRepository;
 
-        assets.add(new AssetResponse(
-                "A002",
-                "MON-2026-002",
-                "Dell 24-inch Monitor",
-                "Monitor",
-                "SN-MON-002",
-                "ASSIGNED",
-                "HQ Level 2",
-                "amir@example.com"
-        ));
-
-        assets.add(new AssetResponse(
-                "A003",
-                "PRJ-2026-003",
-                "Epson Projector",
-                "Projector",
-                "SN-PRJ-003",
-                "MAINTENANCE",
-                "Training Room 1",
-                null
-        ));
+    public AssetService(AssetRepository assetRepository) {
+        this.assetRepository = assetRepository;
     }
 
-    // Return all assets. Note: returning the internal list directly is simple
-    // for learning but would be unsafe in a concurrent production app.
-    public List<AssetResponse> getAllAssets() {
-        return assets;
-    }
+    public List<AssetResponse> getAssets(String status, String category, String location) {
+        logger.info("Fetching assets with status={}, category={}, location={}", status, category, location);
 
-    // Find an asset by id or throw a ResourceNotFoundException which is
-    // handled globally by GlobalExceptionHandler.
-    public AssetResponse getAssetById(String id) {
+        List<Asset> assets;
+
+        if (hasValue(status)) {
+            assets = assetRepository.findByStatusIgnoreCase(status.trim());
+        } else if (hasValue(category)) {
+            assets = assetRepository.findByCategoryIgnoreCase(category.trim());
+        } else if (hasValue(location)) {
+            assets = assetRepository.findByLocationContainingIgnoreCase(location.trim());
+        } else {
+            assets = assetRepository.findAll();
+        }
+
+        logger.info("Found {} asset(s)", assets.size());
+
         return assets.stream()
-                .filter(asset -> asset.getId().equalsIgnoreCase(id))
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Asset " + id + " was not found"));
+                .map(this::toResponse)
+                .toList();
     }
 
-    // Create a new asset from the request DTO. Demonstrates simple mapping
-    // from request -> response DTO and updating the in-memory store.
+    public Page<AssetResponse> getAssetsPaged(int page, int size, String sortBy, String direction) {
+        logger.info("Fetching paged assets page={}, size={}, sortBy={}, direction={}", page, size, sortBy, direction);
+
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return assetRepository.findAll(pageable)
+                .map(this::toResponse);
+    }
+
+    public AssetResponse getAssetById(String id) {
+        logger.info("Fetching asset by id={}", id);
+
+        Asset asset = assetRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Asset " + id + " was not found"));
+
+        return toResponse(asset);
+    }
+
     public AssetResponse createAsset(CreateAssetRequest request) {
-        AssetResponse created = new AssetResponse(
-                createNextId(),
-                request.getAssetTag().trim(),
+        String assetTag = request.getAssetTag().trim();
+        String serialNumber = request.getSerialNumber().trim();
+
+        if (assetRepository.existsByAssetTag(assetTag)) {
+            throw new DuplicateResourceException("Asset tag already exists: " + assetTag);
+        }
+
+        if (assetRepository.existsBySerialNumber(serialNumber)) {
+            throw new DuplicateResourceException("Serial number already exists: " + serialNumber);
+        }
+
+        Asset asset = new Asset(
+                assetTag,
                 request.getName().trim(),
                 request.getCategory().trim(),
-                request.getSerialNumber().trim(),
+                serialNumber,
                 "AVAILABLE",
                 request.getLocation().trim(),
                 null
         );
 
-        assets.add(created);
-        return created;
+        Asset savedAsset = assetRepository.save(asset);
+        return toResponse(savedAsset);
     }
 
-    // Helper to create a simple sequential id. Not thread-safe but fine for demo.
-    private String createNextId() {
-        return "A" + String.format("%03d", assets.size() + 1);
+    private boolean hasValue(String value) {
+        return value != null && !value.isBlank();
+    }
+
+    private AssetResponse toResponse(Asset asset) {
+        return new AssetResponse(
+                asset.getId(),
+                asset.getAssetTag(),
+                asset.getName(),
+                asset.getCategory(),
+                asset.getSerialNumber(),
+                asset.getStatus(),
+                asset.getLocation(),
+                asset.getAssignedTo()
+        );
     }
 }
