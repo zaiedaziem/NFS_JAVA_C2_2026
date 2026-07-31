@@ -152,6 +152,48 @@ No code changes were needed for this exercise — `TicketService.createTicket()`
 
 ---
 
+## Day 7 Exercise 05 - Persistence Checkpoint
+
+No code changes for this exercise. It is a verification checkpoint proving tickets survive an application restart.
+
+### Test steps
+
+1. Started MongoDB locally.
+2. Started the Support Desk API with `mvn spring-boot:run`.
+3. Created a new ticket using `POST /api/tickets`.
+4. Confirmed it appeared using `GET /api/tickets`.
+5. Stopped the Spring Boot application.
+6. Started the Spring Boot application again.
+7. Ran `GET /api/tickets` again.
+
+### Ticket ID created
+
+`6a6c2862bbb9c4921833f6e2`
+
+### Confirmation
+
+After stopping and restarting the application, `GET /api/tickets` still returned this ticket along with others created earlier, confirming the data is stored permanently in MongoDB rather than in memory. Checked directly in MongoDB Compass as well, the ticket documents are visible in the `tickets` collection independent of whether the application is running.
+
+### Reflection Questions
+
+**1. What is the role of the repository?**
+
+The repository is the layer that actually talks to MongoDB. It provides methods like `save()`, `findAll()`, and `findById()` so the service does not need to write any database query code itself.
+
+**2. What is the difference between Ticket and TicketResponse?**
+
+`Ticket` is the MongoDB document model, mapped directly to the `tickets` collection using `@Document` and `@Id`. `TicketResponse` is the DTO returned by the API, kept separate so the database structure and the API response shape can change independently of each other.
+
+**3. What does MongoDB store as the document ID?**
+
+An `ObjectId`, a unique 24 character hexadecimal string MongoDB generates automatically when a document is inserted, unless a custom ID is explicitly provided.
+
+**4. Why should the controller not talk directly to MongoDB?**
+
+Keeping the controller focused only on handling HTTP requests keeps responsibilities separated. If the controller queried MongoDB directly, database logic would be mixed with HTTP logic, making the code harder to test, harder to reuse, and harder to change later. For example, swapping databases would mean rewriting the controller too, not just the repository.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
