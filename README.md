@@ -128,6 +128,30 @@ The returned ticket ID changed from a manually generated format like `T001` to a
 
 ---
 
+## Day 7 Exercise 04 - Save New Tickets to MongoDB
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files updated
+
+No code changes were needed for this exercise — `TicketService.createTicket()` and `TicketController`'s `POST /api/tickets` were already updated to save into MongoDB while completing Exercise 3. This exercise just verifies that behaviour meets all the requirements: accepts JSON, validates required fields, saves via `TicketRepository`, returns `201 Created` on success, `400 Bad Request` on invalid input, and returns a `TicketResponse` DTO rather than the raw `Ticket` model.
+
+### Output Screenshot
+
+![Day 7 Exercise 04 Valid Request](screenshots/day7_exercise4-validRequest.png)
+*POST /api/tickets with valid data returns 201 Created*
+
+![Day 7 Exercise 04 Invalid Request](screenshots/day7_exercise4-invalidReq.png)
+*POST /api/tickets with blank fields returns 400 Bad Request*
+
+![Day 7 Exercise 04 Get All Tickets](screenshots/day7_exercise4-getAll.png)
+*GET /api/tickets confirms the new ticket was saved*
+
+![Day 7 Exercise 04 MongoDB Compass](screenshots/day7_exercise4-mongodbcompass.png)
+*New ticket document visible in the tickets collection via MongoDB Compass*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
