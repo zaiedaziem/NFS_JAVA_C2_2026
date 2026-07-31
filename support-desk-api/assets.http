@@ -1,0 +1,44 @@
+### 1. Health check
+GET http://localhost:8080/api/health
+
+
+### 2. About the API
+GET http://localhost:8080/api/about
+
+
+### 3. Get all support tickets
+GET http://localhost:8080/api/tickets
+
+
+### 4. Get existing ticket
+GET http://localhost:8080/api/tickets/6a6c2862bbb9c4921833f6e2
+
+
+### 5. Get missing ticket
+GET http://localhost:8080/api/tickets/000000000000000000000000
+
+
+### 6. Create a valid ticket
+POST http://localhost:8080/api/tickets
+Content-Type: application/json
+
+{
+  "title": "VPN connection not working",
+  "description": "User cannot connect to company VPN from home.",
+  "category": "Network",
+  "priority": "MEDIUM",
+  "createdBy": "siti@example.com"
+}
+
+
+### 7. Create an invalid ticket
+POST http://localhost:8080/api/tickets
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "",
+  "category": "",
+  "priority": "",
+  "createdBy": ""
+}
