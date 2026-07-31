@@ -102,6 +102,32 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requir
 
 ---
 
+## Day 7 Exercise 03 - Convert Ticket Read API to MongoDB
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files updated
+
+- `TicketService.java` — replaced the hardcoded in-memory list with `TicketRepository`. `getAllTickets()` now calls `findAll()` and maps each `Ticket` document to a `TicketResponse`. `getTicketById()` now calls `findById()` and throws `ResourceNotFoundException` if nothing matches. `createTicket()` was also updated to `save()` a new `Ticket` document to MongoDB, since the old in-memory list it relied on no longer exists.
+- Added a private `toResponse()` helper that converts a MongoDB `Ticket` document into a `TicketResponse` DTO.
+
+### How I confirmed the data came from MongoDB
+
+The returned ticket ID changed from a manually generated format like `T001` to a real MongoDB `ObjectId` (e.g. `6a6c2862bbb9c4921833f6e2`), which only MongoDB generates on save, confirming the ticket is a genuine document. Checking MongoDB Compass also showed the saved ticket sitting inside a `tickets` collection with all fields matching the request, plus MongoDB's own `_id` and a `_class` field added by Spring Data.
+
+### Output Screenshot
+
+![Day 7 Exercise 03 Get All Tickets](screenshots/day3_exercise3-getall.png)
+*GET /api/tickets returns tickets read from MongoDB*
+
+![Day 7 Exercise 03 Get One Ticket](screenshots/day7_exercise3-get-id.png)
+*GET /api/tickets/{id} returns the matching ticket with its MongoDB ObjectId*
+
+![Day 7 Exercise 03 Missing Ticket](screenshots/dayy7_exercise3-get00000.png)
+*GET /api/tickets/000000000000000000000000 returns 404 Not Found*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

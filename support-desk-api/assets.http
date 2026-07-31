@@ -11,11 +11,11 @@ GET http://localhost:8080/api/tickets
 
 
 ### 4. Get existing ticket
-GET http://localhost:8080/api/tickets/T001
+GET http://localhost:8080/api/tickets/6a6c2862bbb9c4921833f6e2
 
 
 ### 5. Get missing ticket
-GET http://localhost:8080/api/tickets/T999
+GET http://localhost:8080/api/tickets/000000000000000000000000
 
 
 ### 6. Create a valid ticket

@@ -1,61 +1,70 @@
 package com.example.supportdesk.service;
 
+import com.example.supportdesk.model.Ticket;
+import com.example.supportdesk.repository.TicketRepository;
 import com.example.supportdesk.dto.TicketResponse;
 import com.example.supportdesk.dto.CreateTicketRequest;
 import com.example.supportdesk.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // @Service marks this class as a Spring-managed bean holding business logic and data
 @Service
 public class TicketService {
-    // Hardcoded ticket storage - stands in for a real database for this exercise
-    private final List<TicketResponse> tickets = new ArrayList<>();
+    // TicketRepository replaces the old hardcoded list - it talks to MongoDB instead
+    private final TicketRepository ticketRepository;
 
-    // Runs once when Spring creates this bean - preloads the ticket list with sample data
-    public TicketService() {
-        tickets.add(new TicketResponse("T001", "Cannot access email",
-                "User cannot login to company email account.", "Email", "HIGH", "OPEN",
-                "amir@example.com", "2026-07-03"));
-
-        tickets.add(new TicketResponse("T002", "Laptop is slow",
-                "Laptop takes a long time to start up and open applications.", "Hardware", "MEDIUM", "OPEN",
-                "siti@example.com", "2026-07-03"));
-
-        tickets.add(new TicketResponse("T003", "VPN connection not working",
-                "User is unable to connect to the company VPN from home.", "Network", "HIGH", "OPEN",
-                "wei@example.com", "2026-07-04"));
+    // Constructor injection - Spring creates and passes in the repository automatically
+    public TicketService(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
     }
 
-    // Returns the full ticket list to whoever calls this service (the controller)
     public List<TicketResponse> getAllTickets() {
-        return tickets;
+        // findAll() comes free from MongoRepository - fetches every Ticket document from MongoDB
+        return ticketRepository.findAll()
+                .stream()
+                // Convert each MongoDB Ticket document into a TicketResponse DTO for the API
+                .map(this::toResponse)
+                .toList();
     }
 
-    // Searches the ticket list for a matching ID, throws if none is found
     public TicketResponse getTicketById(String id) {
-        return tickets.stream()
-                .filter(ticket -> ticket.getId().equals(id))
-                .findFirst()
+        // findById() also comes free from MongoRepository - returns Optional<Ticket>
+        Ticket ticket = ticketRepository.findById(id)
+                // If no document matches this ID, throw 404 (handled by GlobalExceptionHandler)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket " + id + " was not found"));
+        return toResponse(ticket);
     }
 
-    public TicketResponse createTicket(CreateTicketRequest request){
-        String newId = "T00" + (tickets.size() + 1); // Simple ID generation for demonstration
+    public TicketResponse createTicket(CreateTicketRequest request) {
+        // Build a Ticket document (no id set - MongoDB generates it automatically on save)
+        Ticket ticket = new Ticket();
+        ticket.setTitle(request.getTitle());
+        ticket.setDescription(request.getDescription());
+        ticket.setCategory(request.getCategory());
+        ticket.setPriority(request.getPriority());
+        ticket.setStatus("OPEN"); // Default status for new tickets
+        ticket.setCreatedBy(request.getCreatedBy());
+        ticket.setCreatedAt(java.time.LocalDate.now().toString());
 
-        TicketResponse newTicket = new TicketResponse(
-                newId,
-                request.getTitle(),
-                request.getDescription(),
-                request.getCategory(),
-                request.getPriority(),
-                "OPEN", // Default status for new tickets
-                request.getCreatedBy(),
-                java.time.LocalDate.now().toString() // Current date as string
+        // save() comes free from MongoRepository - inserts the document and returns it with its new id
+        Ticket saved = ticketRepository.save(ticket);
+        return toResponse(saved);
+    }
+
+    // Converts a MongoDB Ticket document into the TicketResponse shape the API returns.
+    // Kept separate because the database model and the API response don't have to be identical.
+    private TicketResponse toResponse(Ticket ticket) {
+        return new TicketResponse(
+                ticket.getId(),
+                ticket.getTitle(),
+                ticket.getDescription(),
+                ticket.getCategory(),
+                ticket.getPriority(),
+                ticket.getStatus(),
+                ticket.getCreatedBy(),
+                ticket.getCreatedAt()
         );
-        tickets.add(newTicket);
-        return newTicket;
     }
 }
