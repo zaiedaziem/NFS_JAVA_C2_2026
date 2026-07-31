@@ -123,7 +123,7 @@ The returned ticket ID changed from a manually generated format like `T001` to a
 ![Day 7 Exercise 03 Get One Ticket](screenshots/day7_exercise3-get-id.png)
 *GET /api/tickets/{id} returns the matching ticket with its MongoDB ObjectId*
 
-![Day 7 Exercise 03 Missing Ticket](screenshots/dayy7_exercise3-get00000.png)
+![Day 7 Exercise 03 Missing Ticket](screenshots/day7_exercise3-get00000.png)
 *GET /api/tickets/000000000000000000000000 returns 404 Not Found*
 
 ---
