@@ -84,6 +84,24 @@ By the end of this programme, participants will be able to:
 
 
 
+## Day 7 Exercise 02 - Create Ticket Model and Repository
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files created
+
+- `pom.xml` — added the `spring-boot-starter-data-mongodb` dependency.
+- `application.properties` — added `spring.data.mongodb.uri=mongodb://localhost:27017/support_desk_db` to configure the connection.
+- `Ticket.java` — a `@Document(collection = "tickets")` model mapped to MongoDB, with an `@Id` field and getters/setters for title, description, category, priority, status, createdBy, and createdAt.
+- `TicketRepository.java` — an interface extending `MongoRepository<Ticket, String>`, giving `save()`, `findAll()`, `findById()`, `deleteById()` automatically without writing any implementation.
+
+### Output Screenshot
+
+![Day 7 Exercise 02 Output](screenshots/day7_exercise2.png)
+*Application starts successfully and connects to MongoDB at localhost:27017*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
