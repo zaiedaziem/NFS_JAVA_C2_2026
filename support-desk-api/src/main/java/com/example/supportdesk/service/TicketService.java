@@ -29,6 +29,26 @@ public class TicketService {
                 .toList();
     }
 
+    public List<TicketResponse> getFilteredTickets(String status, String priority, String category) {
+        List<Ticket> tickets;
+
+        // Check each filter one at a time - only one filter is applied per request
+        if (status != null && !status.isBlank()) {
+            tickets = ticketRepository.findByStatusIgnoreCase(status);
+        } else if (priority != null && !priority.isBlank()) {
+            tickets = ticketRepository.findByPriorityIgnoreCase(priority);
+        } else if (category != null && !category.isBlank()) {
+            tickets = ticketRepository.findByCategoryIgnoreCase(category);
+        } else {
+            // No filter provided - return everything
+            tickets = ticketRepository.findAll();
+        }
+
+        return tickets.stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
     public TicketResponse getTicketById(String id) {
         // findById() also comes free from MongoRepository - returns Optional<Ticket>
         Ticket ticket = ticketRepository.findById(id)

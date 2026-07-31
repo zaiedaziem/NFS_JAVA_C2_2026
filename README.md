@@ -84,6 +84,30 @@ By the end of this programme, participants will be able to:
 
 
 
+## Day 8 Exercise 01 - Add Ticket Filtering
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files updated
+
+- `TicketRepository.java` — added `findByStatusIgnoreCase()`, `findByPriorityIgnoreCase()`, and `findByCategoryIgnoreCase()`. Spring Data generates the MongoDB query automatically from the method name, no implementation needed.
+- `TicketService.java` — added `getFilteredTickets(status, priority, category)`, which checks each optional filter in order and falls back to `findAll()` when none are provided.
+- `TicketController.java` — `GET /api/tickets` now accepts optional query parameters (`@RequestParam(required = false)`) for `status`, `priority`, and `category`, passing them to the service.
+- `assets.http` — added test requests for filtering by status, priority, and category.
+
+### Output Screenshot
+
+![Day 8 Exercise 01 Filter by Status](screenshots/day8_exercise1-filterticket_status open.png)
+*GET /api/tickets?status=OPEN returns only matching tickets*
+
+![Day 8 Exercise 01 Filter by Priority](screenshots/day8_exercise1-filterticket_priority HIGH.png)
+*GET /api/tickets?priority=HIGH returns only matching tickets*
+
+![Day 8 Exercise 01 Filter by Category](screenshots/day8_exercise1-filterticket_categoryEMAIL.png)
+*GET /api/tickets?category=Email returns only matching tickets*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

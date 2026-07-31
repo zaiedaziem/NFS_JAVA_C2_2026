@@ -42,3 +42,14 @@ Content-Type: application/json
   "priority": "",
   "createdBy": ""
 }
+
+### Filter tickets by status
+GET http://localhost:8080/api/tickets?status=OPEN
+
+
+### Filter tickets by priority
+GET http://localhost:8080/api/tickets?priority=HIGH
+
+
+### Filter tickets by category
+GET http://localhost:8080/api/tickets?category=Email
