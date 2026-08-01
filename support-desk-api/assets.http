@@ -53,3 +53,19 @@ GET http://localhost:8080/api/tickets?priority=HIGH
 
 ### Filter tickets by category
 GET http://localhost:8080/api/tickets?category=Email
+
+
+### Paged tickets - default page size
+GET http://localhost:8080/api/tickets/paged?page=0&size=5
+
+
+### Paged tickets - sorted by createdAt descending
+GET http://localhost:8080/api/tickets/paged?page=0&size=5&sortBy=createdAt&direction=desc
+
+
+### Paged tickets - first page, 2 per page
+GET http://localhost:8080/api/tickets/paged?page=0&size=2
+
+
+### Paged tickets - second page, 2 per page
+GET http://localhost:8080/api/tickets/paged?page=1&size=2

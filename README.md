@@ -108,6 +108,26 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requir
 
 ---
 
+## Day 8 Exercise 02 - Add Ticket Pagination and Sorting
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files updated
+
+- `TicketService.java` — added `getTicketsPaged(page, size, sortBy, direction)`, which builds a `Sort` and `Pageable` and calls `findAll(Pageable)` from `MongoRepository`, mapping the resulting `Page<Ticket>` into `Page<TicketResponse>`.
+- `TicketController.java` — added `GET /api/tickets/paged`, accepting `page`, `size`, `sortBy`, and `direction` as query parameters with default values (`page=0`, `size=5`, `sortBy=createdAt`, `direction=desc`). Placed before `GET /api/tickets/{id}` so `/paged` is not mistaken for a ticket ID.
+- `assets.http` — added test requests for default paging, sorting, and splitting results across two pages.
+
+### Output Screenshot
+
+![Day 8 Exercise 02 Output 1](screenshots/day8_exercise2_1.png)
+*GET /api/tickets/paged returns a page of results with pagination metadata*
+
+![Day 8 Exercise 02 Output 2](screenshots/day8_exercise2-2.png)
+*Paging and sorting parameters applied correctly*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

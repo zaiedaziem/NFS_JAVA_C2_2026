@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -46,6 +47,15 @@ public class TicketController {
     @GetMapping("/api/tickets/{id}")
     public TicketResponse getTicketById(@PathVariable String id) {
         return ticketService.getTicketById(id);
+    }
+
+    @GetMapping("/api/tickets/paged")
+    public Page<TicketResponse> getTicketsPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction) {
+        return ticketService.getTicketsPaged(page, size, sortBy, direction);
     }
 
     @PostMapping("/api/tickets")

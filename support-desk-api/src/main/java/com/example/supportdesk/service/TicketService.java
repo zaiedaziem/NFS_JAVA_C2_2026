@@ -6,6 +6,10 @@ import com.example.supportdesk.dto.TicketResponse;
 import com.example.supportdesk.dto.CreateTicketRequest;
 import com.example.supportdesk.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -55,6 +59,17 @@ public class TicketService {
                 // If no document matches this ID, throw 404 (handled by GlobalExceptionHandler)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket " + id + " was not found"));
         return toResponse(ticket);
+    }
+
+    public Page<TicketResponse> getTicketsPaged(int page, int size, String sortBy, String direction) {
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return ticketRepository.findAll(pageable)
+                .map(this::toResponse);
     }
 
     public TicketResponse createTicket(CreateTicketRequest request) {
