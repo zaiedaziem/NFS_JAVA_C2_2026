@@ -183,6 +183,65 @@ The response's `pageable.sort` shows `sorted: true`, confirming sorting is appli
 
 ---
 
+## Day 8 Exercise 05 - Query Behaviour and Troubleshooting
+
+Open `support-desk-api/assets.http` with the REST Client extension to run this exercise. Requires `support-desk-api` running and MongoDB running locally.
+
+### Files updated
+
+- `assets.http` — added 6 unusual/edge-case query requests: invalid status, invalid priority, out-of-range page, very large page size, unknown sort field, and combined filters.
+
+### Test Results
+
+| Test | Result |
+|---|---|
+| Invalid status (`status=INVALID`) | Returned an empty list, no error |
+| Invalid priority (`priority=URGENT`) | Returned an empty list, no error |
+| Page with no records (`page=99`) | Returned `200 OK` with empty `content`, no crash. Metadata correctly showed `totalElements: 4`, `totalPages: 1` |
+| Very large page size (`size=100`) | Returned all 4 tickets with no rejection. No maximum page size is enforced |
+| Unknown sort field (`sortBy=unknownField`) | Returned `200 OK` with `sorted: true`, but the result order was unaffected since no field named `unknownField` exists on the documents |
+| Combined filters (`status=OPEN&priority=HIGH`) | Returned all 4 tickets instead of just the 1 matching both conditions, since the current filter logic only applies one filter at a time |
+
+### Reflection Questions
+
+**1. What happened when you used an invalid status?**
+
+The API returned an empty list, not an error. Since there is no enum validation, MongoDB simply looks for documents matching `status=INVALID` and finds none.
+
+**2. What happened when you used an invalid priority?**
+
+Same behaviour, an empty list, since `priority=URGENT` does not match any stored ticket's priority value.
+
+**3. What happened when you requested page 99?**
+
+The API returned `200 OK` with an empty `content` array. It did not crash. The response metadata correctly showed `totalElements: 4` and `totalPages: 1`, making it clear the requested page simply does not exist.
+
+**4. What happened when you used an unknown sort field?**
+
+The API still returned `200 OK` with `sorted: true` in the metadata, but the actual order of results was unaffected, since no ticket has a field called `unknownField` to sort by. The API silently accepted an invalid sort field instead of rejecting it.
+
+**5. Why should an API limit page size?**
+
+Without a maximum, a client could request an enormous page size (for example `size=1000000`), forcing the server to load and return far more data than intended in a single response. This can slow down the server, increase memory usage, and defeat the entire purpose of pagination.
+
+**6. Why should an API validate sort fields?**
+
+Without validation, a caller can pass a completely invalid field name and the API will respond as if the request succeeded, when in reality no sorting happened at all. This creates a misleading response, silently wrong instead of clearly rejected.
+
+**7. Does your current API support combined filters?**
+
+No. Testing `status=OPEN&priority=HIGH` returned all 4 tickets instead of just the 1 matching both conditions. The current `getFilteredTickets()` method only checks filters one at a time in an `if/else if` chain, so only the first non-blank filter provided is actually applied.
+
+**8. What log messages helped you understand what happened?**
+
+The `Fetching tickets with status=..., priority=..., category=...` log line was the most useful, since it shows exactly which values were received by the service, confirming both filters were passed in but only one was actually used in the query.
+
+**9. Which behaviour would you improve in a future version?**
+
+I would add a maximum allowed page size, validate `sortBy` against a fixed list of allowed fields, and rewrite `getFilteredTickets()` to build a single combined query so multiple filters can apply together instead of only one at a time.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
