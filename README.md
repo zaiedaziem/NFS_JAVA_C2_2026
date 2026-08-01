@@ -145,6 +145,44 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requir
 
 ---
 
+## Day 8 Exercise 04 - Query Test File and Notes
+
+Open `support-desk-api/assets.http` with the REST Client extension to run this exercise. Requires `support-desk-api` running and MongoDB running locally.
+
+### Files updated
+
+- `assets.http` — added the remaining required test request (`page=1&size=5`), completing full coverage of all query, filter, pagination, and sorting scenarios from Exercises 1-3.
+
+### 1. Which query parameters did you implement?
+
+For filtering: `status`, `priority`, `category` on `GET /api/tickets`. For pagination: `page`, `size`, `sortBy`, `direction` on `GET /api/tickets/paged`.
+
+### 2. Which fields did you index?
+
+`status`, `priority`, `category`, `createdBy`, and `createdAt`, using `@Indexed` on the `Ticket` model.
+
+### 3. Why should an API use pagination?
+
+Returning every record in one response does not scale. As the ticket collection grows to thousands of entries, sending them all at once would slow down the API and overwhelm the client. Pagination limits each response to a manageable page size, letting the client request more as needed.
+
+### 4. What log messages appear when you call the filtering endpoint?
+
+```
+Fetching tickets with status=OPEN, priority=null, category=null
+```
+
+The unused filters show as `null`, confirming only one filter is applied at a time.
+
+### 5. What endpoint proves your sorting works?
+
+```
+GET /api/tickets/paged?page=0&size=5&sortBy=createdAt&direction=desc
+```
+
+The response's `pageable.sort` shows `sorted: true`, confirming sorting is applied based on the `sortBy` and `direction` parameters.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
