@@ -140,7 +140,7 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requir
 
 ### Output Screenshot
 
-![Day 8 Exercise 03 Logs in Terminal](screenshots/exercise3_ logs in the terminal.png)
+![Day 8 Exercise 03 Logs in Terminal](screenshots/exercise3_ logsInTheTerminal.png)
 *Terminal logs showing filter values and pagination parameters being fetched*
 
 ---
