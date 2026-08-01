@@ -2,6 +2,7 @@ package com.example.supportdesk.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 @Document(collection = "tickets")
 public class Ticket {
@@ -10,10 +11,20 @@ public class Ticket {
     private String id;
     private String title;
     private String description;
+    
+    @Indexed
     private String category;
+    
+    @Indexed
     private String priority;
+    
+    @Indexed
     private String status;
+    
+    @Indexed
     private String createdBy;
+    
+    @Indexed
     private String createdAt;
 
     public String getId() {

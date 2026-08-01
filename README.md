@@ -128,6 +128,23 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requir
 
 ---
 
+## Day 8 Exercise 03 - Add Ticket Indexes and Logging
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files updated
+
+- `Ticket.java` — added `@Indexed` to `status`, `priority`, `category`, `createdBy`, and `createdAt`, so MongoDB can look up and sort by these fields quickly instead of scanning every document.
+- `application.properties` — added `spring.data.mongodb.auto-index-creation=true` so Spring Data automatically creates these indexes on startup.
+- `TicketService.java` — added an SLF4J `Logger` and log statements in `getFilteredTickets()`, `getTicketsPaged()`, and `createTicket()`, logging filter values, pagination parameters, and the ID of newly created tickets.
+
+### Output Screenshot
+
+![Day 8 Exercise 03 Logs in Terminal](screenshots/exercise3_ logs in the terminal.png)
+*Terminal logs showing filter values and pagination parameters being fetched*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
