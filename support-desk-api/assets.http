@@ -1,0 +1,99 @@
+### 1. Health check
+GET http://localhost:8080/api/health
+
+
+### 2. About the API
+GET http://localhost:8080/api/about
+
+
+### 3. Get all support tickets
+GET http://localhost:8080/api/tickets
+
+
+### 4. Get existing ticket
+GET http://localhost:8080/api/tickets/6a6c2862bbb9c4921833f6e2
+
+
+### 5. Get missing ticket
+GET http://localhost:8080/api/tickets/000000000000000000000000
+
+
+### 6. Create a valid ticket
+POST http://localhost:8080/api/tickets
+Content-Type: application/json
+
+{
+  "title": "VPN connection not working",
+  "description": "User cannot connect to company VPN from home.",
+  "category": "Network",
+  "priority": "MEDIUM",
+  "createdBy": "siti@example.com"
+}
+
+
+### 7. Create an invalid ticket
+POST http://localhost:8080/api/tickets
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "",
+  "category": "",
+  "priority": "",
+  "createdBy": ""
+}
+
+### Filter tickets by status
+GET http://localhost:8080/api/tickets?status=OPEN
+
+
+### Filter tickets by priority
+GET http://localhost:8080/api/tickets?priority=HIGH
+
+
+### Filter tickets by category
+GET http://localhost:8080/api/tickets?category=Email
+
+
+### Paged tickets - default page size
+GET http://localhost:8080/api/tickets/paged?page=0&size=5
+
+
+### Paged tickets - second page, default size
+GET http://localhost:8080/api/tickets/paged?page=1&size=5
+
+
+### Paged tickets - sorted by createdAt descending
+GET http://localhost:8080/api/tickets/paged?page=0&size=5&sortBy=createdAt&direction=desc
+
+
+### Paged tickets - first page, 2 per page
+GET http://localhost:8080/api/tickets/paged?page=0&size=2
+
+
+### Paged tickets - second page, 2 per page
+GET http://localhost:8080/api/tickets/paged?page=1&size=2
+
+
+### Test 1: Invalid status value
+GET http://localhost:8080/api/tickets?status=INVALID
+
+
+### Test 2: Invalid priority value
+GET http://localhost:8080/api/tickets?priority=URGENT
+
+
+### Test 3: Page number with no records
+GET http://localhost:8080/api/tickets/paged?page=99&size=5
+
+
+### Test 4: Very large page size
+GET http://localhost:8080/api/tickets/paged?page=0&size=100
+
+
+### Test 5: Unknown sort field
+GET http://localhost:8080/api/tickets/paged?page=0&size=5&sortBy=unknownField&direction=asc
+
+
+### Test 6: Combined filters
+GET http://localhost:8080/api/tickets?status=OPEN&priority=HIGH
