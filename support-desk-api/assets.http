@@ -160,30 +160,19 @@ Content-Type: application/json
 }
 
 
-### Register a separate admin candidate account
-POST http://localhost:8080/api/auth/register
-Content-Type: application/json
-
-{
-  "name": "Aina Rahman",
-  "email": "aina.rahman@example.com",
-  "password": "password123"
-}
-
-
-### Login after promoting priya.nair to ADMIN in mongosh - use to get a fresh ADMIN token
+### Login as seeded admin - use to get an ADMIN token
 POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "aina.rahman@example.com",
-  "password": "password123"
+  "email": "admin@example.com",
+  "password": "Admin@12345"
 }
 
 
 ### 3d. Create ticket with ADMIN token, should return 201
 POST http://localhost:8080/api/tickets
-Authorization: Bearer PASTE_ADMIN_TOKEN_HERE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlzcyI6InN1cHBvcnQtZGVzay1hcGkiLCJuYW1lIjoiQWRtaW4gVXNlciIsImV4cCI6MTc4NjAwNzg5NSwiaWF0IjoxNzg2MDA0Mjk1LCJ1c2VySWQiOiI2YTc0NDEyMzk5NGI2Y2RmMmZhOTExNTYifQ.L1MJ10ORy3isiK__px7Kt9OTG47oYJGK2ZlXJO3hVfs
 Content-Type: application/json
 
 {
@@ -191,5 +180,6 @@ Content-Type: application/json
   "description": "Testing admin-only creation",
   "category": "Network",
   "priority": "LOW",
-  "createdBy": "aina.rahman@example.com"
+  "createdBy": "admin@example.com"
 }
+

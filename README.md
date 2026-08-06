@@ -145,7 +145,7 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requir
 | `GET /api/tickets` without token | 401 | Confirmed - returned `401` |
 | `GET /api/tickets` with USER token | 200 | Confirmed - returned `200` with ticket list |
 | `POST /api/tickets` with USER token | 403 | Confirmed - returned `403` with `insufficient_scope` error |
-| `POST /api/tickets` with ADMIN token | 201 | Pending - no way to create an ADMIN account yet, this is completed in Exercise 4 (Seed Admin User) |
+| `POST /api/tickets` with ADMIN token | 201 | Confirmed - returned `201` with the created ticket. Tested after Exercise 4 seeded a real ADMIN account |
 
 ### Output Screenshot
 
@@ -157,6 +157,24 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requir
 
 ![Day 9 Exercise 03 USER Token POST](screenshots/day9_exercise3_post_api_tickets_usertoken.png)
 *POST /api/tickets with a USER token returns 403 Forbidden, since only ADMIN can create tickets*
+
+---
+
+## Day 9 Exercise 04 - Seed an Admin User
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files created
+
+- `UserDataSeeder.java` — a `@Configuration` class with a `CommandLineRunner` bean that runs automatically once on every app startup. It seeds one admin account (`admin@example.com` / `Admin@12345`, role `ADMIN`) with the password hashed via `PasswordEncoder`. Checks `existsByEmailIgnoreCase()` first so it never creates a duplicate admin on repeated restarts.
+
+### Output Screenshot
+
+![Day 9 Exercise 04 Admin Login](screenshots/day9_exercise4_successful_admin_login.png)
+*POST /api/auth/login with the seeded admin credentials returns 200 with role ADMIN*
+
+![Day 9 Exercise 04 Admin Create Ticket](screenshots/day9_exercise4_post_api_ticket_with_admintoken.png)
+*Using the ADMIN token to create a ticket returns 201 Created, completing the last pending test case from Exercise 3*
 
 ---
 
