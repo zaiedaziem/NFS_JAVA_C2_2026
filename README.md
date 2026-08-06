@@ -178,6 +178,55 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requir
 
 ---
 
+## Day 9 Exercise 05 - Authentication Test Evidence
+
+Open `requests/day09-auth.http` with the REST Client extension to run this exercise. Requires `support-desk-api` running and MongoDB running locally.
+
+### Files created
+
+- `requests/day09-auth.http` — consolidated `.http` file covering all 8 required auth tests: health public, ticket endpoint requires token, register returns token, login returns token, ticket endpoint with token succeeds, USER token blocked from creating tickets, admin login returns token, ADMIN token allowed to create tickets.
+
+### Test Results
+
+| Test | Expected | Result |
+|---|---|---|
+| Health endpoint is public | 200 | Confirmed |
+| Ticket endpoint without token | 401 | Confirmed |
+| Register user returns token | 201 with token | Confirmed in Exercise 2 (this run showed 409 since the test account already existed from earlier testing) |
+| Login user returns token | 200 with token | Confirmed |
+| Ticket endpoint with token | 200 | Confirmed |
+| Create ticket with USER token | 403 | Confirmed |
+| Login admin returns token | 200 with role ADMIN | Confirmed |
+| Create ticket with ADMIN token | 201 | Confirmed |
+
+### Output Screenshot
+
+![Day 9 Exercise 05 Output 1](screenshots/day9_exercise5_1.png)
+*Health check and setup*
+
+![Day 9 Exercise 05 Output 2](screenshots/day9_exercise5_2.png)
+*Ticket endpoint without token returns 401*
+
+![Day 9 Exercise 05 Output 3](screenshots/day9_exercise5_3.png)
+*Register attempt with existing account returns 409, already confirmed working with a fresh account in Exercise 2*
+
+![Day 9 Exercise 05 Output 4](screenshots/day9_exercise5_4.png)
+*Login returns a JWT token*
+
+![Day 9 Exercise 05 Output 5](screenshots/day9_exercise5_5.png)
+*Ticket endpoint with token returns 200*
+
+![Day 9 Exercise 05 Output 6](screenshots/day9_exercise5_6.png)
+*Create ticket with USER token returns 403*
+
+![Day 9 Exercise 05 Output 7](screenshots/day9_exercise5_7.png)
+*Admin login returns a JWT token with role ADMIN*
+
+![Day 9 Exercise 05 Output 8](screenshots/day9_exercise5_8.png)
+*Create ticket with ADMIN token returns 201*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
