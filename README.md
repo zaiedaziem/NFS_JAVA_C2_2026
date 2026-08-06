@@ -129,6 +129,37 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requir
 
 ---
 
+## Day 9 Exercise 03 - Protect Ticket Endpoints
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files updated
+
+- `SecurityConfig.java` — expanded from the minimal Exercise 2 version. Added `authorizeHttpRequests` rules: `/api/health` and `/api/auth/**` stay public, `GET /api/tickets/**` requires `USER` or `ADMIN`, `POST /api/tickets` requires `ADMIN` only, everything else requires being logged in. Added `oauth2ResourceServer().jwt(...)` to actually validate incoming tokens, plus two new beans: `JwtDecoder` (validates tokens using the same secret used to sign them) and `JwtAuthenticationConverter` (reads the `role` claim from the token and turns it into a Spring Security authority like `ROLE_ADMIN`, which `hasRole()` checks against).
+- `assets.http` — added test requests for all 4 expected behaviours.
+
+### Test Results
+
+| Test | Expected | Result |
+|---|---|---|
+| `GET /api/tickets` without token | 401 | Confirmed - returned `401` |
+| `GET /api/tickets` with USER token | 200 | Confirmed - returned `200` with ticket list |
+| `POST /api/tickets` with USER token | 403 | Confirmed - returned `403` with `insufficient_scope` error |
+| `POST /api/tickets` with ADMIN token | 201 | Pending - no way to create an ADMIN account yet, this is completed in Exercise 4 (Seed Admin User) |
+
+### Output Screenshot
+
+![Day 9 Exercise 03 No Token](screenshots/day9_exercise3_get_api_tickets_without_usertoken.png)
+*GET /api/tickets without a token returns 401 Unauthorized*
+
+![Day 9 Exercise 03 USER Token GET](screenshots/day9_exercise3_get_api_tickets_with_usertoken.png)
+*GET /api/tickets with a USER token returns 200 OK*
+
+![Day 9 Exercise 03 USER Token POST](screenshots/day9_exercise3_post_api_tickets_usertoken.png)
+*POST /api/tickets with a USER token returns 403 Forbidden, since only ADMIN can create tickets*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

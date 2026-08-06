@@ -6,8 +6,27 @@ GET http://localhost:8080/api/health
 GET http://localhost:8080/api/about
 
 
-### 3. Get all support tickets
+### 3. Get all support tickets - without token, should return 401
 GET http://localhost:8080/api/tickets
+
+
+### 3b. Get all support tickets - with USER token, should return 200
+GET http://localhost:8080/api/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbWlyLmhha2ltQGV4YW1wbGUuY29tIiwicm9sZSI6IlVTRVIiLCJpc3MiOiJzdXBwb3J0LWRlc2stYXBpIiwibmFtZSI6IkFtaXIgSGFraW0iLCJleHAiOjE3ODYwMDU2MzgsImlhdCI6MTc4NjAwMjAzOCwidXNlcklkIjoiNmE3NDMwMzBiYTljMTk3NGQxODZlZDRkIn0.kW2f3eH8RSzmUIiGx5xmHgJAAA-64wSQqT55-qz6qMU
+
+
+### 3c. Create ticket with USER token, should return 403
+POST http://localhost:8080/api/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbWlyLmhha2ltQGV4YW1wbGUuY29tIiwicm9sZSI6IlVTRVIiLCJpc3MiOiJzdXBwb3J0LWRlc2stYXBpIiwibmFtZSI6IkFtaXIgSGFraW0iLCJleHAiOjE3ODYwMDU2MzgsImlhdCI6MTc4NjAwMjAzOCwidXNlcklkIjoiNmE3NDMwMzBiYTljMTk3NGQxODZlZDRkIn0.kW2f3eH8RSzmUIiGx5xmHgJAAA-64wSQqT55-qz6qMU
+Content-Type: application/json
+
+{
+  "title": "Test ticket",
+  "description": "Testing admin-only creation",
+  "category": "Network",
+  "priority": "LOW",
+  "createdBy": "amir.hakim@example.com"
+}
 
 
 ### 4. Get existing ticket
@@ -138,4 +157,39 @@ Content-Type: application/json
 {
   "email": "amir.hakim@example.com",
   "password": "wrongpassword"
+}
+
+
+### Register a separate admin candidate account
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Aina Rahman",
+  "email": "aina.rahman@example.com",
+  "password": "password123"
+}
+
+
+### Login after promoting priya.nair to ADMIN in mongosh - use to get a fresh ADMIN token
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "aina.rahman@example.com",
+  "password": "password123"
+}
+
+
+### 3d. Create ticket with ADMIN token, should return 201
+POST http://localhost:8080/api/tickets
+Authorization: Bearer PASTE_ADMIN_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "title": "Test ticket as admin",
+  "description": "Testing admin-only creation",
+  "category": "Network",
+  "priority": "LOW",
+  "createdBy": "aina.rahman@example.com"
 }
