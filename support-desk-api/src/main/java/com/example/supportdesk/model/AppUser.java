@@ -17,6 +17,16 @@ public class AppUser {
     private String passwordHash;
     private String role;
 
+    public AppUser() {
+    }
+
+    public AppUser(String name, String email, String passwordHash, String role) {
+        this.name = name;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.role = role;
+    }
+
     public String getId() {
         return id;
     }
