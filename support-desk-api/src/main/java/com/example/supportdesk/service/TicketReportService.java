@@ -27,6 +27,11 @@ public class TicketReportService {
         return countTicketsByField("status");
     }
 
+    public List<ReportCountResponse> countTicketsByPriority() {
+        logger.info("Generating ticket count report by priority");
+        return countTicketsByField("priority");
+    }
+
     private List<ReportCountResponse> countTicketsByField(String field) {
         // Group documents by the given field, count how many fall into each group,
         // then rename MongoDB's default "_id" (the group key) to "label" to match ReportCountResponse

@@ -139,6 +139,29 @@ Downloading every ticket just to count them wastes bandwidth and processing, esp
 
 ---
 
+## Day 10 Exercise 03 - Create a Ticket Report by Priority
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files updated
+
+- `TicketReportService.java` — added `countTicketsByPriority()`, reusing the existing `countTicketsByField()` aggregation helper with `"priority"` instead of `"status"`.
+- `ReportController.java` — added `GET /api/v1/reports/tickets-by-priority`.
+- `assets.http` — added a test request for the priority report endpoint.
+
+### Reflection Question
+
+**How could this report help a support manager decide where to assign staff?**
+
+If the report shows a large number of `HIGH` priority tickets compared to `LOW`, the manager knows urgent issues are piling up and can assign more staff to handle them first, rather than spreading the team evenly across all tickets regardless of urgency. It turns raw ticket data into a quick decision-making tool, showing where the team's attention is needed most without anyone having to manually scroll through every ticket.
+
+### Output Screenshot
+
+![Day 10 Exercise 03 Output](screenshots/day10_exercise3.png)
+*GET /api/v1/reports/tickets-by-priority returns grouped counts by priority*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
