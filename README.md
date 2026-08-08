@@ -103,6 +103,31 @@ Run `npm run dev` inside `support-desk-ui` to run this exercise.
 
 ---
 
+## Day 11 Exercise 02 - Build Layout Components
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created
+
+- `AppHeader.jsx` — shows the "Day 11 React Fundamentals" label and the "Support Desk UI" title.
+- `Layout.jsx` — wraps the page, renders `AppHeader` at the top and whatever is passed in as `children` below it.
+- `App.jsx` — updated to use `Layout`, passing in a placeholder paragraph as `children`.
+
+### Component Tree
+
+```text
+App
+└── Layout
+    └── AppHeader
+```
+
+### Output Screenshot
+
+![Day 11 Exercise 02 Output](screenshots/day11_exercise2.png)
+*Layout renders AppHeader plus the children content passed from App*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
