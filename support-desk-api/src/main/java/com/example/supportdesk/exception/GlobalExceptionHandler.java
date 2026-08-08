@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.supportdesk.dto.FieldErrorDetail;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.List;
 
@@ -29,5 +30,19 @@ public class GlobalExceptionHandler {
                 .toList();
 
         return new ApiErrorResponse("Validation failed", errors);
+    }
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiErrorResponse handleDuplicateResource(DuplicateResourceException exception) {
+        return new ApiErrorResponse(exception.getMessage());
+    }
+
+    // Catches bad login credentials thrown by AuthenticationManager.authenticate() in AuthService.
+    // Without this, Spring Security's default fallback returns 403 instead of the correct 401.
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ApiErrorResponse handleAuthenticationError(AuthenticationException exception) {
+        return new ApiErrorResponse("Invalid email or password");
     }
 }

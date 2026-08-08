@@ -1,0 +1,69 @@
+### 1. Health endpoint is public
+GET http://localhost:8080/api/health
+
+
+### 2. Ticket endpoint without token returns 401
+GET http://localhost:8080/api/tickets
+
+
+### 3. Register user returns token
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Amir Hakim",
+  "email": "amir.hakim@example.com",
+  "password": "password123"
+}
+
+
+### 4. Login user returns token
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "amir.hakim@example.com",
+  "password": "password123"
+}
+
+
+### 5. Ticket endpoint with token returns 200
+GET http://localhost:8080/api/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbWlyLmhha2ltQGV4YW1wbGUuY29tIiwicm9sZSI6IlVTRVIiLCJpc3MiOiJzdXBwb3J0LWRlc2stYXBpIiwibmFtZSI6IkFtaXIgSGFraW0iLCJleHAiOjE3ODYwMDg1MjUsImlhdCI6MTc4NjAwNDkyNSwidXNlcklkIjoiNmE3NDMwMzBiYTljMTk3NGQxODZlZDRkIn0.WPCyp40EQ840Lmx7Q66JTuprl1VOXdy4IgVqBuqiBFo
+
+### 6. Create ticket with normal USER token returns 403
+POST http://localhost:8080/api/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbWlyLmhha2ltQGV4YW1wbGUuY29tIiwicm9sZSI6IlVTRVIiLCJpc3MiOiJzdXBwb3J0LWRlc2stYXBpIiwibmFtZSI6IkFtaXIgSGFraW0iLCJleHAiOjE3ODYwMDg1MjUsImlhdCI6MTc4NjAwNDkyNSwidXNlcklkIjoiNmE3NDMwMzBiYTljMTk3NGQxODZlZDRkIn0.WPCyp40EQ840Lmx7Q66JTuprl1VOXdy4IgVqBuqiBFo
+Content-Type: application/json
+
+{
+  "title": "Test ticket",
+  "description": "Testing admin-only creation",
+  "category": "Network",
+  "priority": "LOW",
+  "createdBy": "amir.hakim@example.com"
+}
+
+
+### 7. Login admin returns token
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Admin@12345"
+}
+
+
+### 8. Create ticket with ADMIN token returns 201
+POST http://localhost:8080/api/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlzcyI6InN1cHBvcnQtZGVzay1hcGkiLCJuYW1lIjoiQWRtaW4gVXNlciIsImV4cCI6MTc4NjAwODY5NCwiaWF0IjoxNzg2MDA1MDk0LCJ1c2VySWQiOiI2YTc0NDEyMzk5NGI2Y2RmMmZhOTExNTYifQ.3Z-eAMvCUXgzaQ4VWorozbYW9cQ-00dZvuTUE2nK3a0
+Content-Type: application/json
+
+{
+  "title": "Test ticket as admin",
+  "description": "Testing admin-only creation",
+  "category": "Network",
+  "priority": "LOW",
+  "createdBy": "admin@example.com"
+}

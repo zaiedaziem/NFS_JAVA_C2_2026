@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -27,15 +29,33 @@ public class TicketController {
 
     // Handles GET requests to /api/tickets - delegates the actual work to the service
     // and returns the result, which Spring converts into a JSON array
+    // @GetMapping("/api/tickets")
+    // public List<TicketResponse> getAllTickets() {
+    //     return ticketService.getAllTickets();
+    // }
+
+    // Query parameters are optional - if none are provided, all three stay null
     @GetMapping("/api/tickets")
-    public List<TicketResponse> getAllTickets() {
-        return ticketService.getAllTickets();
+    public List<TicketResponse> getAllTickets(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String priority,
+            @RequestParam(required = false) String category) {
+        return ticketService.getFilteredTickets(status, priority, category);
     }
 
     // {id} in the URL is captured by @PathVariable and passed to the service to find one ticket
     @GetMapping("/api/tickets/{id}")
     public TicketResponse getTicketById(@PathVariable String id) {
         return ticketService.getTicketById(id);
+    }
+
+    @GetMapping("/api/tickets/paged")
+    public Page<TicketResponse> getTicketsPaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction) {
+        return ticketService.getTicketsPaged(page, size, sortBy, direction);
     }
 
     @PostMapping("/api/tickets")
