@@ -1,0 +1,185 @@
+### 1. Health check
+GET http://localhost:8080/api/health
+
+
+### 2. About the API
+GET http://localhost:8080/api/about
+
+
+### 3. Get all support tickets - without token, should return 401
+GET http://localhost:8080/api/tickets
+
+
+### 3b. Get all support tickets - with USER token, should return 200
+GET http://localhost:8080/api/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbWlyLmhha2ltQGV4YW1wbGUuY29tIiwicm9sZSI6IlVTRVIiLCJpc3MiOiJzdXBwb3J0LWRlc2stYXBpIiwibmFtZSI6IkFtaXIgSGFraW0iLCJleHAiOjE3ODYwMDU2MzgsImlhdCI6MTc4NjAwMjAzOCwidXNlcklkIjoiNmE3NDMwMzBiYTljMTk3NGQxODZlZDRkIn0.kW2f3eH8RSzmUIiGx5xmHgJAAA-64wSQqT55-qz6qMU
+
+
+### 3c. Create ticket with USER token, should return 403
+POST http://localhost:8080/api/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbWlyLmhha2ltQGV4YW1wbGUuY29tIiwicm9sZSI6IlVTRVIiLCJpc3MiOiJzdXBwb3J0LWRlc2stYXBpIiwibmFtZSI6IkFtaXIgSGFraW0iLCJleHAiOjE3ODYwMDU2MzgsImlhdCI6MTc4NjAwMjAzOCwidXNlcklkIjoiNmE3NDMwMzBiYTljMTk3NGQxODZlZDRkIn0.kW2f3eH8RSzmUIiGx5xmHgJAAA-64wSQqT55-qz6qMU
+Content-Type: application/json
+
+{
+  "title": "Test ticket",
+  "description": "Testing admin-only creation",
+  "category": "Network",
+  "priority": "LOW",
+  "createdBy": "amir.hakim@example.com"
+}
+
+
+### 4. Get existing ticket
+GET http://localhost:8080/api/tickets/6a6c2862bbb9c4921833f6e2
+
+
+### 5. Get missing ticket
+GET http://localhost:8080/api/tickets/000000000000000000000000
+
+
+### 6. Create a valid ticket
+POST http://localhost:8080/api/tickets
+Content-Type: application/json
+
+{
+  "title": "VPN connection not working",
+  "description": "User cannot connect to company VPN from home.",
+  "category": "Network",
+  "priority": "MEDIUM",
+  "createdBy": "siti@example.com"
+}
+
+
+### 7. Create an invalid ticket
+POST http://localhost:8080/api/tickets
+Content-Type: application/json
+
+{
+  "title": "",
+  "description": "",
+  "category": "",
+  "priority": "",
+  "createdBy": ""
+}
+
+### Filter tickets by status
+GET http://localhost:8080/api/tickets?status=OPEN
+
+
+### Filter tickets by priority
+GET http://localhost:8080/api/tickets?priority=HIGH
+
+
+### Filter tickets by category
+GET http://localhost:8080/api/tickets?category=Email
+
+
+### Paged tickets - default page size
+GET http://localhost:8080/api/tickets/paged?page=0&size=5
+
+
+### Paged tickets - second page, default size
+GET http://localhost:8080/api/tickets/paged?page=1&size=5
+
+
+### Paged tickets - sorted by createdAt descending
+GET http://localhost:8080/api/tickets/paged?page=0&size=5&sortBy=createdAt&direction=desc
+
+
+### Paged tickets - first page, 2 per page
+GET http://localhost:8080/api/tickets/paged?page=0&size=2
+
+
+### Paged tickets - second page, 2 per page
+GET http://localhost:8080/api/tickets/paged?page=1&size=2
+
+
+### Test 1: Invalid status value
+GET http://localhost:8080/api/tickets?status=INVALID
+
+
+### Test 2: Invalid priority value
+GET http://localhost:8080/api/tickets?priority=URGENT
+
+
+### Test 3: Page number with no records
+GET http://localhost:8080/api/tickets/paged?page=99&size=5
+
+
+### Test 4: Very large page size
+GET http://localhost:8080/api/tickets/paged?page=0&size=100
+
+
+### Test 5: Unknown sort field
+GET http://localhost:8080/api/tickets/paged?page=0&size=5&sortBy=unknownField&direction=asc
+
+
+### Test 6: Combined filters
+GET http://localhost:8080/api/tickets?status=OPEN&priority=HIGH
+
+
+### Register success
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Amir Hakim",
+  "email": "amir.hakim@example.com",
+  "password": "password123"
+}
+
+
+### Login success
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "amir.hakim@example.com",
+  "password": "password123"
+}
+
+
+### Duplicate email error
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Amir Hakim",
+  "email": "amir.hakim@example.com",
+  "password": "password123"
+}
+
+
+### Wrong password error
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "amir.hakim@example.com",
+  "password": "wrongpassword"
+}
+
+
+### Login as seeded admin - use to get an ADMIN token
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "Admin@12345"
+}
+
+
+### 3d. Create ticket with ADMIN token, should return 201
+POST http://localhost:8080/api/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlzcyI6InN1cHBvcnQtZGVzay1hcGkiLCJuYW1lIjoiQWRtaW4gVXNlciIsImV4cCI6MTc4NjAwNzg5NSwiaWF0IjoxNzg2MDA0Mjk1LCJ1c2VySWQiOiI2YTc0NDEyMzk5NGI2Y2RmMmZhOTExNTYifQ.L1MJ10ORy3isiK__px7Kt9OTG47oYJGK2ZlXJO3hVfs
+Content-Type: application/json
+
+{
+  "title": "Test ticket as admin",
+  "description": "Testing admin-only creation",
+  "category": "Network",
+  "priority": "LOW",
+  "createdBy": "admin@example.com"
+}
+
