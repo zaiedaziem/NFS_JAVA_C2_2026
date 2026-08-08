@@ -187,6 +187,54 @@ Frontend developers need to know exactly what endpoints exist, what HTTP method 
 
 ---
 
+## Day 10 Exercise 05 - Backend Milestone Review
+
+This is a review exercise, no new code. It confirms the backend is ready for frontend integration.
+
+### Checklist
+
+| Item | Status |
+|---|---|
+| Project runs successfully | Done |
+| MongoDB connection works | Done |
+| Ticket model uses `@Document` and `@Id` | Done |
+| `TicketRepository` extends `MongoRepository` | Done |
+| Basic CRUD endpoints work | Done |
+| Filtering works | Done |
+| Pagination works | Done |
+| Sorting works | Done |
+| Duplicate or validation errors return clear responses | Done |
+| Register endpoint works | Done |
+| Login endpoint returns JWT | Done |
+| Protected endpoints reject missing token | Done |
+| Protected endpoints accept valid token | Done |
+| Versioned `/api/v1` routes exist | Done |
+| Report endpoint works | Done |
+| API documentation endpoint exists | Done |
+| `.http` file contains test evidence | Done |
+
+### Reflection Question
+
+**What is one thing you would improve before connecting this backend to React?**
+
+I would fix `getFilteredTickets()` so it can combine multiple query parameters at once instead of only applying one filter at a time (found during Day 8 Exercise 5 troubleshooting). Right now, calling `/api/tickets?status=OPEN&priority=HIGH` silently ignores the second filter, which would confuse a frontend developer building a search form with multiple filter fields, since they would expect both conditions to apply together.
+
+### Output Screenshot
+
+![Day 10 Exercise 05 User Login](screenshots/day10_exercise5_UserLogin.png)
+*Successful login response with a JWT token*
+
+![Day 10 Exercise 05 Protected Endpoint](screenshots/day10_exercise1_TicketWtihUserToken.png)
+*Protected endpoint working with a valid token*
+
+![Day 10 Exercise 05 Report Endpoint](screenshots/day10_exercise3.png)
+*Report endpoint returning grouped ticket counts*
+
+![Day 10 Exercise 05 API Docs](screenshots/day10_exercise4.png)
+*API documentation endpoint response*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
