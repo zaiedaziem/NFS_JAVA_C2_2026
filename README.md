@@ -166,6 +166,29 @@ Run `npm run dev` inside `support-desk-ui` to run this exercise.
 
 ---
 
+## Day 11 Exercise 05 - useEffect, Loading and Error UI
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise. Requires `support-desk-api` running on port 8080.
+
+### Files created
+
+- `vite.config.js` — added a proxy so any request to `/api` during development is forwarded to `http://localhost:8080`, avoiding CORS issues.
+- `services/api.js` — `fetchApiDocs()` calls `GET /api/docs` on the backend (adapted from the trainer's `/api/v1/info` example, since our own backend uses `/api/docs` from Day 10 Exercise 4), throwing an error if the response is not OK.
+- `LoadingMessage.jsx` / `ErrorMessage.jsx` — small components that render a styled message for loading and error states.
+- `ApiInfoCard.jsx` — shows a loading message while fetching, an error message if the fetch fails, or a grid of API info (application, version, base URL, documented endpoint count) once loaded successfully.
+- `App.jsx` — added a `useEffect` that runs once on mount, fetching the API docs and updating `loadingApi`, `apiError`, and `apiDocs` state through a `try/catch/finally` block.
+- `index.css` — added styling for `.api-card`, `.api-info-grid`, `.info-item`, and `.message`/`.loading-message`/`.error-message`.
+
+### Output Screenshot
+
+![Day 11 Exercise 05 Success State](screenshots/day11_exercise5_Sucess.png)
+*Successful state showing API application name, version, base URL, and endpoint count*
+
+![Day 11 Exercise 05 Error State](screenshots/day11_exercise5_Error.png)
+*Error state shown when the backend is stopped, rest of the page still works with sample data*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

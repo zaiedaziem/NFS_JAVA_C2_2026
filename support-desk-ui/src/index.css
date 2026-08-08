@@ -82,6 +82,45 @@ h1 {
   margin-bottom: 0;
 }
 
+.api-card {
+  margin-bottom: 20px;
+}
+
+.api-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.info-item {
+  background: #f7f9fc;
+  padding: 14px;
+  border-radius: 14px;
+}
+
+.info-item span {
+  display: block;
+  color: #667085;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.message {
+  margin-bottom: 0;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.loading-message {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.error-message {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
 .filter-panel {
   background: white;
   border: 1px solid #d9e2ef;
@@ -230,7 +269,8 @@ dd {
 @media (max-width: 860px) {
   .app-header,
   .workspace-grid,
-  .filter-panel {
+  .filter-panel,
+  .api-info-grid {
     grid-template-columns: 1fr;
     display: grid;
   }
