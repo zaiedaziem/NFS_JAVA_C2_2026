@@ -162,6 +162,31 @@ If the report shows a large number of `HIGH` priority tickets compared to `LOW`,
 
 ---
 
+## Day 10 Exercise 04 - Create a Simple API Documentation Endpoint
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
+
+### Files created
+
+- `EndpointInfo.java` — a DTO holding `method`, `path`, `access`, and `description` for one documented endpoint.
+- `ApiDocsResponse.java` — a DTO holding `application`, `version`, `baseUrl`, and a `List<EndpointInfo>`.
+- `ApiDocsController.java` — exposes `GET /api/docs`, returning a static but structured list of the API's important endpoints (auth, tickets, reports, health).
+- `SecurityConfig.java` — added `/api/docs/**` to the `permitAll()` rules, so this endpoint is public.
+- `assets.http` — added a test request for the docs endpoint.
+
+### Reflection Question
+
+**Why is API documentation useful before frontend integration?**
+
+Frontend developers need to know exactly what endpoints exist, what HTTP method to use, what access level is required, and what each endpoint does, before they can start writing code that calls the API correctly. Without documentation, they would have to read through the backend source code or guess, which slows integration down and increases the chance of mistakes like using the wrong method or missing a required token. A documentation endpoint like this gives frontend developers a live, always-up-to-date reference they can query directly from the running API.
+
+### Output Screenshot
+
+![Day 10 Exercise 04 Output](screenshots/day10_exercise4.png)
+*GET /api/docs is public and returns the structured endpoint list*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
