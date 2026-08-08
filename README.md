@@ -189,6 +189,55 @@ Run `npm run dev` inside `support-desk-ui` to run this exercise. Requires `suppo
 
 ---
 
+## Day 11 Exercise 06 - Component Tree and Reflection
+
+No new code for this exercise, it documents the structure built across Exercises 1-5.
+
+### Component Tree
+
+```text
+App
+├── Layout
+│   └── AppHeader
+├── ApiInfoCard
+├── TicketFilterPanel
+└── (workspace-grid section)
+    ├── TicketList
+    │   ├── PriorityBadge
+    │   └── StatusBadge
+    └── TicketDetail
+        ├── PriorityBadge
+        └── StatusBadge
+```
+
+### Reflection Questions
+
+**1. Which component owns the selected ticket state?**
+
+`App` — it holds `selectedTicket` via `useState` and passes it down to both `TicketList` (to know which row to highlight) and `TicketDetail` (to know what to display).
+
+**2. Which components receive props?**
+
+`Layout` (`children`), `TicketFilterPanel` (`searchText`, `statusFilter`, `priorityFilter`, and their `onChange` handlers), `ApiInfoCard` (`loading`, `error`, `apiDocs`), `TicketList` (`tickets`, `selectedTicketId`, `onSelectTicket`), `TicketDetail` (`ticket`), and `PriorityBadge`/`StatusBadge` (`priority`/`status`).
+
+**3. What does useEffect do in your app?**
+
+It fetches the API documentation info from the backend (`GET /api/docs`) once when the app first loads, updating `loadingApi`, `apiError`, and `apiDocs` state depending on whether the request succeeds or fails.
+
+**4. What loading state did you create?**
+
+`loadingApi`, a boolean that starts `true` and flips to `false` in the `finally` block once the fetch completes, shown via `LoadingMessage`.
+
+**5. What error state did you create?**
+
+`apiError`, a string set inside the `catch` block if the fetch fails (e.g. backend not running), shown via `ErrorMessage` instead of the API info grid.
+
+**6. What would change when you connect this UI to the protected backend API later?**
+
+Since `/api/tickets` requires a valid JWT, the fetch calls would need an `Authorization: Bearer <token>` header attached, meaning the app would need a login flow to obtain and store that token first. The hardcoded `sampleTickets.js` data would be replaced with a real fetch to `/api/v1/tickets`, and a `401` response would need to redirect the user back to login instead of just showing an error message.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
