@@ -105,11 +105,37 @@ To avoid breaking existing clients. If other applications, mobile apps, or front
 ![Day 10 Exercise 01 Without Token](screenshots/day10_exercise1_ticketsWithoutToken.png)
 *GET /api/v1/tickets without a token returns 401*
 
-![Day 10 Exercise 01 With USER Token](screenshots/day10_exercise1_TicketWtih UserToken.png)
+![Day 10 Exercise 01 With USER Token](screenshots/day10_exercise1_TicketWtihUserToken.png)
 *GET /api/v1/tickets with a USER token returns 200*
 
 ![Day 10 Exercise 01 Old Endpoint Still Works](screenshots/day10_exercise1_oldEndpoint.png)
 *The old GET /api/tickets endpoint still works unchanged*
+
+---
+
+## Day 10 Exercise 02 - Create a Ticket Report by Status
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files created
+
+- `ReportCountResponse.java` — a simple DTO with `label` and `count` fields, shaping each group's result.
+- `TicketReportService.java` — uses `MongoTemplate` and MongoDB's aggregation pipeline to group ticket documents by a field, count how many fall into each group, then rename the default `_id` group key to `label` to match `ReportCountResponse`.
+- `ReportController.java` — exposes `GET /api/v1/reports/tickets-by-status`, returning the grouped counts.
+- `assets.http` — added a test request for the report endpoint.
+
+No changes were needed in `SecurityConfig.java` — the existing `.anyRequest().authenticated()` catch-all rule already requires any logged-in user (regardless of role) to access `/api/v1/reports/**`.
+
+### Reflection Question
+
+**Why is a grouped report endpoint better than asking the frontend to download all tickets and count them manually?**
+
+Downloading every ticket just to count them wastes bandwidth and processing, especially as the collection grows, since the client would be pulling full ticket objects (title, description, dates, etc.) just to throw most of that data away and only keep a count. A grouped report endpoint does the counting inside the database itself, which is built to handle this efficiently, and only sends back a few small summary numbers instead of potentially thousands of full documents. It is also faster and more consistent, since the same aggregation logic lives in one place on the backend instead of every frontend needing to implement its own counting logic correctly.
+
+### Output Screenshot
+
+![Day 10 Exercise 02 Output](screenshots/day10_exercise2_1.png)
+*GET /api/v1/reports/tickets-by-status returns grouped counts by status*
 
 ---
 
