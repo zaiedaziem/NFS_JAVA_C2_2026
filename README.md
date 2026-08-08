@@ -84,124 +84,22 @@ By the end of this programme, participants will be able to:
 
 
 
-## Day 6 Exercise 01 - Health and About Endpoints
+## Day 11 Exercise 01 - Create the React Project
 
-Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
-
-### Files created
-
-- `support-desk-api/` — new Spring Boot project generated from Spring Initializr with group `com.example`, artifact `support-desk-api`, package `com.example.supportdesk`, and the Spring Web dependency.
-- `HealthController.java` — a `@RestController` with two `GET` endpoints: `/api/health` returns a status and service name, `/api/about` returns app name, version, and description. Both return a `Map<String, String>` which Spring automatically converts into JSON.
-
-### Output Screenshot
-
-![Day 6 Exercise 01 Output 1](screenshots/day6_exercise1_1.png)
-*GET /api/health response*
-
-![Day 6 Exercise 01 Output 2](screenshots/day6_exercise1_2.png)
-*GET /api/about response*
-
----
-
-## Day 6 Exercise 02 - Build the Ticket Read API
-
-Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
 
 ### Files created
 
-- `TicketResponse.java` — a DTO holding ticket fields (id, title, description, category, priority, status, createdBy, createdAt) with getters. Shapes what gets returned as JSON.
-- `TicketService.java` — a `@Service` bean that holds a hardcoded list of 3 tickets and exposes `getAllTickets()` to return them.
-- `TicketController.java` — a `@RestController` that depends on `TicketService` through constructor injection and exposes `GET /api/tickets`, returning the ticket list as a JSON array.
+- `support-desk-ui/` — new Vite React project created with `npm create vite@latest support-desk-ui -- --template react`, using ESLint as the linter.
+- `App.jsx` — replaced the default Vite starter content with a simple `<h1>Support Desk UI</h1>`.
 
 ### Output Screenshot
 
-![Day 6 Exercise 02 Output](screenshots/day6_exercise2.png)
-*GET /api/tickets response showing the hardcoded ticket list*
+![Day 11 Exercise 01 Default Vite Page](screenshots/day11_exercise1_vite.png)
+*Default Vite + React starter page at localhost:5173*
 
----
-
-## Day 6 Exercise 03 - Ticket by ID and 404 Handling
-
-Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
-
-### Files created
-
-- `ResourceNotFoundException.java` — a custom exception extending `RuntimeException`, thrown when a ticket ID is not found.
-- `ApiErrorResponse.java` — a simple DTO holding an error message, returned as JSON when an exception is caught.
-- `GlobalExceptionHandler.java` — a `@RestControllerAdvice` that catches `ResourceNotFoundException` anywhere in the app and converts it into a `404 Not Found` response with the error message.
-- `TicketService.java` — added `getTicketById(String id)` which searches the ticket list using a stream and throws `ResourceNotFoundException` if no match is found.
-- `TicketController.java` — added `GET /api/tickets/{id}` which reads the ID from the URL using `@PathVariable` and delegates the lookup to the service.
-
-### Output Screenshot
-
-![Day 6 Exercise 03 Output 1](screenshots/day6_exercise3_1.png)
-*GET /api/tickets/T001 - existing ticket returns 200 OK*
-
-![Day 6 Exercise 03 Output 2](screenshots/day6_exercise3_2.png)
-*GET /api/tickets/T999 - missing ticket returns 404 Not Found*
-
----
-
-## Day 6 Exercise 04 - Create Ticket with Validation
-
-Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise.
-
-### Files created
-
-- `CreateTicketRequest.java` — a request DTO with `@NotBlank` validation on all 5 required fields (title, description, category, priority, createdBy).
-- `FieldErrorDetail.java` — pairs a field name with its validation error message.
-- `ApiErrorResponse.java` — updated to hold both a `message` and a list of `FieldErrorDetail`, so validation failures return field-level detail instead of just a generic message.
-- `TicketService.java` — added `createTicket()` which generates a new ID, sets status to `OPEN`, sets the current date, and adds the ticket to the in-memory list.
-- `TicketController.java` — added `POST /api/tickets` using `@Valid @RequestBody`, returning `201 Created` on success.
-- `GlobalExceptionHandler.java` — added a handler for `MethodArgumentNotValidException` that collects all field errors and returns them in a `400 Bad Request` response.
-
-### Output Screenshot
-
-![Day 6 Exercise 04 Valid Ticket](screenshots/day6_exercise4_validticket.png)
-*POST /api/tickets with valid data - returns 201 Created*
-
-![Day 6 Exercise 04 Invalid Ticket](screenshots/day6_exercise4_invalidticket.png)
-*POST /api/tickets with blank fields - returns 400 Bad Request with field-level errors*
-
----
-
-## Day 6 Exercise 05 - Create an HTTP Test File
-
-Open `requests/day06-tickets.http` with the REST Client extension to run this exercise. Requires `support-desk-api` to be running (`mvn spring-boot:run`).
-
-### Files created
-
-- `requests/day06-tickets.http` — consolidated `.http` test file covering all 7 required tests: health, about, get all tickets, get one existing ticket, get one missing ticket, create a valid ticket, and create an invalid ticket.
-
-### Which endpoints worked
-
-All 7 requests returned the expected status codes, already verified in Exercises 1-4:
-
-| Test | Expected Status | Result |
-|---|---:|---|
-| Health | 200 | Pass |
-| About | 200 | Pass |
-| Get all tickets | 200 | Pass |
-| Get existing ticket | 200 | Pass |
-| Get missing ticket | 404 | Pass |
-| Create valid ticket | 201 | Pass |
-| Create invalid ticket | 400 | Pass |
-
-### Example successful response
-
-`POST /api/tickets` with valid data returns `201 Created` with the new ticket, ID, and status `OPEN` (see screenshot below).
-
-### Example error response
-
-`GET /api/tickets/T999` returns `404 Not Found` with `{"message": "Ticket T999 was not found"}` (see screenshot below).
-
-### Output Screenshot
-
-![Day 6 Exercise 05 Valid Ticket](screenshots/day6_exercise4_validticket.png)
-*Example successful response - POST /api/tickets returns 201 Created*
-
-![Day 6 Exercise 05 Missing Ticket](screenshots/day6_exercise3_2.png)
-*Example error response - GET /api/tickets/T999 returns 404 Not Found*
+![Day 11 Exercise 01 Support Desk UI](screenshots/day11_exercise1_supportDeskUI.png)
+*App.jsx cleaned up to show "Support Desk UI"*
 
 ---
 
