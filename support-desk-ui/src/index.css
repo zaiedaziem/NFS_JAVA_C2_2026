@@ -82,6 +82,34 @@ h1 {
   margin-bottom: 0;
 }
 
+.filter-panel {
+  background: white;
+  border: 1px solid #d9e2ef;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(23, 32, 51, 0.08);
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 200px 200px;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  color: #344054;
+  font-weight: 700;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid #ccd6e3;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fbfcff;
+}
+
 .workspace-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -201,7 +229,8 @@ dd {
 
 @media (max-width: 860px) {
   .app-header,
-  .workspace-grid {
+  .workspace-grid,
+  .filter-panel {
     grid-template-columns: 1fr;
     display: grid;
   }

@@ -148,6 +148,24 @@ Run `npm run dev` inside `support-desk-ui` to run this exercise.
 
 ---
 
+## Day 11 Exercise 04 - State, Search and Filter
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created
+
+- `tickets.js` (utils) — `filterTickets()` checks search text against title/category, plus status and priority, returning only tickets matching all active filters.
+- `TicketFilterPanel.jsx` — a search input plus status and priority dropdowns, all controlled inputs tied to state in `App.jsx`.
+- `App.jsx` — added `searchText`, `statusFilter`, `priorityFilter` state, computing `filteredTickets` with `useMemo` and passing it to `TicketList` instead of the full ticket list.
+- `index.css` — added styling for `.filter-panel`, `label`, `input`, and `select`.
+
+### Output Screenshot
+
+![Day 11 Exercise 04 Output](screenshots/day11_exercise4.png)
+*Filtering by status "Open" and priority "High" correctly narrows the ticket list*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
