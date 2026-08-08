@@ -128,6 +128,26 @@ App
 
 ---
 
+## Day 11 Exercise 03 - Ticket Sample Data, List and Detail
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created
+
+- `sampleTickets.js` — 5 hardcoded ticket objects with id, title, category, priority, status, createdBy, and createdAt.
+- `StatusBadge.jsx` / `PriorityBadge.jsx` — small components that render a colored pill label based on the `status`/`priority` prop.
+- `TicketList.jsx` — renders all tickets as clickable rows, highlighting the currently selected one and showing its priority/status badges.
+- `TicketDetail.jsx` — shows the full details of whichever ticket is currently selected, or a placeholder message if none is selected.
+- `App.jsx` — uses `useState` to hold the ticket list and the currently selected ticket, wiring `TicketList` and `TicketDetail` together so clicking a row updates the detail panel.
+- `index.css` — added styling for the card layout, ticket list rows, and priority/status badge colors, adapted from the trainer's reference Asset UI styling.
+
+### Output Screenshot
+
+![Day 11 Exercise 03 Output](screenshots/day11_exercise3.png)
+*Ticket list and detail view working together, with the selected ticket highlighted*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
