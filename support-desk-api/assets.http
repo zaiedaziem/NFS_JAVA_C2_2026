@@ -183,3 +183,17 @@ Content-Type: application/json
   "createdBy": "admin@example.com"
 }
 
+
+### v1: /api/v1/tickets without token, should return 401
+GET http://localhost:8080/api/v1/tickets
+
+
+### v1: /api/v1/tickets with USER token, should return 200
+GET http://localhost:8080/api/v1/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbWlyLmhha2ltQGV4YW1wbGUuY29tIiwicm9sZSI6IlVTRVIiLCJpc3MiOiJzdXBwb3J0LWRlc2stYXBpIiwibmFtZSI6IkFtaXIgSGFraW0iLCJleHAiOjE3ODYxNTU5ODgsImlhdCI6MTc4NjE1MjM4OCwidXNlcklkIjoiNmE3NDMwMzBiYTljMTk3NGQxODZlZDRkIn0.Luxdo7xt5aeYwVwtFa3ltQTNJblXvadZSHwPLHZ9HKs
+
+
+### v1: old /api/tickets endpoint still works
+GET http://localhost:8080/api/tickets
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbWlyLmhha2ltQGV4YW1wbGUuY29tIiwicm9sZSI6IlVTRVIiLCJpc3MiOiJzdXBwb3J0LWRlc2stYXBpIiwibmFtZSI6IkFtaXIgSGFraW0iLCJleHAiOjE3ODYxNTU5ODgsImlhdCI6MTc4NjE1MjM4OCwidXNlcklkIjoiNmE3NDMwMzBiYTljMTk3NGQxODZlZDRkIn0.Luxdo7xt5aeYwVwtFa3ltQTNJblXvadZSHwPLHZ9HKs
+

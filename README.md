@@ -84,6 +84,35 @@ By the end of this programme, participants will be able to:
 
 
 
+## Day 10 Exercise 01 - Add Versioned Ticket API Endpoints
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Requires MongoDB running locally.
+
+### Files created
+
+- `TicketV1Controller.java` — versioned copy of `TicketController` under `/api/v1/tickets`, reusing the same `TicketService` methods. Exposes `GET /api/v1/tickets`, `GET /api/v1/tickets/{id}`, and `POST /api/v1/tickets`.
+- `SecurityConfig.java` — added rules so `GET /api/v1/tickets/**` requires `USER` or `ADMIN`, and `POST /api/v1/tickets` requires `USER` or `ADMIN` (looser than the original `/api/tickets` POST rule, which is `ADMIN`-only).
+- `assets.http` — added test requests confirming `/api/v1/tickets` rejects requests without a token, works with a valid token, and that the old `/api/tickets` endpoint still works.
+
+### Reflection Question
+
+**Why might a company keep both `/api/tickets` and `/api/v1/tickets` temporarily?**
+
+To avoid breaking existing clients. If other applications, mobile apps, or frontend code are already calling `/api/tickets`, removing it immediately would break them the moment the new versioned route goes live. Keeping both allows a gradual migration, existing consumers keep working on the old route while new consumers adopt `/api/v1/tickets`, until everyone has switched over and the old route can be safely retired.
+
+### Output Screenshot
+
+![Day 10 Exercise 01 Without Token](screenshots/day10_exercise1_ticketsWithoutToken.png)
+*GET /api/v1/tickets without a token returns 401*
+
+![Day 10 Exercise 01 With USER Token](screenshots/day10_exercise1_TicketWtih UserToken.png)
+*GET /api/v1/tickets with a USER token returns 200*
+
+![Day 10 Exercise 01 Old Endpoint Still Works](screenshots/day10_exercise1_oldEndpoint.png)
+*The old GET /api/tickets endpoint still works unchanged*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
