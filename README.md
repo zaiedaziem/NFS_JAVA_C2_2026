@@ -133,6 +133,32 @@ Run `npm run dev` inside `support-desk-ui` to run this exercise.
 
 ---
 
+## Day 12 Exercise 03 - Login Page and Auth Context
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise. Backend must be running on port 8080 for login to work.
+
+### Files created/updated
+
+- `context/AuthContext.jsx` — new `AuthProvider`/`useAuth` pair built with `createContext`/`useContext`. Holds the logged-in user, JWT token, and `isAuthenticated` flag in state, persists them to `localStorage` under `supportDeskAuth` so a refresh doesn't log the user out, and exposes `login(email, password)` (calls the backend, stores the response) and `logout()` (clears state and storage).
+- `services/api.js` — added `loginRequest(email, password)`, a `POST /api/auth/login` call reusing the existing `parseJsonResponse()` helper so backend validation/auth errors surface as readable messages.
+- `pages/LoginPage.jsx` — replaced the placeholder with a real controlled form (email + password), wired to `useAuth().login()`. Shows a loading state while the request is in flight, an `ErrorMessage` on failure (e.g. wrong credentials), and redirects to `/app/dashboard` (or back to whatever page the user was trying to reach) on success. Pre-fills the seeded admin credentials as a convenience. The password field has an eye-icon toggle button (inline SVG, no extra library) to show/hide the typed password instead of a plain "Show/Hide" text button.
+- `components/AppShell.jsx` — added a `user-panel` in the header showing the logged-in user's name and role, plus a `Logout` button. Clicking it opens a `window.confirm()` dialog ("Are you sure you want to log out?") before calling `logout()` and navigating back to `/login`, so a logout can't happen from a single accidental click.
+- `main.jsx` — wrapped `<App />` in `<AuthProvider>` (inside `BrowserRouter`) so every route can read auth state via `useAuth()`.
+- `index.css` — added `.password-field`/`.password-toggle` (icon button positioned inside the input, centered, with a hover state) and `.user-panel` (name, role pill, logout button styling in the dark header).
+
+### Output Screenshot
+
+![Day 12 Exercise 03 Login Page](screenshots/day12_exercise3_loginPage.png)
+*The login form pre-filled with the seeded admin credentials, password hidden by default*
+
+![Day 12 Exercise 03 Logout](screenshots/day12_exercise3_logout.png)
+*Clicking Logout in the header opens a confirmation dialog before actually logging out*
+
+![Day 12 Exercise 03 Wrong Credential](screenshots/day12_exercise3_wrongCredential.png)
+*An incorrect password shows an inline "Invalid email or password" error, with the password revealed via the eye icon*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

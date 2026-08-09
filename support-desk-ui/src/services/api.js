@@ -1,9 +1,28 @@
-export async function fetchApiDocs() {
-  const response = await fetch('/api/docs');
+async function parseJsonResponse(response) {
+  const contentType = response.headers.get('content-type') ?? '';
+  const body = contentType.includes('application/json') ? await response.json() : null;
 
   if (!response.ok) {
-    throw new Error(`API docs request failed with status ${response.status}`);
+    const message = body?.message || `Request failed with status ${response.status}`;
+    throw new Error(message);
   }
 
-  return response.json();
+  return body;
+}
+
+export async function fetchApiDocs() {
+  const response = await fetch('/api/docs');
+  return parseJsonResponse(response);
+}
+
+export async function loginRequest(email, password) {
+  const response = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+  });
+
+  return parseJsonResponse(response);
 }

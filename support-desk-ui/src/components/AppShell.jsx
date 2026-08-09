@@ -1,12 +1,32 @@
-import { NavLink, Outlet } from 'react-router';
+import { NavLink, Outlet, useNavigate } from 'react-router';
+import { useAuth } from '../context/AuthContext.jsx';
 
 export default function AppShell() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    const confirmed = window.confirm('Are you sure you want to log out?');
+
+    if (!confirmed) {
+      return;
+    }
+
+    logout();
+    navigate('/login', { replace: true });
+  }
+
   return (
     <div className="app-shell">
       <header className="app-header">
         <div>
           <p className="eyebrow">Day 12 Routing</p>
           <h1>Support Desk UI</h1>
+        </div>
+        <div className="user-panel">
+          <span>{user?.name}</span>
+          <strong>{user?.role}</strong>
+          <button type="button" onClick={handleLogout}>Logout</button>
         </div>
       </header>
 
