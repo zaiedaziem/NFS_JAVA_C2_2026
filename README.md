@@ -174,6 +174,23 @@ Navigating directly to `/app/tickets` (or `/app/dashboard`, `/app/reports`) whil
 
 ---
 
+## Day 12 Exercise 05 - Redirect After Login
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+No new code was needed — `ProtectedRoute.jsx` and `LoginPage.jsx` from Exercise 4 and Exercise 3 already cover this:
+
+- `ProtectedRoute.jsx` grabs the current location with `useLocation()` and passes it along in `state={{ from: location }}` when it redirects an unauthenticated user to `/login`.
+- `LoginPage.jsx` reads that back with `location.state?.from?.pathname`, falling back to `/app/dashboard` if there isn't one, and calls `navigate(redirectTo, { replace: true })` once `login()` succeeds.
+
+### Result
+
+Logged out, opened `/app/tickets` directly, got redirected to `/login`. After logging in, was returned to `/app/tickets` instead of the dashboard, confirmed by testing.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
