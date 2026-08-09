@@ -84,6 +84,31 @@ By the end of this programme, participants will be able to:
 
 
 
+## Day 12 Exercise 01 - Add React Router
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created
+
+- Installed `react-router` via `npm install react-router`.
+- `main.jsx` — wrapped the app in `BrowserRouter`, enabling client-side routing based on the URL.
+- `App.jsx` — replaced the single page with `Routes`/`Route` definitions for `/login`, `/app/dashboard`, and `/app/tickets`.
+- `pages/LoginPage.jsx` / `pages/DashboardPage.jsx` — simple placeholder pages for now.
+- `pages/TicketsPage.jsx` — moved all the Day 11 ticket UI (API info card, filter panel, list, detail) here, since it now lives at its own dedicated route instead of being the only content on the page.
+
+### Output Screenshot
+
+![Day 12 Exercise 01 Login Route](screenshots/day12_exercise1_login.png)
+*GET /login shows the placeholder login page*
+
+![Day 12 Exercise 01 Dashboard Route](screenshots/day12_exercise1_dashboard.png)
+*GET /app/dashboard shows the header plus the placeholder dashboard page*
+
+![Day 12 Exercise 01 Tickets Route](screenshots/day12_exercise1_tickets.png)
+*GET /app/tickets shows the full Day 11 ticket UI, now living at its own route*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
