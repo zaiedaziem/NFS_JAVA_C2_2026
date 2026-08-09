@@ -109,6 +109,30 @@ Run `npm run dev` inside `support-desk-ui` to run this exercise.
 
 ---
 
+## Day 12 Exercise 02 - Create Nested App Layout
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created
+
+- `AppShell.jsx` — the shared shell for all `/app/*` pages, with a header, a `NavLink`-based navigation bar, and an `Outlet` where the matching child route renders.
+- `pages/ReportsPage.jsx` — a placeholder page for the new `/app/reports` route.
+- `App.jsx` — restructured to use nested routing: `/app` renders `AppShell`, with `dashboard`, `tickets`, and `reports` as child routes rendered inside its `Outlet`, replacing the earlier approach of wrapping each page in `Layout` individually.
+- `index.css` — added `.app-nav` styling, including the `.active` state React Router applies to whichever `NavLink` matches the current URL.
+
+### Output Screenshot
+
+![Day 12 Exercise 02 Dashboard](screenshots/day12_exercise2_dashboard.png)
+*Dashboard tab active, nav bar and header stay fixed*
+
+![Day 12 Exercise 02 Tickets](screenshots/day12_exercise2_tickets.png)
+*Tickets tab active, showing the full Day 11 ticket UI inside the shared shell*
+
+![Day 12 Exercise 02 Reports](screenshots/day12_exercise2_reports.png)
+*Reports tab active, showing the new placeholder page*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
