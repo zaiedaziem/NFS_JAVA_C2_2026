@@ -191,6 +191,38 @@ Logged out, opened `/app/tickets` directly, got redirected to `/login`. After lo
 
 ---
 
+## Day 12 Exercise 06 - Protected Route Reflection
+
+### 1. What is the role of `BrowserRouter`?
+
+The top-level router that uses the browser's History API to sync the URL with what's rendered, so `/app/tickets` shows the tickets page without a full page reload. It's what wraps `<App />` in `main.jsx`.
+
+### 2. What is the difference between `Routes` and `Route`?
+
+`Routes` is the container that looks at the current URL and picks the one best-matching `Route` inside it to render. `Route` is a single path-to-element mapping (e.g. `path="tickets" element={<TicketsPage />}`). `Routes` does the matching; `Route` just describes an option.
+
+### 3. Why do we use `Outlet`?
+
+`Outlet` is a placeholder that says "render whichever child route matched here." It's used in `AppShell.jsx` so the header/nav stay fixed while `dashboard`/`tickets`/`reports` swap in underneath, and again in `ProtectedRoute.jsx` so the actual page renders after the auth check passes.
+
+### 4. What does `Navigate` do?
+
+`Navigate` is a component that immediately redirects to another route when rendered, instead of showing UI. `ProtectedRoute.jsx` uses it to send unauthenticated users to `/login`, and `LoginPage.jsx` uses it to bounce already-logged-in users away from the login form.
+
+### 5. Why is frontend route protection not enough by itself?
+
+`ProtectedRoute` only controls what renders in the browser. It's just JavaScript running on the user's machine — anyone can open dev tools, edit local storage, or call the API directly with `curl`/Postman, bypassing React entirely. It's a UX nicety (don't show a broken page), not a security boundary.
+
+### 6. Which backend endpoints still need to enforce security?
+
+All endpoints that touch protected data: `/api/v1/tickets/**` and `/api/v1/reports/**`, both of which `SecurityConfig` already requires a valid JWT with `USER`/`ADMIN` role for — everything except `/api/health`, `/api/auth/**`, and `/api/docs/**`, which are intentionally `permitAll()`. The real enforcement happens server-side on every request; the frontend route guard just mirrors that for UX.
+
+### Output Screenshot
+
+Covered by the existing routing-flow screenshots from Exercises 3-5 (login form, logout confirmation, wrong-credential error, and the redirect-after-login flow) — no new screenshots needed for this reflection.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
