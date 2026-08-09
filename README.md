@@ -159,6 +159,21 @@ Run `npm run dev` inside `support-desk-ui` to run this exercise. Backend must be
 
 ---
 
+## Day 12 Exercise 04 - Protect Ticket Pages
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `components/ProtectedRoute.jsx` — new gate component. Reads `isAuthenticated` from `useAuth()`; if there's no token it renders `<Navigate to="/login" state={{ from: location }} replace />` (stashing the attempted URL so `LoginPage` can redirect back after a successful login), otherwise it renders `<Outlet />` so the matched child route continues to render.
+- `App.jsx` — wrapped the existing `/app` route (and its `dashboard`/`tickets`/`reports` children) in a path-less parent `<Route element={<ProtectedRoute />}>`, so all three pages now require a valid token before they'll render.
+
+### Result
+
+Navigating directly to `/app/tickets` (or `/app/dashboard`, `/app/reports`) while logged out immediately redirects to `/login`, confirmed by testing.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
