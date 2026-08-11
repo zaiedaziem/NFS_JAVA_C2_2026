@@ -84,6 +84,145 @@ By the end of this programme, participants will be able to:
 
 
 
+## Day 12 Exercise 01 - Add React Router
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created
+
+- Installed `react-router` via `npm install react-router`.
+- `main.jsx` — wrapped the app in `BrowserRouter`, enabling client-side routing based on the URL.
+- `App.jsx` — replaced the single page with `Routes`/`Route` definitions for `/login`, `/app/dashboard`, and `/app/tickets`.
+- `pages/LoginPage.jsx` / `pages/DashboardPage.jsx` — simple placeholder pages for now.
+- `pages/TicketsPage.jsx` — moved all the Day 11 ticket UI (API info card, filter panel, list, detail) here, since it now lives at its own dedicated route instead of being the only content on the page.
+
+### Output Screenshot
+
+![Day 12 Exercise 01 Login Route](screenshots/day12_exercise1_login.png)
+*GET /login shows the placeholder login page*
+
+![Day 12 Exercise 01 Dashboard Route](screenshots/day12_exercise1_dashboard.png)
+*GET /app/dashboard shows the header plus the placeholder dashboard page*
+
+![Day 12 Exercise 01 Tickets Route](screenshots/day12_exercise1_tickets.png)
+*GET /app/tickets shows the full Day 11 ticket UI, now living at its own route*
+
+---
+
+## Day 12 Exercise 02 - Create Nested App Layout
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created
+
+- `AppShell.jsx` — the shared shell for all `/app/*` pages, with a header, a `NavLink`-based navigation bar, and an `Outlet` where the matching child route renders.
+- `pages/ReportsPage.jsx` — a placeholder page for the new `/app/reports` route.
+- `App.jsx` — restructured to use nested routing: `/app` renders `AppShell`, with `dashboard`, `tickets`, and `reports` as child routes rendered inside its `Outlet`, replacing the earlier approach of wrapping each page in `Layout` individually.
+- `index.css` — added `.app-nav` styling, including the `.active` state React Router applies to whichever `NavLink` matches the current URL.
+
+### Output Screenshot
+
+![Day 12 Exercise 02 Dashboard](screenshots/day12_exercise2_dashboard.png)
+*Dashboard tab active, nav bar and header stay fixed*
+
+![Day 12 Exercise 02 Tickets](screenshots/day12_exercise2_tickets.png)
+*Tickets tab active, showing the full Day 11 ticket UI inside the shared shell*
+
+![Day 12 Exercise 02 Reports](screenshots/day12_exercise2_reports.png)
+*Reports tab active, showing the new placeholder page*
+
+---
+
+## Day 12 Exercise 03 - Login Page and Auth Context
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise. Backend must be running on port 8080 for login to work.
+
+### Files created/updated
+
+- `context/AuthContext.jsx` — new `AuthProvider`/`useAuth` pair built with `createContext`/`useContext`. Holds the logged-in user, JWT token, and `isAuthenticated` flag in state, persists them to `localStorage` under `supportDeskAuth` so a refresh doesn't log the user out, and exposes `login(email, password)` (calls the backend, stores the response) and `logout()` (clears state and storage).
+- `services/api.js` — added `loginRequest(email, password)`, a `POST /api/auth/login` call reusing the existing `parseJsonResponse()` helper so backend validation/auth errors surface as readable messages.
+- `pages/LoginPage.jsx` — replaced the placeholder with a real controlled form (email + password), wired to `useAuth().login()`. Shows a loading state while the request is in flight, an `ErrorMessage` on failure (e.g. wrong credentials), and redirects to `/app/dashboard` (or back to whatever page the user was trying to reach) on success. Pre-fills the seeded admin credentials as a convenience. The password field has an eye-icon toggle button (inline SVG, no extra library) to show/hide the typed password instead of a plain "Show/Hide" text button.
+- `components/AppShell.jsx` — added a `user-panel` in the header showing the logged-in user's name and role, plus a `Logout` button. Clicking it opens a `window.confirm()` dialog ("Are you sure you want to log out?") before calling `logout()` and navigating back to `/login`, so a logout can't happen from a single accidental click.
+- `main.jsx` — wrapped `<App />` in `<AuthProvider>` (inside `BrowserRouter`) so every route can read auth state via `useAuth()`.
+- `index.css` — added `.password-field`/`.password-toggle` (icon button positioned inside the input, centered, with a hover state) and `.user-panel` (name, role pill, logout button styling in the dark header).
+
+### Output Screenshot
+
+![Day 12 Exercise 03 Login Page](screenshots/day12_exercise3_loginPage.png)
+*The login form pre-filled with the seeded admin credentials, password hidden by default*
+
+![Day 12 Exercise 03 Logout](screenshots/day12_exercise3_logout.png)
+*Clicking Logout in the header opens a confirmation dialog before actually logging out*
+
+![Day 12 Exercise 03 Wrong Credential](screenshots/day12_exercise3_wrongCredential.png)
+*An incorrect password shows an inline "Invalid email or password" error, with the password revealed via the eye icon*
+
+---
+
+## Day 12 Exercise 04 - Protect Ticket Pages
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `components/ProtectedRoute.jsx` — new gate component. Reads `isAuthenticated` from `useAuth()`; if there's no token it renders `<Navigate to="/login" state={{ from: location }} replace />` (stashing the attempted URL so `LoginPage` can redirect back after a successful login), otherwise it renders `<Outlet />` so the matched child route continues to render.
+- `App.jsx` — wrapped the existing `/app` route (and its `dashboard`/`tickets`/`reports` children) in a path-less parent `<Route element={<ProtectedRoute />}>`, so all three pages now require a valid token before they'll render.
+
+### Result
+
+Navigating directly to `/app/tickets` (or `/app/dashboard`, `/app/reports`) while logged out immediately redirects to `/login`, confirmed by testing.
+
+---
+
+## Day 12 Exercise 05 - Redirect After Login
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+No new code was needed — `ProtectedRoute.jsx` and `LoginPage.jsx` from Exercise 4 and Exercise 3 already cover this:
+
+- `ProtectedRoute.jsx` grabs the current location with `useLocation()` and passes it along in `state={{ from: location }}` when it redirects an unauthenticated user to `/login`.
+- `LoginPage.jsx` reads that back with `location.state?.from?.pathname`, falling back to `/app/dashboard` if there isn't one, and calls `navigate(redirectTo, { replace: true })` once `login()` succeeds.
+
+### Result
+
+Logged out, opened `/app/tickets` directly, got redirected to `/login`. After logging in, was returned to `/app/tickets` instead of the dashboard, confirmed by testing.
+
+---
+
+## Day 12 Exercise 06 - Protected Route Reflection
+
+### 1. What is the role of `BrowserRouter`?
+
+The top-level router that uses the browser's History API to sync the URL with what's rendered, so `/app/tickets` shows the tickets page without a full page reload. It's what wraps `<App />` in `main.jsx`.
+
+### 2. What is the difference between `Routes` and `Route`?
+
+`Routes` is the container that looks at the current URL and picks the one best-matching `Route` inside it to render. `Route` is a single path-to-element mapping (e.g. `path="tickets" element={<TicketsPage />}`). `Routes` does the matching; `Route` just describes an option.
+
+### 3. Why do we use `Outlet`?
+
+`Outlet` is a placeholder that says "render whichever child route matched here." It's used in `AppShell.jsx` so the header/nav stay fixed while `dashboard`/`tickets`/`reports` swap in underneath, and again in `ProtectedRoute.jsx` so the actual page renders after the auth check passes.
+
+### 4. What does `Navigate` do?
+
+`Navigate` is a component that immediately redirects to another route when rendered, instead of showing UI. `ProtectedRoute.jsx` uses it to send unauthenticated users to `/login`, and `LoginPage.jsx` uses it to bounce already-logged-in users away from the login form.
+
+### 5. Why is frontend route protection not enough by itself?
+
+`ProtectedRoute` only controls what renders in the browser. It's just JavaScript running on the user's machine — anyone can open dev tools, edit local storage, or call the API directly with `curl`/Postman, bypassing React entirely. It's a UX nicety (don't show a broken page), not a security boundary.
+
+### 6. Which backend endpoints still need to enforce security?
+
+All endpoints that touch protected data: `/api/v1/tickets/**` and `/api/v1/reports/**`, both of which `SecurityConfig` already requires a valid JWT with `USER`/`ADMIN` role for — everything except `/api/health`, `/api/auth/**`, and `/api/docs/**`, which are intentionally `permitAll()`. The real enforcement happens server-side on every request; the frontend route guard just mirrors that for UX.
+
+### Output Screenshot
+
+Covered by the existing routing-flow screenshots from Exercises 3-5 (login form, logout confirmation, wrong-credential error, and the redirect-after-login flow) — no new screenshots needed for this reflection.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
