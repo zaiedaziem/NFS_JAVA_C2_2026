@@ -27,3 +27,15 @@ export async function apiRequest(path, options = {}) {
 
   return responseBody;
 }
+
+export function buildQueryString(params) {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      searchParams.set(key, value);
+    }
+  });
+
+  return searchParams.toString();
+}
