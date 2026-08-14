@@ -253,6 +253,35 @@ Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Test w
 
 ---
 
+## Day 13 Exercise 02 - Create Ticket Form Page
+
+Run `npm run dev` inside `support-desk-ui` (backend must be running on port 8080) to run this exercise.
+
+### Files created/updated
+
+- `components/TicketFormWizard.jsx` — new controlled 3-step form (Ticket details → Priority & status → Review), styled after the trainer's `AssetFormWizard` reference. Step 1 collects `title`/`description`/`category`, Step 2 collects `priority`/`status`, Step 3 shows a read-only review of all values plus a confirmation checkbox before submit. Each step validates before allowing `Continue`, with inline error messages per field.
+- `components/TicketFormStepIndicator.jsx` — numbered 3-step progress indicator (1 Ticket details, 2 Priority & status, 3 Review), highlighting the active/completed step.
+- `components/InlineFieldError.jsx` — small helper that renders a red inline message under a field only when an error string is present.
+- `pages/TicketFormPage.jsx` — the route's page shell: a `welcome-card` header ("Create a new ticket") with a "Back to Tickets" button, wraps `TicketFormWizard`, and owns the actual submit logic.
+- `App.jsx` — added the `tickets/new` child route (`/app/tickets/new`) inside the existing `ProtectedRoute` → `AppShell` nesting, plus fixed a duplicate `tickets` route line, added a `/` → `/app/dashboard` redirect (previously blank), and a catch-all `*` route so unknown URLs redirect home instead of showing nothing.
+- `pages/TicketsPage.jsx` — added a `welcome-card` header with a "+ New Ticket" button (`Link` to `/app/tickets/new`), and switched from the hardcoded `sampleTickets` array to fetching real tickets from `GET /api/v1/tickets` via `useAuth()`'s token, with loading/error states — matching the trainer's `AssetsPage` pattern.
+- `services/api.js` — added `authHeaders()`, `fetchTickets(token)`, `createTicket(token, payload)`, and `updateTicket(id, token, payload)`.
+- `index.css` — ported the trainer's `welcome-card`, `action-row`, `button-link` (+`.secondary`), `step-indicator`, `form-grid` (+`.form-grid-full`), `field-error`, `review-grid`, `review-check`, `form-actions`, and `success-message` classes so the new pages match the Day 12 visual system.
+
+### Result
+
+Since the backend's update endpoint already existed from Exercise 1, `createTicket` was wired up immediately instead of waiting for Exercise 4 — submitting the wizard now actually calls `POST /api/v1/tickets` (using the logged-in user's email as `createdBy`) and the new ticket appears in the real ticket list right away. Note the backend always sets a new ticket's status to `OPEN` regardless of what's picked in Step 2 — that field only matters once editing/updating is wired in.
+
+### Output Screenshot
+
+![Day 13 Exercise 02 Ticket Form](screenshots/day13_exercise2_form.png)
+*Step 1 of the Create Ticket wizard, with the step indicator and Back to Tickets button*
+
+![Day 13 Exercise 02 Ticket List](screenshots/day13_exercise2_ticketlist.png)
+*The newly created "Printer not working on 3rd floor" ticket appears in the real ticket list, fetched from the backend*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
