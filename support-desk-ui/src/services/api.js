@@ -42,6 +42,14 @@ export async function fetchTickets(token) {
   return parseJsonResponse(response);
 }
 
+export async function fetchTicketById(id, token) {
+  const response = await fetch(`/api/v1/tickets/${id}`, {
+    headers: authHeaders(token)
+  });
+
+  return parseJsonResponse(response);
+}
+
 export async function createTicket(token, payload) {
   const response = await fetch('/api/v1/tickets', {
     method: 'POST',

@@ -334,6 +334,23 @@ Covered by the existing screenshots from Exercise 2 ([day13_exercise2_form.png](
 
 ---
 
+## Day 13 Exercise 05 - Add Edit Ticket Flow
+
+Run `npm run dev` inside `support-desk-ui` (backend must be running on port 8080) to run this exercise.
+
+### Files created/updated
+
+- `services/api.js` — added `fetchTicketById(id, token)` (`GET /api/v1/tickets/{id}`).
+- `App.jsx` — added the `tickets/:ticketId/edit` route, pointing at the same `TicketFormPage` used for creating.
+- `pages/TicketFormPage.jsx` — now reads `useParams()` for `ticketId`. In edit mode it fetches that ticket on mount and pre-fills the wizard's `initialValues`, showing a loading/error state while fetching, and submits via `updateTicket` instead of `createTicket`. `key={ticketId || 'create'}` on `TicketFormWizard` forces a clean remount with fresh initial values when switching between create and edit. Both create and update now navigate straight back to `/app/tickets` on success instead of showing an in-page success message — the saved/updated ticket being visible in the list is confirmation enough.
+- `pages/TicketsPage.jsx` — added an "Edit Selected" button next to "+ New Ticket", linking to `/app/tickets/{selectedTicket.id}/edit`, shown only when a ticket is selected.
+
+### Result
+
+Selecting a ticket and clicking "Edit Selected" opens the wizard pre-filled with that ticket's real data; changing a field (e.g. status) and submitting saves the change via `PUT /api/v1/tickets/{id}` and returns to the Tickets page showing the update, confirmed by testing.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

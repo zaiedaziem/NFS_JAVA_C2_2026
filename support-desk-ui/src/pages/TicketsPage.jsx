@@ -117,6 +117,11 @@ export default function TicketsPage() {
         </div>
         <div className="action-row">
           <Link className="button-link" to="/app/tickets/new">+ New Ticket</Link>
+          {selectedTicket && (
+            <Link className="button-link secondary" to={`/app/tickets/${selectedTicket.id}/edit`}>
+              Edit Selected
+            </Link>
+          )}
         </div>
       </section>
 
