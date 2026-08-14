@@ -12,55 +12,65 @@ Content-Type: application/json
 
 
 ### Copy token from login response
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlzcyI6ImFzc2V0LXRyYWNrZXItYXBpIiwibmFtZSI6IkFkbWluIFVzZXIiLCJleHAiOjE3ODM1MjQ5ODIsImlhdCI6MTc4MzUyMTM4MiwidXNlcklkIjoiNmE0ZTMyMDBjYjFjNGU0ZDk4NTQ1M2MyIn0.xgHsbJzYb6VntgtKkjWc6FXl2kVeDbpOixNAB22eL38
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlzcyI6InN1cHBvcnQtZGVzay1hcGkiLCJuYW1lIjoiQWRtaW4gVXNlciIsImV4cCI6MTc4NjcyMjE1OSwiaWF0IjoxNzg2NzE4NTU5LCJ1c2VySWQiOiI2YTc0NDEyMzk5NGI2Y2RmMmZhOTExNTYifQ.PRDe2_J6cwDooWfPkm68fbIbY-0A1zPlEDhNv_IVZOc
 
 
-### Create asset from frontend form
-POST http://localhost:8080/api/v1/assets
+### Create ticket from frontend form
+POST http://localhost:8080/api/v1/tickets
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "assetTag": "FORM-2026-001",
-  "name": "Training Room Camera",
-  "category": "Camera",
-  "serialNumber": "SN-FORM-001",
-  "location": "Training Room B"
+  "title": "Cannot connect to VPN",
+  "description": "VPN client fails to connect from home network",
+  "category": "Network",
+  "priority": "HIGH",
+  "createdBy": "trainer@example.com"
 }
 
 
-### Get all assets and copy one id for update
-GET http://localhost:8080/api/v1/assets
+### Get all tickets and copy one id for update
+GET http://localhost:8080/api/v1/tickets
 Authorization: Bearer {{token}}
 
 
-### Update asset from frontend form
-PUT http://localhost:8080/api/v1/assets/6a4e1056bd4000ca7cd48975
+### Update ticket from frontend form
+PUT http://localhost:8080/api/v1/tickets/6a7f299dd81b565fecbd61c6
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "assetTag": "FORM-2026-001",
-  "name": "Training Room Camera Updated",
-  "category": "Camera",
-  "serialNumber": "SN-FORM-001",
-  "status": "ASSIGNED",
-  "location": "Training Room B",
-  "assignedTo": "trainer@example.com"
+  "title": "Cannot connect to VPN",
+  "description": "VPN client fails to connect from home network - escalated to network team",
+  "category": "Network",
+  "priority": "HIGH",
+  "status": "IN_PROGRESS"
+}
+
+
+### Invalid update priority - should return 400
+PUT http://localhost:8080/api/v1/tickets/6a7f299dd81b565fecbd61c6
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Cannot connect to VPN",
+  "description": "VPN client fails to connect from home network",
+  "category": "Network",
+  "priority": "URGENT",
+  "status": "IN_PROGRESS"
 }
 
 
 ### Invalid update status - should return 400
-PUT http://localhost:8080/api/v1/assets/6a4e1056bd4000ca7cd48975
+PUT http://localhost:8080/api/v1/tickets/6a7f299dd81b565fecbd61c6
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "assetTag": "FORM-2026-001",
-  "name": "Training Room Camera Updated",
-  "category": "Camera",
-  "serialNumber": "SN-FORM-001",
-  "status": "BROKEN",
-  "location": "Training Room B",
-  "assignedTo": "trainer@example.com"
+  "title": "Cannot connect to VPN",
+  "description": "VPN client fails to connect from home network",
+  "category": "Network",
+  "priority": "HIGH",
+  "status": "RESOLVED"
 }

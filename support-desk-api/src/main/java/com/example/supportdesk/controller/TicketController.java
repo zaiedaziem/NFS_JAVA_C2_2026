@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Page;
+import com.example.supportdesk.dto.UpdateTicketRequest;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 
@@ -62,5 +64,10 @@ public class TicketController {
     @ResponseStatus(HttpStatus.CREATED)
     public TicketResponse createTicket(@Valid @RequestBody CreateTicketRequest request) {
         return ticketService.createTicket(request);
+    }
+
+    @PutMapping("/{id}")
+    public TicketResponse updateTicket(@PathVariable String id, @Valid @RequestBody UpdateTicketRequest request) {
+        return ticketService.updateTicket(id, request);
     }
 }

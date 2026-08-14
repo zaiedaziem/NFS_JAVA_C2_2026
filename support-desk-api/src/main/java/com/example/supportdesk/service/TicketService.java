@@ -1,5 +1,6 @@
 package com.example.supportdesk.service;
 
+import com.example.supportdesk.dto.UpdateTicketRequest;
 import com.example.supportdesk.model.Ticket;
 import com.example.supportdesk.repository.TicketRepository;
 import com.example.supportdesk.dto.TicketResponse;
@@ -96,6 +97,21 @@ public class TicketService {
         // save() comes free from MongoRepository - inserts the document and returns it with its new id
         Ticket saved = ticketRepository.save(ticket);
         logger.info("Created ticket with id={}", saved.getId());
+        return toResponse(saved);
+    }
+
+    public TicketResponse updateTicket(String id, UpdateTicketRequest request) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket " + id + " was not found"));
+
+        ticket.setTitle(request.getTitle());
+        ticket.setDescription(request.getDescription());
+        ticket.setCategory(request.getCategory());
+        ticket.setPriority(request.getPriority());
+        ticket.setStatus(request.getStatus());
+
+        Ticket saved = ticketRepository.save(ticket);
+        logger.info("Updated ticket with id={}", saved.getId());
         return toResponse(saved);
     }
 

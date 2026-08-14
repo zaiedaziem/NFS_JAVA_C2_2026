@@ -223,6 +223,36 @@ Covered by the existing routing-flow screenshots from Exercises 3-5 (login form,
 
 ---
 
+## Day 13 Exercise 01 - Add Backend Update Ticket Endpoint
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Test with `requests/day13.http`.
+
+### Files created/updated
+
+- `dto/UpdateTicketRequest.java` — new DTO with `title`, `description`, `category`, `priority`, and `status`. `title`/`description`/`category` use `@NotBlank`, while `priority` and `status` use `@Pattern` to restrict them to `LOW|MEDIUM|HIGH` and `OPEN|IN_PROGRESS|CLOSED` respectively.
+- `service/TicketService.java` — added `updateTicket(String id, UpdateTicketRequest request)`. Looks up the existing ticket by id (reusing the same `ResourceNotFoundException` → 404 pattern as `getTicketById`), overwrites its fields from the request, then calls `save()`, which updates the existing MongoDB document in place since it already has an `id`.
+- `controller/TicketV1Controller.java` — added `PUT /api/v1/tickets/{id}`, validated with `@Valid @RequestBody UpdateTicketRequest`, calling `ticketService.updateTicket(id, request)`.
+- `requests/day13.http` — rewritten from the trainer's Asset-domain template to the Ticket domain: login, create a ticket, get all tickets to grab an id, a valid update, and two invalid updates (bad `priority`, bad `status`) to confirm the 400 validation path.
+
+### Output Screenshot
+
+![Day 13 Exercise 01 Create Ticket](screenshots/day13_exercise1_post.png)
+*POST /api/v1/tickets returns 201 with the new ticket*
+
+![Day 13 Exercise 01 Get All Tickets](screenshots/day13_exercise1_getall.png)
+*GET /api/v1/tickets used to copy an id for the update requests*
+
+![Day 13 Exercise 01 Valid Update](screenshots/day13_exercise1_put1.png)
+*PUT /api/v1/tickets/{id} with valid data returns 200 with the updated ticket, status now IN_PROGRESS*
+
+![Day 13 Exercise 01 Invalid Priority](screenshots/day13_exercise1_put2.png)
+*PUT with priority "URGENT" returns 400 with "Priority must be LOW, MEDIUM or HIGH"*
+
+![Day 13 Exercise 01 Invalid Status](screenshots/day13_exercise1_put3.png)
+*PUT with status "RESOLVED" returns 400 with "Status must be OPEN, IN_PROGRESS or CLOSED"*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
