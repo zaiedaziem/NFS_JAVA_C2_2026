@@ -351,6 +351,23 @@ Selecting a ticket and clicking "Edit Selected" opens the wizard pre-filled with
 
 ---
 
+## Day 14 Exercise 01 - Create API Client Layer
+
+Run `npm run dev` inside `support-desk-ui` (backend must be running on port 8080) to run this exercise.
+
+### Files created/updated
+
+- `services/httpClient.js` — new `apiRequest(path, options)` helper. Takes `{ method, token, body }`, adds the `Authorization: Bearer` header only when a `token` is passed, sets `Content-Type: application/json` and stringifies the body only when a `body` is passed, parses the JSON response, and throws an `Error` carrying the backend's message on a non-OK response.
+- `services/api.js` — rewritten so every function (`fetchApiDocs`, `loginRequest`, `fetchTickets`, `fetchTicketById`, `createTicket`, `updateTicket`) is now a one-line call into `apiRequest`, instead of each repeating its own `fetch`/header/JSON-parsing logic. The old `parseJsonResponse`/`authHeaders` duplicated helpers are gone.
+
+No page components needed to change — `TicketsPage.jsx`, `TicketFormPage.jsx`, and `LoginPage.jsx` all still call the same exported functions from `api.js` with the same signatures.
+
+### Result
+
+Re-tested login, viewing tickets, creating a ticket, and editing a ticket after the refactor — all still work correctly through the new shared `apiRequest` layer, confirmed by testing.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
