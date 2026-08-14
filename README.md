@@ -311,6 +311,29 @@ Submitting Step 1 with Title, Description, and Category all blank shows all thre
 
 ---
 
+## Day 13 Exercise 04 - Submit Ticket To Backend
+
+Run `npm run dev` inside `support-desk-ui` (backend must be running on port 8080) to run this exercise.
+
+### Files created/updated
+
+No new code was needed — this was wired up early during Exercise 2's testing, when the ticket list needed real backend data to display against:
+
+- `services/api.js` already has `createTicket(token, payload)` (`POST /api/v1/tickets`) and `updateTicket(id, token, payload)` (`PUT /api/v1/tickets/{id}`).
+- `pages/TicketFormPage.jsx` already reads the token via `useAuth()`, and tracks `saving` (disables the submit button, shows "Saving..."), `successMessage` (green banner via `.success-message`), and `serverError` (shown through `ErrorMessage` on failure).
+
+`updateTicket` exists but isn't called from any UI yet — no edit route exists to use it. That's Exercise 5's job, not this one.
+
+### Result
+
+Already confirmed working during Exercise 2 testing: submitting the wizard calls `POST /api/v1/tickets` with the logged-in user's email as `createdBy`, shows a success message, and the new ticket immediately appears in the real ticket list.
+
+### Output Screenshot
+
+Covered by the existing screenshots from Exercise 2 ([day13_exercise2_form.png](screenshots/day13_exercise2_form.png), [day13_exercise2_ticketlist.png](screenshots/day13_exercise2_ticketlist.png)) — no new screenshots needed since the same create-and-save flow is what this exercise verifies.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
