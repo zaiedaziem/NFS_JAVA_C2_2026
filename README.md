@@ -282,6 +282,35 @@ Since the backend's update endpoint already existed from Exercise 1, `createTick
 
 ---
 
+## Day 13 Exercise 03 - Client-Side Validation
+
+Run `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+No new code was needed — `components/TicketFormWizard.jsx` from Exercise 2 already covers every rule in this exercise:
+
+- `validateStep(1)` blocks `Continue` and shows an inline `InlineFieldError` message under `title`, `description`, and `category` whenever any of them are left blank.
+- `validateStep(2)` checks `priority`/`status` against their valid option lists. Since both are `<select>` dropdowns defaulting to `MEDIUM`/`OPEN`, they can never actually be submitted blank, so this validation acts as a safety net rather than something that visibly triggers.
+- `validateStep(3)` blocks final submission unless the review checkbox is checked.
+
+### Result
+
+Submitting Step 1 with Title, Description, and Category all blank shows all three inline "is required" errors and stays on Step 1 instead of advancing, confirmed by testing.
+
+### Output Screenshot
+
+![Day 13 Exercise 03 Blank Field Validation](screenshots/day13_exercise3_validation1.png)
+*Submitting Step 1 blank shows inline "Title is required.", "Description is required.", and "Category is required." errors*
+
+![Day 13 Exercise 03 Priority Options](screenshots/day13_exercise3_validation2.png)
+*Step 2 Priority dropdown restricted to LOW / MEDIUM / HIGH*
+
+![Day 13 Exercise 03 Status Options](screenshots/day13_exercise3_validation3.png)
+*Step 2 Status dropdown restricted to OPEN / IN_PROGRESS / CLOSED*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
