@@ -1,10 +1,10 @@
-export default function TicketDataControls({ pageInfo, loading, onPageSizeChange, onSortChange }) {
+export default function TicketDataControls({ pageInfo, cacheMessage, loading, onRefresh, onPageSizeChange, onSortChange }) {
   return (
     <section className="card">
       <div className="section-heading">
         <p className="eyebrow">Data layer</p>
-        <h2>Server pagination controls</h2>
-        <p>Change page size or sorting to fetch a new page from the backend.</p>
+        <h2>Server pagination and cache controls</h2>
+        <p>{cacheMessage}</p>
       </div>
 
       <div className="data-controls-grid">
@@ -47,6 +47,12 @@ export default function TicketDataControls({ pageInfo, loading, onPageSizeChange
             <option value="desc">Descending</option>
           </select>
         </label>
+      </div>
+
+      <div className="action-row form-actions">
+        <button className="button-link" type="button" onClick={onRefresh} disabled={loading}>
+          {loading ? 'Refreshing...' : 'Refresh from backend'}
+        </button>
       </div>
     </section>
   );

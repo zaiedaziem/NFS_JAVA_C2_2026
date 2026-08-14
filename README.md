@@ -143,8 +143,29 @@ Page size, sort field, sort direction, and Previous/Next all correctly fetch a n
 
 ### Output Screenshot
 
-![Day 14 Exercise 03 Pagination Controls](screenshots/day14_exercise2_pagination.png)
+![Day 14 Exercise 03 Pagination Controls](screenshots/day14_exercise3_pagination.png)
 *Page 1 of 2 showing 5 of 9 total tickets, sorted by Created At descending, with Previous disabled on the first page*
+
+---
+
+## Day 14 Exercise 04 - Add Simple Page Cache
+
+Run `mvn spring-boot:run` inside `support-desk-api` and `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `context/TicketDataContext.jsx` — added an in-memory `cache` object keyed by `page|size|sortBy|direction` (via `makeCacheKey`), plus a `cacheMessage` string reflecting the current state ("Fetching from backend...", "Loaded from cache.", "Fetched from backend.", "Could not load data."). `loadTicketsPage()` checks the cache first — a hit skips the network call entirely, a miss fetches and stores the result. Added `refreshTickets()`, which calls `loadTicketsPage({ force: true })` to bypass the cache.
+- `components/TicketDataControls.jsx` — the section description now shows the live `cacheMessage` instead of static text, and there's a new "Refresh from backend" button.
+- `pages/TicketsPage.jsx` — passes `cacheMessage` and `refreshTickets` through to the controls.
+
+### Result
+
+Loading page 1 shows "Fetched from backend.", navigating to page 2 and back to page 1 shows "Loaded from cache." with an instant load (no network request), and clicking "Refresh from backend" forces a real fetch again, confirmed by testing.
+
+### Output Screenshot
+
+![Day 14 Exercise 04 Cache Hit](screenshots/day14_exercise2_cache.png)
+*Returning to a previously-loaded page shows "Loaded from cache." in the Data layer card instead of re-fetching from the backend*
 
 ---
 

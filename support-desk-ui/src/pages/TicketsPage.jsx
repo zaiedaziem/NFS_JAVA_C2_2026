@@ -21,7 +21,9 @@ export default function TicketsPage() {
     loading,
     error,
     pageInfo,
+    cacheMessage,
     loadTicketsPage,
+    refreshTickets,
     selectTicket,
     setSearchText,
     setStatusFilter,
@@ -95,7 +97,9 @@ export default function TicketsPage() {
 
       <TicketDataControls
         pageInfo={pageInfo}
+        cacheMessage={cacheMessage}
         loading={loading}
+        onRefresh={refreshTickets}
         onPageSizeChange={(size) => loadTicketsPage({ page: 0, size })}
         onSortChange={(sortBy, direction) => loadTicketsPage({ page: 0, sortBy, direction })}
       />
