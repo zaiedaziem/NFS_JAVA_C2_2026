@@ -5,6 +5,7 @@ import TicketDetail from '../components/TicketDetail.jsx';
 import TicketFilterPanel from '../components/TicketFilterPanel.jsx';
 import TicketDataControls from '../components/TicketDataControls.jsx';
 import TicketPaginationControls from '../components/TicketPaginationControls.jsx';
+import TicketStatusControls from '../components/TicketStatusControls.jsx';
 import ApiInfoCard from '../components/ApiInfoCard.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 import LoadingMessage from '../components/LoadingMessage.jsx';
@@ -22,8 +23,10 @@ export default function TicketsPage() {
     error,
     pageInfo,
     cacheMessage,
+    updatingId,
     loadTicketsPage,
     refreshTickets,
+    changeTicketStatus,
     selectTicket,
     setSearchText,
     setStatusFilter,
@@ -123,7 +126,14 @@ export default function TicketsPage() {
             selectedTicketId={selectedTicket?.id}
             onSelectTicket={(ticket) => selectTicket(ticket.id)}
           />
-          <TicketDetail ticket={selectedTicket} />
+          <div className="ticket-detail-column">
+            <TicketDetail ticket={selectedTicket} />
+            <TicketStatusControls
+              ticket={selectedTicket}
+              updatingId={updatingId}
+              onStatusChange={changeTicketStatus}
+            />
+          </div>
         </section>
       )}
 

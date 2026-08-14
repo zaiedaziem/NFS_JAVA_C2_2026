@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useReducer } from 'react';
 import { useAuth } from './AuthContext.jsx';
-import { fetchTicketsPaged } from '../services/api.js';
+import { fetchTicketsPaged, updateTicket } from '../services/api.js';
 import { filterTickets } from '../utils/tickets.js';
 
 const TicketDataContext = createContext(null);
@@ -12,6 +12,7 @@ const initialState = {
   error: '',
   cache: {},
   cacheMessage: 'No cached page loaded yet.',
+  updatingId: '',
   pageInfo: {
     page: 0,
     size: 5,
@@ -29,6 +30,33 @@ const initialState = {
 
 function makeCacheKey(params) {
   return `${params.page}|${params.size}|${params.sortBy}|${params.direction}`;
+}
+
+function replaceTicket(tickets, updatedTicket) {
+  return tickets.map((ticket) => (ticket.id === updatedTicket.id ? updatedTicket : ticket));
+}
+
+function replaceTicketInCache(cache, updatedTicket) {
+  const nextCache = {};
+
+  Object.entries(cache).forEach(([key, pageData]) => {
+    nextCache[key] = {
+      ...pageData,
+      content: replaceTicket(pageData.content ?? [], updatedTicket)
+    };
+  });
+
+  return nextCache;
+}
+
+function toUpdatePayload(ticket) {
+  return {
+    title: ticket.title,
+    description: ticket.description,
+    category: ticket.category,
+    priority: ticket.priority,
+    status: ticket.status
+  };
 }
 
 function toPageInfo(data, params) {
@@ -82,6 +110,31 @@ function ticketDataReducer(state, action) {
     case 'SELECT_TICKET':
       return { ...state, selectedTicketId: action.payload };
 
+    case 'OPTIMISTIC_UPDATE':
+      return {
+        ...state,
+        updatingId: action.ticket.id,
+        tickets: replaceTicket(state.tickets, action.ticket),
+        cache: replaceTicketInCache(state.cache, action.ticket)
+      };
+
+    case 'UPDATE_SUCCESS':
+      return {
+        ...state,
+        updatingId: '',
+        tickets: replaceTicket(state.tickets, action.ticket),
+        cache: replaceTicketInCache(state.cache, action.ticket)
+      };
+
+    case 'ROLLBACK_UPDATE':
+      return {
+        ...state,
+        updatingId: '',
+        tickets: replaceTicket(state.tickets, action.ticket),
+        cache: replaceTicketInCache(state.cache, action.ticket),
+        error: action.payload
+      };
+
     default:
       return state;
   }
@@ -123,6 +176,28 @@ export function TicketDataProvider({ children }) {
     return loadTicketsPage({ force: true });
   }, [loadTicketsPage]);
 
+  const changeTicketStatus = useCallback(async (ticketId, nextStatus) => {
+    const currentTicket = state.tickets.find((ticket) => ticket.id === ticketId);
+
+    if (!currentTicket || currentTicket.status === nextStatus) {
+      return;
+    }
+
+    const optimisticTicket = { ...currentTicket, status: nextStatus };
+    dispatch({ type: 'OPTIMISTIC_UPDATE', ticket: optimisticTicket });
+
+    try {
+      const savedTicket = await updateTicket(ticketId, token, toUpdatePayload(optimisticTicket));
+      dispatch({ type: 'UPDATE_SUCCESS', ticket: savedTicket });
+    } catch (err) {
+      dispatch({
+        type: 'ROLLBACK_UPDATE',
+        ticket: currentTicket,
+        payload: err.message || 'Could not update ticket status. Reverted local change.'
+      });
+    }
+  }, [state.tickets, token]);
+
   const filteredTickets = useMemo(
     () => filterTickets(state.tickets, state.filters.searchText, state.filters.statusFilter, state.filters.priorityFilter),
     [state.tickets, state.filters]
@@ -143,14 +218,16 @@ export function TicketDataProvider({ children }) {
       cacheMessage: state.cacheMessage,
       pageInfo: state.pageInfo,
       filters: state.filters,
+      updatingId: state.updatingId,
       loadTicketsPage,
       refreshTickets,
+      changeTicketStatus,
       selectTicket: (ticketId) => dispatch({ type: 'SELECT_TICKET', payload: ticketId }),
       setSearchText: (value) => dispatch({ type: 'SET_SEARCH_TEXT', payload: value }),
       setStatusFilter: (value) => dispatch({ type: 'SET_STATUS_FILTER', payload: value }),
       setPriorityFilter: (value) => dispatch({ type: 'SET_PRIORITY_FILTER', payload: value })
     }),
-    [state, filteredTickets, selectedTicket, loadTicketsPage, refreshTickets]
+    [state, filteredTickets, selectedTicket, loadTicketsPage, refreshTickets, changeTicketStatus]
   );
 
   return <TicketDataContext.Provider value={value}>{children}</TicketDataContext.Provider>;

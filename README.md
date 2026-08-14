@@ -164,8 +164,30 @@ Loading page 1 shows "Fetched from backend.", navigating to page 2 and back to p
 
 ### Output Screenshot
 
-![Day 14 Exercise 04 Cache Hit](screenshots/day14_exercise2_cache.png)
+![Day 14 Exercise 04 Cache Hit](screenshots/day14_exercise4_cache.png)
 *Returning to a previously-loaded page shows "Loaded from cache." in the Data layer card instead of re-fetching from the backend*
+
+---
+
+## Day 14 Exercise 05 - Ticket Status Update
+
+Run `mvn spring-boot:run` inside `support-desk-api` and `npm run dev` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `context/TicketDataContext.jsx` — added `updatingId` to state, `replaceTicket`/`replaceTicketInCache` helpers (so a status change updates both the live list and any cached pages), and `toUpdatePayload(ticket)` for the `PUT` body. New reducer actions: `OPTIMISTIC_UPDATE` (apply the change to the UI immediately), `UPDATE_SUCCESS` (replace with the backend's confirmed response), `ROLLBACK_UPDATE` (revert to the backup ticket and surface an error). `changeTicketStatus(ticketId, nextStatus)` runs the full optimistic flow: back up the current ticket → optimistic UI update → `PUT /api/v1/tickets/{id}` → keep on success, roll back on failure.
+- `components/TicketStatusControls.jsx` — new card with OPEN / IN_PROGRESS / CLOSED buttons for the selected ticket, color-coded to match the existing status badge palette (green/amber/grey). The current status shows as a solid filled pill with a checkmark and is disabled; the other two are clickable tinted pills that lift on hover. Shows "Saving status change..." while the update is in flight.
+- `pages/TicketsPage.jsx` — added `TicketStatusControls` under `TicketDetail` inside a new `.ticket-detail-column` wrapper.
+- `index.css` — added `.ticket-detail-column` and the `.status-option` pill styling (per-status colors, active state, hover lift).
+
+### Result
+
+Clicking a different status button updates the UI immediately (both the detail card badge and the ticket list row), and stays that way once the backend confirms via `PUT`, confirmed by testing.
+
+### Output Screenshot
+
+![Day 14 Exercise 05 Status Update](screenshots/day14_exercise5.png)
+*Changing the selected ticket's status to IN_PROGRESS via the Quick status update card, reflected instantly in the detail badge and ticket list*
 
 ---
 

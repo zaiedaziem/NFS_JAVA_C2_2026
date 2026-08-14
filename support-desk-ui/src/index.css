@@ -452,6 +452,69 @@ select {
   gap: 20px;
 }
 
+.ticket-detail-column {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+}
+
+.status-option-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.status-option {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.status-option:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(23, 32, 51, 0.12);
+}
+
+.status-option:disabled {
+  cursor: not-allowed;
+}
+
+.status-option.status-open {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-option.status-in_progress {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-option.status-closed {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.status-option.active {
+  color: white;
+  transform: none;
+}
+
+.status-option.status-open.active {
+  background: #16a34a;
+}
+
+.status-option.status-in_progress.active {
+  background: #d97706;
+}
+
+.status-option.status-closed.active {
+  background: #4b5563;
+}
+
 .ticket-list {
   display: grid;
   gap: 10px;
