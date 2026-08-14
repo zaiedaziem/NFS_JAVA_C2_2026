@@ -6,6 +6,7 @@ import DashboardPage from './pages/DashboardPage.jsx';
 import TicketsPage from './pages/TicketsPage.jsx';
 import ReportsPage from './pages/ReportsPage.jsx';
 import TicketFormPage from './pages/TicketFormPage.jsx';
+import { TicketDataProvider } from './context/TicketDataContext.jsx';
 
 export default function App() {
   return (
@@ -16,7 +17,14 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route path="/app" element={<AppShell />}>
           <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="tickets" element={<TicketsPage />} />
+          <Route
+            path="tickets"
+            element={(
+              <TicketDataProvider>
+                <TicketsPage />
+              </TicketDataProvider>
+            )}
+          />
           <Route path="tickets/new" element={<TicketFormPage />} />
           <Route path="tickets/:ticketId/edit" element={<TicketFormPage />} />
           <Route path="reports" element={<ReportsPage />} />

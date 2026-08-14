@@ -368,6 +368,27 @@ Re-tested login, viewing tickets, creating a ticket, and editing a ticket after 
 
 ---
 
+## Day 14 Exercise 02 - Ticket Data Context And Reducer
+
+Run `npm run dev` inside `support-desk-ui` (backend must be running on port 8080) to run this exercise.
+
+### Files created/updated
+
+- `context/TicketDataContext.jsx` — new `TicketDataProvider` + `useTicketData()`. A `useReducer` manages `tickets`, `selectedTicketId`, `loading`, `error`, `page`, and `filters` (`searchText`/`statusFilter`/`priorityFilter`) in one place, with actions `LOAD_START`, `LOAD_SUCCESS`, `LOAD_ERROR`, `SET_SEARCH_TEXT`, `SET_STATUS_FILTER`, `SELECT_TICKET` (plus `SET_PRIORITY_FILTER`/`SET_PAGE`, since the existing filter panel and the upcoming pagination exercise need them too). Fetches tickets on mount via `fetchTickets(token)`, and derives `filteredTickets`/`selectedTicket` with `useMemo`.
+- `App.jsx` — the `tickets` route is now wrapped in `<TicketDataProvider>`.
+- `pages/TicketsPage.jsx` — no longer holds its own `tickets`/`filters`/`selectedTicket` state or fetch `useEffect`. It calls `useTicketData()` and passes the values/actions down to `TicketFilterPanel`, `TicketList`, and `TicketDetail` exactly as before — same behavior, just backed by the shared reducer instead of local `useState`.
+
+### Result
+
+Search, status/priority filters, ticket selection, and the "Edit Selected" button all behave the same as before the refactor, now driven entirely through `useTicketData()`, confirmed by testing.
+
+### Output Screenshot
+
+![Day 14 Exercise 02 Search Filter](screenshots/day14_exercise2_search.png)
+*Searching "vpn" filters the ticket list via the reducer's SET_SEARCH_TEXT action, with the matching ticket's detail shown alongside*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
