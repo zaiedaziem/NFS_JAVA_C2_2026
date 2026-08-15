@@ -243,6 +243,18 @@ The final `ticketFormValidation.test.js` (6 tests) already satisfies all three r
 
 ---
 
+## Day 16 Exercise 05 - Before/After Diff Rationale
+
+### Files created/updated
+
+- [`docs/day16-ticket-refactor-rationale.md`](docs/day16-ticket-refactor-rationale.md) — new standalone rationale document covering both the Exercise 2 (`TicketService`) and Exercise 3 (`TicketFormWizard`/`ticketFormValidation.js`) refactors: files changed, what behaviour was preserved, what logic was extracted, why the new version is easier to maintain, what tests/HTTP requests were run, and remaining risk.
+
+### Result
+
+A reviewable summary that lets another developer understand the Day 16 backend and frontend refactors without re-reading every diff — including one honestly-flagged risk (the priority/status uppercasing in `TicketService` is currently unreachable in practice, since the DTO's case-sensitive `@Pattern` validation rejects lowercase values before the service method runs).
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
