@@ -82,7 +82,27 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 15 Exercise 01 - Set Up Frontend Testing Tools
 
+Run `npm run test` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `package.json` — added `vitest`, `jsdom`, `@testing-library/react`, `@testing-library/jest-dom`, and `@testing-library/user-event` as dev dependencies, plus `test`/`test:watch` scripts.
+- `vite.config.js` — added a `test` block (`environment: 'jsdom'`, `globals: true`, `setupFiles: './src/test/setup.js'`, `css: true`).
+- `src/test/setup.js` — imports `@testing-library/jest-dom/vitest` for readable matchers like `toBeInTheDocument()`, and clears `localStorage`/mocks/rendered components after each test so tests don't leak state into each other.
+- `src/components/ErrorMessage.test.jsx` — a small sample test rendering `ErrorMessage` and asserting the message text appears, proving the whole pipeline (Vitest → jsdom → React Testing Library → jest-dom) works end to end. Kept simple and separate from `filterTickets`, since that utility gets its own dedicated test in Exercise 2.
+
+### Result
+
+`npm run test` runs cleanly with no missing test configuration: 1 test file, 1 test, both passing, confirmed by testing.
+
+### Output Screenshot
+
+![Day 15 Exercise 01 Test Run](screenshots/day15_exercise1.png)
+*`npm run test` inside support-desk-ui passing the ErrorMessage sample test*
+
+---
 
 ## AI-Assisted Learning Guidelines
 
