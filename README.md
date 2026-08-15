@@ -164,6 +164,30 @@ Run `npm run test` inside `support-desk-ui` to run this exercise.
 
 ---
 
+## Day 15 Exercise 05 - Test Ticket Form Validation
+
+Run `npm run test` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `components/TicketFormWizard.test.jsx` — three tests using `@testing-library/user-event` to simulate real typing/clicking:
+  1. Clicking "Continue" on a blank Step 1 shows all three inline "is required" errors, stays on Step 1, and `onSubmit` is never called.
+  2. Typing valid values, stepping through all 3 pages, checking the review confirmation box, and submitting calls `onSubmit` exactly once with the clean trimmed payload (`title`, `description`, `category`, `priority`, `status`).
+  3. Rendering with `saving` true and valid `initialValues`, then navigating to Step 3, shows the submit button labeled "Saving..." and disabled.
+
+One test assertion needed adjusting along the way: checking `getByLabelText('Title')` after triggering the Step 1 errors failed, because the `<label>` wraps both the field text and its inline error span, changing the label's full accessible text once an error renders. Replaced with a check that the "Continue" button is still present, which is enough to prove the form didn't advance.
+
+### Result
+
+`npm run test` passes all 3 new form tests alongside every previous test: 5 test files, 11 tests, all green, confirmed by testing.
+
+### Output Screenshot
+
+![Day 15 Exercise 05 Test Run](screenshots/day15_exercise5.png)
+*`npm run test` passing all 3 TicketFormWizard tests alongside every previous test*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
