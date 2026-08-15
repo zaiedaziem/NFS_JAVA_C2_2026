@@ -165,6 +165,18 @@ All five error paths triggered and confirmed with the exact status code and mess
 
 ---
 
+## Day 17 Exercise 04 - Performance and Index Review
+
+### Files created/updated
+
+- [`docs/day17-index-tuning-notes.md`](docs/day17-index-tuning-notes.md) — new notes covering fields used for filtering, sorting, uniqueness, and reports, cross-referenced against `Ticket.java`'s `@Indexed` annotations, `TicketService`'s filter/sort logic, and `TicketReportService`'s aggregation grouping fields. Includes real `mongosh db.tickets.getIndexes()` output and real `curl -w` timing measurements — no invented numbers.
+
+### Result
+
+Every field marked `@Indexed` (`category`, `priority`, `status`, `createdBy`, `createdAt`) is confirmed to have a real MongoDB index. One gap found: sorting by `title` (offered in the frontend's sort dropdown) has no matching index. One unrelated environment finding: the actual ticket/user data lives in the `test` database, not `support_desk_db` as `application.properties` configures — `support_desk_db` doesn't exist on this machine at all. Documented as a known discrepancy, not fixed as part of this exercise.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
