@@ -251,7 +251,60 @@ The final `ticketFormValidation.test.js` (6 tests) already satisfies all three r
 
 ### Result
 
-A reviewable summary that lets another developer understand the Day 16 backend and frontend refactors without re-reading every diff — including one honestly-flagged risk (the priority/status uppercasing in `TicketService` is currently unreachable in practice, since the DTO's case-sensitive `@Pattern` validation rejects lowercase values before the service method runs).
+A reviewable summary that lets another developer understand the Day 16 backend and frontend refactors without re-reading every diff. It also flags one honest risk: the priority/status uppercasing in TicketService is currently unreachable in practice, since the DTO's case-sensitive validation rejects lowercase values before the service method runs.
+
+---
+
+## Day 16 Exercise 06 - AI-Assisted Coding Reflection
+
+### 1. What did the AI assistant help you do faster?
+
+Extracting the TicketService and TicketFormWizard refactors in Exercises 2 and 3. Generating the helper methods, the validation utility, and a full test suite took minutes instead of writing and hand checking each piece separately.
+
+### 2. What AI suggestion did you reject or change?
+
+In Exercise 4, a first draft test used toBeTruthy() on the validation errors object. That was changed to exact assertions like toBe('Title is required.') and toEqual({}), since a truthy check would still pass even if the error messages were completely wrong.
+
+### 3. Why should developers not accept generated code blindly?
+
+AI can produce code that compiles and looks reasonable while quietly changing behaviour, like renaming a method, loosening validation, or changing something outside the requested scope. Without manual review and re-running tests or HTTP requests, those changes go unnoticed until something breaks later.
+
+### 4. What private information should never be pasted into AI tools?
+
+JWT tokens, the JWT secret, database connection strings and credentials, real user passwords or emails, and full application.properties or .env files. This is covered in the Exercise 1 safety checklist.
+
+### 5. What tests proved that your refactor preserved behaviour?
+
+On the backend, the requests/day13.http suite (create, get all, valid update, invalid priority, invalid status) all returned the same status codes and shapes. On the frontend, npm run test passed 6 test files and 17 tests after the extraction, plus a manual click through of create and edit in the real UI.
+
+### 6. What part of AI-assisted refactoring still feels unclear?
+
+Knowing when a "safe" refactor has quietly touched something outside its intended scope, like the priority/status normalization in TicketService turning out to be unreachable because of how DTO validation already runs first. Tests catch behaviour changes, but they do not always catch logic that is technically correct but pointless.
+
+---
+
+## Day 16 Exercise 07 - AI Regression Check
+
+### Regression checklist
+
+1. Login: works with seeded admin credentials, redirects to /app/dashboard. Unaffected by the Day 16 refactor since AuthContext.jsx and LoginPage.jsx were not touched.
+2. Protected ticket list: /app/tickets still loads real ticket data and redirects to /login when logged out.
+3. Create ticket form: still submits through all 3 wizard steps and the new ticket appears in the list, now backed by normalizeTicketFormPayload instead of inline code.
+4. Edit ticket form: still pre-fills with the selected ticket's data and saves via PUT, now backed by findTicketOrThrow and the normalize helpers on the backend.
+5. API request headers: apiRequest still attaches Authorization: Bearer only when a token is passed, confirmed by the E2E test succeeding (it depends on the header reaching the protected /api/v1/tickets endpoints).
+6. Validation rules: same required-field and priority/status messages, now proven by ticketFormValidation.test.js instead of only manual clicking.
+7. 401 handling: improved during Exercise 3 testing. A stale token now clears itself and redirects to /login automatically instead of showing a raw error.
+8. 403 handling: not exercised by normal app usage. The v1 endpoints the frontend actually calls (GET/POST /api/v1/tickets/**) allow both USER and ADMIN roles, so there is no path in the UI that would trigger a 403. Only the legacy POST /api/tickets (not used by the frontend) requires ADMIN specifically. This is a known coverage gap, not a regression.
+9. Unit tests: npm run test passes 6 test files, 17 tests, all green, re-run today to confirm.
+10. E2E smoke test: npm run test:e2e passes the full login through create ticket flow in a real Chromium browser, re-run today to confirm.
+
+### Example risk the AI identified
+
+While writing the before/after rationale (Exercise 5), reviewing the refactor surfaced that normalizePriority and normalizeStatus in TicketService uppercase their input, but UpdateTicketRequest already rejects lowercase values with a case-sensitive @Pattern check before the service method ever runs. The normalization looked like it changed accepted input, but it actually only protects against stray whitespace, since bad casing is already blocked earlier in the request pipeline.
+
+### Test/manual check used to confirm behaviour still works
+
+Re-ran both automated suites today: npm run test (6 test files, 17 tests, all passing) and npm run test:e2e (1 test, passing) with the backend running. Both came back clean after all of Day 16's changes, confirming no regression.
 
 ---
 
