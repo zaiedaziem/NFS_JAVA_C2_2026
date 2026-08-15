@@ -1,4 +1,4 @@
-package com.example.AssetTracker;
+package com.example.assettracker;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
