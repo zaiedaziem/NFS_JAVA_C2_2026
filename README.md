@@ -101,6 +101,29 @@ Every request logs a clean, safe timing line, confirmed by testing.
 
 ---
 
+## Day 17 Exercise 02 - Readiness Endpoint
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Test with `requests/day17.http`.
+
+### Files created/updated
+
+- `controller/ReadinessController.java` — new `GET /api/readiness` endpoint. Calls `ticketRepository.count()` to actually verify the MongoDB connection is alive rather than assuming it. On success, returns 200 with `service`, `status: "READY"`, `database: "CONNECTED"`, `ticketCount`, and `timestamp`. If that call throws (database unreachable), returns `503 Service Unavailable` with `status: "NOT_READY"`, `database: "UNAVAILABLE"`, and `message: "Database readiness check failed"`.
+- `security/SecurityConfig.java` — added `.requestMatchers("/api/readiness").permitAll()`, same as `/api/health`, so readiness checks don't require a JWT.
+
+### Result
+
+With MongoDB running, `GET /api/readiness` returns 200 with `status: "READY"`. With the backend already running and MongoDB then stopped, the same request returns 503 with `status: "NOT_READY"`, confirmed by testing both paths.
+
+### Output Screenshot
+
+![Day 17 Exercise 02 Readiness Ready](screenshots/day17_exercise2_200.png)
+*`GET /api/readiness` returns 200 with status READY and database CONNECTED while MongoDB is up*
+
+![Day 17 Exercise 02 Readiness Not Ready](screenshots/day17_exercise2_503.png)
+*With the backend already running and MongoDB stopped, the same request returns 503 with status NOT_READY and database UNAVAILABLE*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

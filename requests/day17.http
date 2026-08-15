@@ -1,3 +1,6 @@
+### Copy token from login response
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlzcyI6InN1cHBvcnQtZGVzay1hcGkiLCJuYW1lIjoiQWRtaW4gVXNlciIsImV4cCI6MTc4Njc3ODE0OSwiaWF0IjoxNzg2Nzc0NTQ5LCJ1c2VySWQiOiI2YTc0NDEyMzk5NGI2Y2RmMmZhOTExNTYifQ.RFXec-ZdRdwumoYFZ19jzOIyJur6Dr9cx9Kozfp282I
+
 ### Day 17 - Health check
 GET http://localhost:8080/api/health
 
