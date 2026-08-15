@@ -198,6 +198,51 @@ Two bugs found and fixed while testing this exercise, unrelated to the validatio
 
 ---
 
+## Day 16 Exercise 04 - Generate Then Harden Tests
+
+No new code for this exercise — `src/utils/ticketFormValidation.test.js` from Exercise 3 already meets all three requirements (required-field, invalid priority/status, payload normalization). This documents the generate → harden process behind it.
+
+### Hypothetical AI draft (weak)
+
+```js
+import { describe, it, expect } from 'vitest';
+import { validateTicketFormStep, normalizeTicketFormPayload } from './ticketFormValidation.js';
+
+describe('ticketFormValidation', () => {
+  it('validates', () => {
+    const result = validateTicketFormStep({ title: '', description: '', category: '' }, 1, false);
+    expect(result).toBeTruthy();
+  });
+
+  it('normalizes', () => {
+    const result = normalizeTicketFormPayload({ title: ' test ', description: 'test', category: 'test', priority: 'LOW', status: 'OPEN' });
+    expect(result).toBeTruthy();
+  });
+});
+```
+
+### Problems with the draft
+
+- Vague test names (`'validates'`, `'normalizes'`) don't say what's being proven.
+- `toBeTruthy()` on an object is a weak assertion — it passes even if the error object has the wrong keys or wrong messages, since any non-empty object is truthy.
+- No invalid priority/status test at all.
+- No "valid input produces zero errors" case — only tests the broken path, never confirms the function doesn't over-trigger.
+- Doesn't check the actual trimmed values — just checks the payload object exists, not that it's correct.
+
+### What the hardened version improves
+
+- Descriptive names stating exact behavior (e.g. `'rejects an invalid priority or status on step 2'`).
+- Exact string assertions (`expect(errors.title).toBe('Title is required.')`) instead of vague truthiness.
+- An explicit "no errors when valid" case (`expect(errors).toEqual({})`).
+- `toEqual` on the full normalized payload object — catches a bug like forgetting to trim one specific field.
+- Tests behavior only (inputs → outputs), with no dependency on component internals, DOM, or refs.
+
+### Result
+
+The final `ticketFormValidation.test.js` (6 tests) already satisfies all three required categories and every item on the manual hardening checklist, confirmed by review.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
