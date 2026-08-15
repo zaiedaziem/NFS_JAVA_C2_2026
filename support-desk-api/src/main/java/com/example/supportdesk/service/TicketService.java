@@ -61,11 +61,7 @@ public class TicketService {
     }
 
     public TicketResponse getTicketById(String id) {
-        // findById() also comes free from MongoRepository - returns Optional<Ticket>
-        Ticket ticket = ticketRepository.findById(id)
-                // If no document matches this ID, throw 404 (handled by GlobalExceptionHandler)
-                .orElseThrow(() -> new ResourceNotFoundException("Ticket " + id + " was not found"));
-        return toResponse(ticket);
+        return toResponse(findTicketOrThrow(id));
     }
 
     public Page<TicketResponse> getTicketsPaged(int page, int size, String sortBy, String direction) {
@@ -86,12 +82,12 @@ public class TicketService {
 
         // Build a Ticket document (no id set - MongoDB generates it automatically on save)
         Ticket ticket = new Ticket();
-        ticket.setTitle(request.getTitle());
-        ticket.setDescription(request.getDescription());
-        ticket.setCategory(request.getCategory());
-        ticket.setPriority(request.getPriority());
+        ticket.setTitle(normalizeRequired(request.getTitle()));
+        ticket.setDescription(normalizeRequired(request.getDescription()));
+        ticket.setCategory(normalizeRequired(request.getCategory()));
+        ticket.setPriority(normalizePriority(request.getPriority()));
         ticket.setStatus("OPEN"); // Default status for new tickets
-        ticket.setCreatedBy(request.getCreatedBy());
+        ticket.setCreatedBy(normalizeRequired(request.getCreatedBy()));
         ticket.setCreatedAt(java.time.LocalDate.now().toString());
 
         // save() comes free from MongoRepository - inserts the document and returns it with its new id
@@ -101,18 +97,37 @@ public class TicketService {
     }
 
     public TicketResponse updateTicket(String id, UpdateTicketRequest request) {
-        Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Ticket " + id + " was not found"));
+        Ticket ticket = findTicketOrThrow(id);
 
-        ticket.setTitle(request.getTitle());
-        ticket.setDescription(request.getDescription());
-        ticket.setCategory(request.getCategory());
-        ticket.setPriority(request.getPriority());
-        ticket.setStatus(request.getStatus());
+        ticket.setTitle(normalizeRequired(request.getTitle()));
+        ticket.setDescription(normalizeRequired(request.getDescription()));
+        ticket.setCategory(normalizeRequired(request.getCategory()));
+        ticket.setPriority(normalizePriority(request.getPriority()));
+        ticket.setStatus(normalizeStatus(request.getStatus()));
 
         Ticket saved = ticketRepository.save(ticket);
         logger.info("Updated ticket with id={}", saved.getId());
         return toResponse(saved);
+    }
+
+    // Looks up a ticket by id or throws the same 404 exception every read/write path relies on.
+    private Ticket findTicketOrThrow(String id) {
+        return ticketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket " + id + " was not found"));
+    }
+
+    // Trims free-text fields (title, description, category, createdBy) so stray whitespace
+    // from the client doesn't get stored as part of the value.
+    private String normalizeRequired(String value) {
+        return value == null ? null : value.trim();
+    }
+
+    private String normalizeStatus(String status) {
+        return status == null ? null : status.trim().toUpperCase();
+    }
+
+    private String normalizePriority(String priority) {
+        return priority == null ? null : priority.trim().toUpperCase();
     }
 
     // Converts a MongoDB Ticket document into the TicketResponse shape the API returns.

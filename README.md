@@ -153,6 +153,30 @@ No code changes for this exercise — a checklist to follow before sharing any p
 
 ---
 
+## Day 16 Exercise 02 - Backend Ticket Service Refactor
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Test with `requests/day13.http`.
+
+### Files created/updated
+
+- `service/TicketService.java` — extracted repeated logic into private helper methods, using the Generate → Explain → Test pattern:
+  - `findTicketOrThrow(id)` — replaces the duplicated `findById(id).orElseThrow(...)` block that both `getTicketById` and `updateTicket` had, now shared by both.
+  - `normalizeRequired(value)` — trims free-text fields (title, description, category, createdBy) so stray whitespace from the client isn't stored as part of the value.
+  - `normalizeStatus(status)` / `normalizePriority(priority)` — trim + uppercase, applied consistently in both `createTicket` and `updateTicket`.
+
+### What stayed the same
+
+- All public method signatures (`getAllTickets`, `getFilteredTickets`, `getTicketById`, `getTicketsPaged`, `createTicket`, `updateTicket`).
+- `TicketV1Controller`'s endpoint URLs, HTTP methods, and status codes.
+- `TicketResponse`/request DTO fields and the response shape.
+- The exception type (`ResourceNotFoundException`) and its message format.
+
+### Result
+
+Backend compiles cleanly (`mvn compile`, no errors). Re-tested create, get all, valid update, and both invalid-priority/invalid-status requests from `requests/day13.http` — all still return the same status codes and response shapes as before the refactor, confirmed by testing. No screenshot for this exercise — verified directly via the `.http` requests.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
