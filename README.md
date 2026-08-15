@@ -214,6 +214,46 @@ All 6 required evidence items collected and verified against the actual repo sta
 
 ---
 
+## Day 17 Exercise 07 - Backend Dockerfile
+
+### Files created/updated
+
+- `support-desk-api/Dockerfile` — multi-stage build. Build stage (`maven:3.9-eclipse-temurin-21`) copies `pom.xml` first and runs `dependency:resolve`/`dependency:resolve-plugins` so that layer is cached separately from source changes, then copies `src/` and runs `mvn clean package`. Runtime stage (`eclipse-temurin:21-jre-alpine`, a much smaller image with no build tools) copies **only** the final built JAR from the build stage. `EXPOSE 8080`, plus a `HEALTHCHECK` hitting `/api/health`. No secrets baked in — `app.jwt.secret` still comes from a runtime environment variable, same as it always has.
+
+Bugs fixed while adapting the trainer's reference Dockerfile: `HEALTHCHECK --retries=` had no value (invalid Docker syntax); the health check used `curl`, which the Alpine-based runtime image doesn't include by default (switched to `wget`, which Alpine's busybox does include); and `dependency:go-offline` was swapped for the lighter `dependency:resolve`/`dependency:resolve-plugins`, since `go-offline` tries to resolve a large, mostly-unnecessary dependency tree (reporting/doc-generation plugins the app doesn't use), which made it more prone to failing on a flaky connection than it needed to be.
+
+### Result
+
+`docker build -t support-desk-api:day17 .` completes successfully — all 16 build steps pass, image produced.
+
+Also tried actually running the built image to double-check it serves traffic. Found (but did not fix, out of scope for this exercise) the same robustness gap noted back in Exercise 2: `UserDataSeeder` makes a blocking database call at startup, so if MongoDB isn't reachable in time, the container exits instead of starting and staying up to serve `/api/health`/`/api/readiness` (which themselves don't need the seeder to have succeeded). A real deployment would need MongoDB reachable before the app container starts (e.g. via `docker-compose` service dependencies), or `UserDataSeeder` would need to tolerate a temporarily unavailable database instead of failing startup outright.
+
+### Output
+
+```text
+PS> docker build -t support-desk-api:day17 .
+[+] Building 71.8s (16/16) FINISHED
+ => [build 1/7] FROM docker.io/library/maven:3.9-eclipse-temurin-21@sha256:c07f7ccf...
+ => [stage-1 1/3] FROM docker.io/library/eclipse-temurin:21-jre-alpine@sha256:3f08b1...
+ => CACHED [stage-1 2/3] WORKDIR /app
+ => CACHED [build 2/7] WORKDIR /workspace
+ => CACHED [build 3/7] COPY pom.xml ./
+ => [build 4/7] RUN mvn -B -DskipTests dependency:resolve dependency:resolve-plugins
+ => [build 5/7] COPY src ./src
+ => [build 6/7] RUN mvn -B clean package -DskipTests
+ => [build 7/7] RUN JAR_FILE=$(find target -maxdepth 1 -type f -name "*.jar" ...)
+ => [stage-1 3/3] COPY --from=build /workspace/app.jar app.jar
+ => exporting to image
+ => => naming to docker.io/library/support-desk-api:day17
+```
+
+### Output Screenshot
+
+![Day 17 Exercise 07 Docker Image](screenshots/day17_exercise7_docker.png)
+*support-desk-api:day17 (350.59 MB) built and listed in Docker Desktop's local images*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
