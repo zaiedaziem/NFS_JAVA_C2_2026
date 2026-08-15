@@ -104,6 +104,25 @@ Run `npm run test` inside `support-desk-ui` to run this exercise.
 
 ---
 
+## Day 15 Exercise 02 - Test Ticket Filter Utility
+
+Run `npm run test` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `src/utils/tickets.test.js` — four tests for the existing `filterTickets(tickets, searchText, statusFilter, priorityFilter)` utility, using the sample ticket data from the exercise spec: filtering by search text alone, filtering by status alone, filtering by search text and status together (including a case with no matches), and returning every ticket when search is empty and status is `ALL`. No React component is rendered — these test the pure filtering logic in isolation.
+
+### Result
+
+`npm run test` passes all 4 new filter tests alongside the existing Exercise 1 test: 2 test files, 5 tests, all green, confirmed by testing.
+
+### Output Screenshot
+
+![Day 15 Exercise 02 Test Run](screenshots/day15_exercise2.png)
+*`npm run test` passing all 4 filterTickets tests plus the Exercise 1 ErrorMessage test*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
