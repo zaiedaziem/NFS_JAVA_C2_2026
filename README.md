@@ -82,7 +82,24 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 17 Exercise 01 - Structured Logs and Request Timing
 
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Test with `requests/day17.http`.
+
+### Files created/updated
+
+- `config/RequestTimingFilter.java` — a `@Component` implementing `Filter`, registered automatically as a Spring bean. For every request it generates a short `requestId` (from a UUID), times the request with `System.currentTimeMillis()` around `chain.doFilter(...)`, and logs one line: `requestId=... method=... path=... status=... durationMs=...`. The `requestId` is also set as an `X-Request-Id` response header and in MDC. Deliberately logs only the method, URI path, status code, requestId, and duration — never the request body, `Authorization` header, passwords, tokens, or any secret value.
+
+### Result
+
+Every request logs a clean, safe timing line, confirmed by testing.
+
+### Output Screenshot
+
+![Day 17 Exercise 01 Request Timing Log](screenshots/day17_exercise1.png)
+*`GET /api/health` logged as `requestId=800986d8 method=GET path=/api/health status=200 durationMs=50`*
+
+---
 
 ## AI-Assisted Learning Guidelines
 
