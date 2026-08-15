@@ -134,6 +134,25 @@ The vague prompt gives the AI no boundaries — it could rename methods, change 
 
 ---
 
+## Day 16 Exercise 01 - AI Refactor Safety Checklist
+
+No code changes for this exercise — a checklist to follow before sharing any project file with an AI assistant.
+
+### AI Refactor Safety Checklist — Support Desk Ticket Project
+
+- **Safe to share**: individual `.java` service/controller/DTO files, `.jsx` components, `.js` utilities, `.css`, and `README.md` — these contain no credentials, just application logic.
+- **Safe to share**: `.http` request files under `requests/`, but only after removing any `@token = ...` value pasted in from a real login response (JWTs identify a real user session).
+- **Not safe to share**: `application.properties` as-is, or at minimum the `app.jwt.secret` value — even though it's a classroom demo default, sharing full config files with AI trains a bad habit for real projects.
+- **Not safe to share**: anything from `.env` files, MongoDB connection strings with credentials, or seeded admin passwords (`Admin@12345`) outside of documentation clearly marked "classroom demo only."
+- **Must be removed/redacted before pasting into AI**: JWT tokens, `app.jwt.secret`, the MongoDB URI if it ever contains real credentials, and any user's real email/password.
+- **Must not change**: public method signatures in `TicketService`/`AuthService`/`JwtService`, and their return types.
+- **Must not change**: `TicketV1Controller`/`AuthController` endpoint URLs, HTTP methods, and status codes.
+- **Must not change**: DTO field names (`TicketResponse`, `CreateTicketRequest`, `UpdateTicketRequest`) since the frontend depends on their exact shape.
+- **Must not change**: `SecurityConfig`'s authorization rules (which roles can hit which endpoints) — a refactor should never accidentally widen access.
+- **Tests/requests that prove safety**: re-run `requests/day13.http` (create, get all, valid/invalid update) and `npm run test` in `support-desk-ui` (currently 5 test files, 11 tests) — if both still pass unchanged, the refactor didn't alter behaviour.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
