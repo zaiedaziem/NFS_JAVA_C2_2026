@@ -188,6 +188,32 @@ One test assertion needed adjusting along the way: checking `getByLabelText('Tit
 
 ---
 
+## Day 15 Exercise 06 - End-to-End Smoke Test
+
+Run `mvn spring-boot:run` inside `support-desk-api`, then `npm run test:e2e` inside `support-desk-ui` (Playwright starts the frontend dev server automatically via `webServer`).
+
+### Files created/updated
+
+- `package.json` — added `@playwright/test` as a dev dependency, plus `test:e2e`/`test:e2e:ui` scripts.
+- `playwright.config.js` — new config: `testDir: './e2e'`, `baseURL: 'http://localhost:5173'`, and a `webServer` block that auto-starts `npm run dev` before tests run (reusing an already-running dev server if one exists). Trimmed to a single `chromium` project — one browser is enough for a smoke test.
+- `e2e/day15-smoke.spec.js` — one end-to-end test covering the full flow: open `/login`, log in as the seeded admin, land on `/app/dashboard`, navigate to Tickets, open the Create Ticket form, fill in a uniquely-titled ticket (using `Date.now()` so re-runs never collide), step through all 3 wizard pages, submit, and confirm the new ticket's title appears in the ticket detail panel back on `/app/tickets`.
+- `eslint.config.js` — added a Node-globals override for `vite.config.js`/`playwright.config.js`, since those run in Node (not the browser) and reference `process`, which the project's browser-focused ESLint config didn't recognize.
+
+Two selector issues came up while getting this test green:
+- `getByLabel('Password')` matched two elements — the password input and the eye-icon toggle button (whose `aria-label="Show password"` also contains "password"). Fixed by switching both email/password fields to `getByPlaceholder(...)`, which is unambiguous.
+- The final assertion checking the new ticket's title with `getByText(...)` matched twice — once in the ticket list row, once in the detail panel heading (a newly created ticket is auto-selected). Fixed by scoping to `getByRole('heading', { name: ticketTitle })`.
+
+### Result
+
+`npm run test:e2e` passes: 1 test, proving the React UI, the protected route, and the backend API all work together end to end, confirmed by testing.
+
+### Output Screenshot
+
+![Day 15 Exercise 06 E2E Test Run](screenshots/day15_exercise6.png)
+*`npm run test:e2e` passing the full login-to-create-ticket smoke test in a real Chromium browser*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
