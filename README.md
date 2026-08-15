@@ -177,6 +177,27 @@ Backend compiles cleanly (`mvn compile`, no errors). Re-tested create, get all, 
 
 ---
 
+## Day 16 Exercise 03 - Extract Ticket Form Validation
+
+Run `npm run test` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `src/utils/ticketFormValidation.js` — new utility extracted from `TicketFormWizard.jsx`, exporting `PRIORITY_OPTIONS`/`STATUS_OPTIONS`, `validateTicketFormStep(formValues, stepToValidate, reviewConfirmed)`, `normalizeTicketFormPayload(formValues)`, and `formatTicketFormLabel(key)` — same validation rules and messages as before, just moved out of the component.
+- `src/components/TicketFormWizard.jsx` — now imports and calls those functions instead of holding the logic inline. `validateStep` is now a thin wrapper that reads the review checkbox ref and delegates to `validateTicketFormStep`; `handleSubmit` calls `normalizeTicketFormPayload` directly.
+- `src/utils/ticketFormValidation.test.js` — 6 unit tests: blank-vs-valid required fields (step 1), invalid priority/status (step 2), review checkbox confirmation (step 3), payload trimming, and label formatting.
+
+Two bugs found and fixed while testing this exercise, unrelated to the validation extraction itself:
+
+- `vite.config.js` — Vitest's default file pattern was picking up `e2e/day15-smoke.spec.js` (a Playwright spec) and failing on it, since Playwright's `test()` only works inside Playwright's own runner. Added `include: ['src/**/*.test.{js,jsx}']` and `exclude: ['node_modules', 'dist', 'e2e/**', 'playwright.config.js']` to scope Vitest to only its own test files.
+- `src/services/httpClient.js` — a stale/expired token previously just showed a raw "Request failed with status 401" error while leaving the user on the broken page, requiring a manual Logout click to recover. `apiRequest` now detects a 401 on any request that sent a token, clears the stored session, and redirects straight to `/login` automatically.
+
+### Result
+
+`npm run test` passes all 6 new validation tests alongside every previous test: 6 test files, 17 tests, all green. The form's UI, messages, and create/edit behavior are unchanged, confirmed by testing. No screenshot for this exercise.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

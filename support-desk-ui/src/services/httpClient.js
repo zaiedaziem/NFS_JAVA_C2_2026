@@ -21,6 +21,11 @@ export async function apiRequest(path, options = {}) {
   const responseBody = contentType.includes('application/json') ? await response.json() : null;
 
   if (!response.ok) {
+    if (response.status === 401 && token) {
+      localStorage.removeItem('supportDeskAuth');
+      window.location.href = '/login';
+    }
+
     const message = responseBody?.message || `Request failed with status ${response.status}`;
     throw new Error(message);
   }
