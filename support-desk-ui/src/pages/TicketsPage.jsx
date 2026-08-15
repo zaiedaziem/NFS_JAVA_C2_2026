@@ -6,6 +6,7 @@ import TicketFilterPanel from '../components/TicketFilterPanel.jsx';
 import TicketDataControls from '../components/TicketDataControls.jsx';
 import TicketPaginationControls from '../components/TicketPaginationControls.jsx';
 import TicketStatusControls from '../components/TicketStatusControls.jsx';
+import TicketSummaryCards from '../components/TicketSummaryCards.jsx';
 import ApiInfoCard from '../components/ApiInfoCard.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 import LoadingMessage from '../components/LoadingMessage.jsx';
@@ -16,6 +17,7 @@ export default function TicketsPage() {
   const initialLoadRef = useRef(false);
 
   const {
+    tickets,
     filteredTickets,
     selectedTicket,
     filters,
@@ -95,6 +97,8 @@ export default function TicketsPage() {
           )}
         </div>
       </section>
+
+      <TicketSummaryCards tickets={tickets} />
 
       <ApiInfoCard loading={loadingApi} error={apiError} apiDocs={apiDocs} />
 

@@ -123,6 +123,28 @@ Run `npm run test` inside `support-desk-ui` to run this exercise.
 
 ---
 
+## Day 15 Exercise 03 - Test Ticket Summary Cards
+
+Run `npm run test` inside `support-desk-ui` to run this exercise. Run `npm run dev` (backend on port 8080) to see it live on `/app/tickets`.
+
+### Files created/updated
+
+- `components/TicketSummaryCards.jsx` — new component showing four stat cards (Total Tickets, Open, In Progress, Closed), styled after the trainer's `SummaryCards` reference. Counts are derived from the `tickets` prop with a local `countByStatus` helper.
+- `components/TicketSummaryCards.test.jsx` — renders the component with 6 sample tickets (3 OPEN, 2 IN_PROGRESS, 1 CLOSED — deliberately unique counts per status to avoid ambiguous `getByText` matches) and asserts all four labels and their correct counts appear.
+- `pages/TicketsPage.jsx` — wired `TicketSummaryCards` into the real page, right below the header, showing counts for the tickets currently loaded (before filtering).
+- `index.css` — ported the trainer's `.summary-grid`/`.summary-card` styling, plus added `.summary-grid` to the existing responsive breakpoint.
+
+### Result
+
+`npm run test` passes the new component test alongside all previous tests: 3 test files, 6 tests, all green. Wired into the live app, the cards correctly show the counts for the currently loaded ticket page, confirmed by testing.
+
+### Output Screenshot
+
+![Day 15 Exercise 03 Test Run](screenshots/day15_exercise3.png)
+*`npm run test` passing the TicketSummaryCards test alongside all previous tests*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

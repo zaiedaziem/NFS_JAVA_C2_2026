@@ -225,6 +225,30 @@ h1 {
   margin-bottom: 20px;
 }
 
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-card {
+  background: white;
+  border: 1px solid #d9e2ef;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(23, 32, 51, 0.08);
+  padding: 20px;
+}
+
+.summary-card p {
+  color: #667085;
+  margin-bottom: 8px;
+}
+
+.summary-card strong {
+  font-size: 2rem;
+}
+
 .action-row {
   display: flex;
   gap: 10px;
@@ -630,7 +654,8 @@ dd {
   .app-header,
   .workspace-grid,
   .filter-panel,
-  .api-info-grid {
+  .api-info-grid,
+  .summary-grid {
     grid-template-columns: 1fr;
     display: grid;
   }
