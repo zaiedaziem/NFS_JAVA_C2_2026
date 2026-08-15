@@ -124,6 +124,47 @@ With MongoDB running, `GET /api/readiness` returns 200 with `status: "READY"`. W
 
 ---
 
+## Day 17 Exercise 03 - Error Tracking Practice
+
+Run `mvn spring-boot:run` inside `support-desk-api` to run this exercise. Test with `requests/day17.http`.
+
+### Files created/updated
+
+- `requests/day17.http` — added five requests, each deliberately triggering one error status: no token on a protected endpoint, a USER-role token hitting an ADMIN-only endpoint, an invalid priority value, a made-up ticket id, and a duplicate email registration. Also fixed the leftover trainer asset-domain requests (`/api/v1/assets/paged`) to use the actual ticket endpoints.
+
+### Error table
+
+| Error | Request made | Why it happened | Where seen |
+|---|---|---|---|
+| 401 Unauthorized | `GET /api/v1/tickets` with no `Authorization` header | No token supplied, so Spring Security's resource server rejects the request before it reaches the controller | `WWW-Authenticate: Bearer` header in the response |
+| 403 Forbidden | `POST /api/tickets` (legacy, non-v1) with a USER-role token | That endpoint requires `ADMIN` specifically (`SecurityConfig`); the token is valid and authenticated, just not authorized | `WWW-Authenticate: Bearer error="insufficient_scope"` in the response |
+| 400 Bad Request | `PUT /api/v1/tickets/{id}` with `priority: "URGENT"` | Fails the `@Pattern` validation on `UpdateTicketRequest`, caught by `GlobalExceptionHandler`'s `MethodArgumentNotValidException` handler | Response body: `"message": "Priority must be LOW, MEDIUM or HIGH"` |
+| 404 Not Found | `GET /api/v1/tickets/000000000000000000000000` | Well-formed MongoDB ObjectId, but no matching document; `findTicketOrThrow` throws `ResourceNotFoundException` | Response body: `"Ticket 000000000000000000000000 was not found"` |
+| 409 Conflict | `POST /api/auth/register` with an email already used | `AuthService.register()` checks `existsByEmailIgnoreCase` first and throws `DuplicateResourceException` | Response body: `"Email already exists: testuser@example.com"` |
+
+### Result
+
+All five error paths triggered and confirmed with the exact status code and message expected, confirmed by testing.
+
+### Output Screenshot
+
+![Day 17 Exercise 03 401 Unauthorized](screenshots/day17_exercise3_401.png)
+*401 from a protected endpoint with no Authorization header*
+
+![Day 17 Exercise 03 403 Forbidden](screenshots/day17_exercise3_403.png)
+*403 from a USER-role token hitting an ADMIN-only endpoint*
+
+![Day 17 Exercise 03 400 Bad Request](screenshots/day17_exercise3_400.png)
+*400 from an invalid priority value*
+
+![Day 17 Exercise 03 404 Not Found](screenshots/day17_exercise3_404.png)
+*404 from a well-formed but non-existent ticket id*
+
+![Day 17 Exercise 03 409 Conflict](screenshots/day17_exercise3_409.png)
+*409 from registering an already-used email*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
