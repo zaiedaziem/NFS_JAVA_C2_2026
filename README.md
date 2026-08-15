@@ -214,6 +214,52 @@ Two selector issues came up while getting this test green:
 
 ---
 
+## Day 15 Exercise 07 - Milestone 2 Evidence Submission
+
+Evidence compiled from testing done across Day 15's exercises, plus earlier UI screenshots brought forward from prior day branches where they best matched the required proof.
+
+### 1. Passing Vitest tests
+
+![Day 15 Vitest Passing](screenshots/day15_exercise5.png)
+*`npm run test` — 5 test files, 11 tests, all passing (ErrorMessage, filterTickets, TicketSummaryCards, ProtectedRoute, TicketFormWizard)*
+
+### 2. Passing Playwright smoke test
+
+![Day 15 Playwright Passing](screenshots/day15_exercise6.png)
+*`npm run test:e2e` — the full login-to-create-ticket flow passing in a real Chromium browser*
+
+### 3. Successful login
+
+![Successful Login](screenshots/day12_exercise3_loginPage.png)
+*The login form filled with the seeded admin credentials, ready to submit*
+
+### 4. Protected ticket page
+
+![Protected Ticket Page](screenshots/day14_exercise5.png)
+*`/app/tickets` — only reachable while authenticated, showing the real ticket list, detail panel, and status controls*
+
+### 5. Ticket form validation error
+
+![Ticket Form Validation Error](screenshots/day13_exercise3_validation1.png)
+*Submitting Step 1 blank shows inline "Title is required.", "Description is required.", and "Category is required." errors*
+
+### 6. Successful ticket create
+
+![Successful Ticket Create](screenshots/day13_exercise2_ticketlist.png)
+*A newly created ticket ("Printer not working on 3rd floor") appears in the real ticket list, fetched from the backend*
+
+### Review questions (answered for Google Classroom submission)
+
+1. **What is a unit test?** A test that checks one small piece of logic in isolation — e.g. `filterTickets` — with no rendering, no network, no other pieces involved.
+2. **What is a component test?** A test that renders a React component via `@testing-library/react` and checks what a user would actually see/do — e.g. `TicketSummaryCards` or `TicketFormWizard`.
+3. **What is an end-to-end test?** A test that drives a real browser against the real running app (frontend and backend together), proving the whole system works — e.g. the Playwright smoke test.
+4. **Why should protected routes be tested?** Because the redirect logic in `ProtectedRoute` is what stops unauthenticated users from reaching pages they shouldn't; a bug here silently breaks access control and is easy to regress during refactors.
+5. **Why do we mock API responses in component tests?** So the test stays fast, deterministic, and isolated from the backend — a real network call could fail for unrelated reasons and make the test flaky even when the component itself is correct.
+6. **Why does the E2E test need the backend running?** Because it exercises the real login-to-create-ticket flow end to end, including actual requests to Spring Boot and MongoDB — proving the real integration works is the entire point, so there's nothing to mock.
+7. **Which test gave you the most trouble?** The Playwright E2E test — getting past the selector ambiguity where `getByLabel('Password')` matched both the password input and the eye-icon toggle button took the most debugging.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
