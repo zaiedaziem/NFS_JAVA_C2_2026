@@ -82,7 +82,57 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 16 Exercise 00 - Prompt Engineering Warm-Up
 
+No code changes for this exercise — it's about practicing how to prompt AI safely before using it to refactor real code.
+
+### 1. Poor prompt (too vague)
+
+> "Can you make my TicketService better?"
+
+### 2. Better prompt (structured)
+
+```text
+Context:
+I am working on the Support Desk Ticket API, a Spring Boot backend. TicketService.java
+(support-desk-api/src/main/java/com/example/supportdesk/service/TicketService.java)
+handles fetching, filtering, paginating, creating, and updating tickets, backed by
+MongoDB via TicketRepository.
+
+Task:
+Refactor TicketService to reduce duplication and improve readability — particularly
+the repeated pattern of converting MongoDB Ticket documents into TicketResponse DTOs,
+and the similar structure between createTicket and updateTicket.
+
+Constraints:
+- Do not change public method names or signatures (getAllTickets, getFilteredTickets,
+  getTicketById, getTicketsPaged, createTicket, updateTicket).
+- Do not change TicketV1Controller's endpoint URLs or HTTP methods.
+- Do not change TicketResponse or the request DTOs' fields.
+- Do not change validation rules or exception types (ResourceNotFoundException, etc.).
+- Do not add new dependencies.
+- Keep it readable for a junior Java developer.
+
+Expected output:
+1. The refactored TicketService.java
+2. A short explanation of each new private helper method and why it exists
+3. A list of exactly what stayed the same
+
+Tests:
+- Tell me which requests in requests/day13.http I should re-run to confirm behaviour
+  didn't change
+- Suggest whether any new unit tests would help lock in the refactor
+
+Review:
+- Point out any risk of behaviour change
+- Flag anything you're unsure about instead of guessing
+```
+
+### Why the second prompt is safer
+
+The vague prompt gives the AI no boundaries — it could rename methods, change validation, alter the response shape, or "improve" things I never asked about, any of which would silently break the frontend or the `.http` test files without me noticing until something downstream fails. The structured prompt pins down exactly which file/class is in scope, explicitly protects the things other code depends on (method signatures, endpoint URLs, DTO fields, exception types), and asks for a "what stayed the same" list plus verification steps. That turns *trust the AI* into *verify the AI* — the actual safety mechanism.
+
+---
 
 ## AI-Assisted Learning Guidelines
 
