@@ -202,6 +202,18 @@ Two things fixed from the trainer's reference `InputSanitizer` while adapting it
 
 ---
 
+## Day 17 Exercise 06 - Security Hardening Evidence
+
+### Files created/updated
+
+- [`docs/day17-security-hardening-evidence.md`](docs/day17-security-hardening-evidence.md) — new evidence document covering all 6 required items: missing token → 401, wrong role → 403, duplicate record → 409, invalid input → 400, logs never showing JWTs/passwords, and `.env` not being committed. Items 1-4 reuse the real screenshots already captured in Exercise 3; item 5 reuses the safe log line from Exercise 1; item 6 is a fresh `git ls-files` check confirming only `.env.example` (a safe template with placeholder values) is tracked, with real `.env`/secrets/keys excluded by the root `.gitignore`.
+
+### Result
+
+All 6 required evidence items collected and verified against the actual repo state, confirmed by review.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
