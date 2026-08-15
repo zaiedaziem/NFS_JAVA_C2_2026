@@ -177,6 +177,31 @@ Every field marked `@Indexed` (`category`, `priority`, `status`, `createdBy`, `c
 
 ---
 
+## Day 17 Exercise 05 - Input Sanitisation
+
+Run `mvn test -Dtest=InputSanitizerTest` inside `support-desk-api` to run this exercise.
+
+### Files created/updated
+
+- `util/InputSanitizer.java` — new utility with `trimToNull(value)`, `cleanText(value)` (trims, strips real control characters via `\p{Cntrl}`, collapses whitespace — deliberately keeps normal punctuation like `!`/`?` intact), and `upperCode(value)` (clean + uppercase, for priority/status).
+- `test/java/.../util/InputSanitizerTest.java` — 6 unit tests covering trimming, blank-to-null conversion, punctuation preservation, control-character/whitespace cleanup, and code uppercasing.
+- `service/TicketService.java` — `createTicket`/`updateTicket` now call `InputSanitizer.cleanText`/`upperCode` instead of the private `normalizeRequired`/`normalizeStatus`/`normalizePriority` helpers added in Day 16 (which only trimmed); those are now removed since the new utility does the same job plus strips control characters.
+
+Two things fixed from the trainer's reference `InputSanitizer` while adapting it: their `cleanText` used `.replaceAll("\\{Cntrl\\}", "")`, which is broken regex matching the literal text `{Cntrl}`, not control characters — fixed to `\p{Cntrl}`. Their version also stripped *all* punctuation, which would mangle a normal ticket description like `"Cannot connect to VPN!"` into `"Cannot connect to VPN"` — ours only strips genuine control characters, since punctuation isn't a security or data-quality problem for free-text fields.
+
+### Reflection
+
+1. **What is validation?** Deciding whether an input is allowed at all, e.g. `@NotBlank`/`@Pattern` on priority/status. If it fails, the request is rejected outright.
+2. **What is sanitisation?** Cleaning up input that is already allowed, before storing it, e.g. trimming, removing control characters, normalizing case, without changing whether it was valid.
+3. **Example where input should be cleaned:** A ticket title typed as `"  Cannot connect to VPN  "`. The extra whitespace is harmless and should just be trimmed, not rejected.
+4. **Example where input should be rejected:** A priority of `"URGENT"`. That is not a valid enum value; sanitisation must never silently rewrite it to something valid, since that would hide a real client bug or a deliberate bypass attempt.
+
+### Result
+
+`mvn test -Dtest=InputSanitizerTest` passes 6 tests, all green. `mvn compile` confirms `TicketService` still builds after swapping in the new utility, confirmed by testing.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 

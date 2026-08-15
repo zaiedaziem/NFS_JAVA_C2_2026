@@ -6,6 +6,7 @@ import com.example.supportdesk.repository.TicketRepository;
 import com.example.supportdesk.dto.TicketResponse;
 import com.example.supportdesk.dto.CreateTicketRequest;
 import com.example.supportdesk.exception.ResourceNotFoundException;
+import com.example.supportdesk.util.InputSanitizer;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -82,12 +83,12 @@ public class TicketService {
 
         // Build a Ticket document (no id set - MongoDB generates it automatically on save)
         Ticket ticket = new Ticket();
-        ticket.setTitle(normalizeRequired(request.getTitle()));
-        ticket.setDescription(normalizeRequired(request.getDescription()));
-        ticket.setCategory(normalizeRequired(request.getCategory()));
-        ticket.setPriority(normalizePriority(request.getPriority()));
+        ticket.setTitle(InputSanitizer.cleanText(request.getTitle()));
+        ticket.setDescription(InputSanitizer.cleanText(request.getDescription()));
+        ticket.setCategory(InputSanitizer.cleanText(request.getCategory()));
+        ticket.setPriority(InputSanitizer.upperCode(request.getPriority()));
         ticket.setStatus("OPEN"); // Default status for new tickets
-        ticket.setCreatedBy(normalizeRequired(request.getCreatedBy()));
+        ticket.setCreatedBy(InputSanitizer.cleanText(request.getCreatedBy()));
         ticket.setCreatedAt(java.time.LocalDate.now().toString());
 
         // save() comes free from MongoRepository - inserts the document and returns it with its new id
@@ -99,11 +100,11 @@ public class TicketService {
     public TicketResponse updateTicket(String id, UpdateTicketRequest request) {
         Ticket ticket = findTicketOrThrow(id);
 
-        ticket.setTitle(normalizeRequired(request.getTitle()));
-        ticket.setDescription(normalizeRequired(request.getDescription()));
-        ticket.setCategory(normalizeRequired(request.getCategory()));
-        ticket.setPriority(normalizePriority(request.getPriority()));
-        ticket.setStatus(normalizeStatus(request.getStatus()));
+        ticket.setTitle(InputSanitizer.cleanText(request.getTitle()));
+        ticket.setDescription(InputSanitizer.cleanText(request.getDescription()));
+        ticket.setCategory(InputSanitizer.cleanText(request.getCategory()));
+        ticket.setPriority(InputSanitizer.upperCode(request.getPriority()));
+        ticket.setStatus(InputSanitizer.upperCode(request.getStatus()));
 
         Ticket saved = ticketRepository.save(ticket);
         logger.info("Updated ticket with id={}", saved.getId());
@@ -114,20 +115,6 @@ public class TicketService {
     private Ticket findTicketOrThrow(String id) {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket " + id + " was not found"));
-    }
-
-    // Trims free-text fields (title, description, category, createdBy) so stray whitespace
-    // from the client doesn't get stored as part of the value.
-    private String normalizeRequired(String value) {
-        return value == null ? null : value.trim();
-    }
-
-    private String normalizeStatus(String status) {
-        return status == null ? null : status.trim().toUpperCase();
-    }
-
-    private String normalizePriority(String priority) {
-        return priority == null ? null : priority.trim().toUpperCase();
     }
 
     // Converts a MongoDB Ticket document into the TicketResponse shape the API returns.
