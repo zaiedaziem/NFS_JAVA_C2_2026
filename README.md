@@ -145,6 +145,25 @@ Run `npm run test` inside `support-desk-ui` to run this exercise. Run `npm run d
 
 ---
 
+## Day 15 Exercise 04 - Test Protected Ticket Route
+
+Run `npm run test` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `components/ProtectedRoute.test.jsx` — two tests. Since the real `ProtectedRoute.jsx` uses the `Outlet`-based pattern (a parent `<Route element={<ProtectedRoute />}>` wrapping nested child routes, not a `children`-prop pattern), the test wraps a small `MemoryRouter` with a `/login` route and a protected `/app/tickets` route nested under `ProtectedRoute`, inside a real `AuthProvider`. The first test renders with no stored auth and asserts `Login Page` shows (not `Protected Tickets`). The second test seeds `localStorage` with a fake `supportDeskAuth` token before rendering — since `AuthContext` reads that on mount — and asserts `Protected Tickets` shows (not `Login Page`). The existing `afterEach` cleanup in `src/test/setup.js` clears `localStorage` between tests so the two cases don't leak into each other.
+
+### Result
+
+`npm run test` passes both new route-guard tests alongside all previous tests: 4 test files, 8 tests, all green, confirmed by testing.
+
+### Output Screenshot
+
+![Day 15 Exercise 04 Test Run](screenshots/day15_exercise4.png)
+*`npm run test` passing both ProtectedRoute tests alongside all previous tests*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
