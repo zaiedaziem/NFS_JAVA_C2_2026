@@ -160,6 +160,14 @@ support-desk-mongo   Up 4 minutes (healthy)
 
 Logging in **through the frontend's Nginx proxy** (`http://localhost:8081/api/auth/login`, not talking to the backend directly) returns a real JWT — proving the Day 18 Exercise 2 proxy rule and this exercise's Compose networking work correctly together, end to end, confirmed by testing.
 
+### Output Screenshot
+
+![Day 18 Exercise 03 Compose Up](screenshots/day18_exercise3.png)
+*docker compose up -d --build bringing up both images and all three containers, mongo/backend healthy*
+
+![Day 18 Exercise 03 Docker Desktop](screenshots/day18_exercise3_docker.png)
+*Docker Desktop showing support-desk-mongo, support-desk-api, and support-desk-ui all running together under the nfs_java_c2_2026 project*
+
 ---
 
 ## AI-Assisted Learning Guidelines
