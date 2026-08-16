@@ -82,7 +82,28 @@ By the end of this programme, participants will be able to:
 
 ---
 
+## Day 18 Exercise 01 - Frontend Dockerfile
 
+Run `docker build -t support-desk-ui:day18 .` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `support-desk-ui/Dockerfile` — multi-stage build. Build stage (`node:24-alpine`) copies `package*.json` first for layer caching, runs `npm ci`, copies source, and runs `npm run build` (Vite build, producing static files in `dist/`). Runtime stage (`nginx:1.27-alpine`, no Node at all) copies **only** `dist/` from the build stage into `/usr/share/nginx/html`. `EXPOSE 80`, plus a `HEALTHCHECK` hitting `/` (using `wget`, since Alpine doesn't ship `curl` by default — same fix applied to the backend Dockerfile in Day 17). `CMD ["nginx", "-g", "daemon off;"]` keeps Nginx in the foreground so Docker tracks it correctly. Satisfies "not use `npm run dev` in the final container" since the runtime image has no Node, no source, and no dev server at all — just static files.
+- `support-desk-ui/.dockerignore` — excludes `node_modules`, `dist`, `.git`, test artifacts (`coverage`, `test-results`, `playwright-report`), and editor folders from the build context. Without it, the initial build sent 130.66MB of local `node_modules`/build output to Docker unnecessarily (visible in the first build's `transferring context: 130.66MB` step, which alone took over 100 seconds) — `node_modules` gets reinstalled fresh inside the container via `npm ci` anyway, so shipping the local copy is pure waste.
+
+### Result
+
+`docker build` completes successfully (14/14 steps). Running the container and opening it in a browser correctly serves the fully-styled login page — confirming the static build + Nginx serving works. Submitting the login form correctly fails with "Request failed with status 404" — expected at this stage, not a bug: the frontend calls a relative `/api/...` path that only gets proxied to the backend in Vite's *dev* server config (`vite.config.js`'s `server.proxy`), which has no effect on the production build served by Nginx. Nginx has no rule yet to forward `/api/*` to the backend, so it 404s trying to find a literal file at that path. Fixing that is exactly Day 18 Exercise 2 (Nginx Config).
+
+### Output Screenshot
+
+![Day 18 Exercise 01 Docker Build](screenshots/day18_exercise1_1.png)
+*docker build completing all 14 steps for support-desk-ui:day18*
+
+![Day 18 Exercise 01 Frontend Serving](screenshots/day18_exercise1_2.png)
+*The containerized frontend serving the fully-styled login page via Nginx; the 404 on submit is expected until Exercise 2 adds the API proxy*
+
+---
 
 ## AI-Assisted Learning Guidelines
 
