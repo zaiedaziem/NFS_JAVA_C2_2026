@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+secrets/
+target/
+node_modules/
+*.log
+
+.git
+.gitignore
+.idea
+.vscode
+*.iml

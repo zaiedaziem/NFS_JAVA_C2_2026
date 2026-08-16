@@ -1,17 +1,11 @@
-@baseUrl = http://localhost:8080
-@token = paste-token-here-after-login
+### Day 17 - Health check
+GET http://localhost:8080/api/health
 
-### 1. Health check
-GET {{baseUrl}}/api/health
+### Day 17 - Readiness check
+GET http://localhost:8080/api/readiness
 
-### 2. Readiness check
-GET {{baseUrl}}/api/readiness
-
-### 3. Protected endpoint without token - should return 401
-GET {{baseUrl}}/api/v1/assets
-
-### 4. Login as admin
-POST {{baseUrl}}/api/auth/login
+### Day 17 - Login as seeded admin
+POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
@@ -19,35 +13,82 @@ Content-Type: application/json
   "password": "Admin@12345"
 }
 
-### 5. Protected endpoint with token - should return 200
-GET {{baseUrl}}/api/v1/assets
-Authorization: Bearer {{token}}
+### Copy token from the login response above
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlzcyI6InN1cHBvcnQtZGVzay1hcGkiLCJuYW1lIjoiQWRtaW4gVXNlciIsImV4cCI6MTc4Njc3OTIwMywiaWF0IjoxNzg2Nzc1NjAzLCJ1c2VySWQiOiI2YTc0NDEyMzk5NGI2Y2RmMmZhOTExNTYifQ.AeDYL3xuWXSFelAiJlc84wFCtOjYnIyF3oKLu9xUluM
 
-### 6. Paged assets timing check
-GET {{baseUrl}}/api/v1/assets/paged?page=0&size=5&sortBy=assetTag&direction=asc
-Authorization: Bearer {{token}}
 
-### 7. Invalid sort field - should return 400 if validation is enabled
-GET {{baseUrl}}/api/v1/assets/paged?page=0&size=5&sortBy=password&direction=asc
-Authorization: Bearer {{token}}
+### Exercise 3 - Error 1: 401 Unauthorized
+# No Authorization header at all on a protected endpoint.
+GET http://localhost:8080/api/v1/tickets
 
-### 8. Report timing check: assets by status
-GET {{baseUrl}}/api/v1/reports/assets-by-status
-Authorization: Bearer {{token}}
 
-### 9. Report timing check: assets by category
-GET {{baseUrl}}/api/v1/reports/assets-by-category
-Authorization: Bearer {{token}}
-
-### 10. Duplicate asset tag check - run only if LAP-2026-001 already exists
-POST {{baseUrl}}/api/v1/assets
-Authorization: Bearer {{token}}
+### Exercise 3 - Error 2 (part 1 of 3): register a non-admin test user
+POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "assetTag": "LAP-2026-001",
-  "name": "Duplicate Laptop",
-  "category": "Laptop",
-  "serialNumber": "DUPLICATE-SN-DAY17",
-  "location": "Security Lab"
+  "name": "Test User",
+  "email": "testuser@example.com",
+  "password": "TestUser@12345"
+}
+
+### Exercise 3 - Error 2 (part 2 of 3): login as that non-admin user
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "TestUser@12345"
+}
+
+### Copy token from the login response above
+@userToken = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlckBleGFtcGxlLmNvbSIsInJvbGUiOiJVU0VSIiwiaXNzIjoic3VwcG9ydC1kZXNrLWFwaSIsIm5hbWUiOiJUZXN0IFVzZXIiLCJleHAiOjE3ODY3NzkzMjcsImlhdCI6MTc4Njc3NTcyNywidXNlcklkIjoiNmE4MDA4NmVkOWY1OGFkODMyNmI4OTQwIn0.zkBAvX1eYNXAz-6e6WJDwD8YwUA5qaNbVjOPoXmj8C8
+
+### Exercise 3 - Error 2 (part 3 of 3): 403 Forbidden
+# POST /api/tickets (the legacy, non-v1 endpoint) requires ADMIN specifically.
+# A USER-role token is authenticated but not authorized for this one.
+POST http://localhost:8080/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{userToken}}
+
+{
+  "title": "Should be forbidden",
+  "description": "Testing 403 with a USER-role token",
+  "category": "Network",
+  "priority": "LOW",
+  "createdBy": "testuser@example.com"
+}
+
+
+### Exercise 3 - Error 3: 400 Bad Request
+# Invalid priority value fails @Pattern validation on UpdateTicketRequest.
+# Get a real ticket id from GET /api/v1/tickets first and paste it below.
+PUT http://localhost:8080/api/v1/tickets/paste-ticket-id-here
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Test",
+  "description": "Test",
+  "category": "Test",
+  "priority": "URGENT",
+  "status": "OPEN"
+}
+
+
+### Exercise 3 - Error 4: 404 Not Found
+# A well-formed but non-existent MongoDB ObjectId.
+GET http://localhost:8080/api/v1/tickets/000000000000000000000000
+Authorization: Bearer {{token}}
+
+
+### Exercise 3 - Error 5: 409 Conflict
+# Registering the same email twice triggers DuplicateResourceException.
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "testuser@example.com",
+  "password": "TestUser@12345"
 }
