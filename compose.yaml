@@ -1,0 +1,60 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: support-desk-mongo
+    restart: unless-stopped
+    # Use 27018 on the host to avoid conflict with a local MongoDB already running on 27017.
+    # Inside Compose, the backend connects to mongo:27017 (the service name, not localhost).
+    ports:
+      - "${MONGO_HOST_PORT:-27018}:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  backend:
+    build:
+      context: ./support-desk-api
+      dockerfile: Dockerfile
+    container_name: support-desk-api
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      SPRING_MONGODB_URI: mongodb://mongo:27017/support_desk_db
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env. Copy .env.example to .env first.}
+      JWT_EXPIRATION_MINUTES: ${JWT_EXPIRATION_MINUTES:-60}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 45s
+
+  frontend:
+    build:
+      context: ./support-desk-ui
+      dockerfile: Dockerfile
+    container_name: support-desk-ui
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${FRONTEND_PORT:-8081}:80"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  mongo_data:

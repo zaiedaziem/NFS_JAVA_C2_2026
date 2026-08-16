@@ -128,6 +128,40 @@ Run `docker build -t support-desk-ui:day18 .` inside `support-desk-ui` to run th
 
 ---
 
+## Day 18 Exercise 03 - Compose File
+
+Run `docker compose up -d --build` at the repo root to run this exercise.
+
+### Files created/updated
+
+- `compose.yaml` (repo root, new) — defines three services: `mongo` (image `mongo:7`, data persisted in a named volume, host port `27018` to avoid clashing with a local MongoDB already on `27017`), `backend` (built from `./support-desk-api`, depends on `mongo` being healthy), and `frontend` (built from `./support-desk-ui`, depends on `backend` being healthy). All container-to-container communication uses service names (`mongo`, `backend`), never `localhost`.
+- `.env.example` (repo root) — rewritten from the leftover trainer template (Asset-Tracker-branded, mismatched variable names) to match this project's real settings.
+- `.env` (repo root) — created locally with real values. **Not committed** — covered by the root `.gitignore`'s `*.env` rule.
+
+### The real Day 17 bug, finally found and fixed
+
+While testing this exercise, the MongoDB connectivity bug documented as unresolved back in Day 17 (Exercises 7-8) got tracked down and fixed. Inspecting the actual jars bundled inside the built backend image (`unzip`-ing `BOOT-INF/lib/*.jar` and grepping `META-INF/spring-configuration-metadata.json`) revealed that this Spring Boot version moved MongoDB configuration into a new module (`spring-boot-mongodb`, package `org.springframework.boot.mongodb.autoconfigure`) with a **different property name**: `spring.mongodb.uri`, not the `spring.data.mongodb.uri` this project had used since Day 6. The old property name still exists in metadata (from a separate, parallel `spring-boot-data-mongodb` module) but no longer feeds the actual `MongoClient` bean — so setting it, by any mechanism, silently did nothing. This is also why the trainer's own reference `compose.yml` used `SPRING_MONGODB_URI` rather than `SPRING_DATA_MONGODB_URI` — that naming was the correct answer the whole time.
+
+- `support-desk-api/src/main/resources/application.properties` — `spring.data.mongodb.uri` → `spring.mongodb.uri`.
+- `compose.yaml` — backend's environment variable renamed to `SPRING_MONGODB_URI` to match.
+
+A second, smaller issue surfaced once Mongo connectivity was fixed: the frontend container reported `unhealthy` even though it worked fine externally (`curl` to the mapped host port succeeded). The compose/Dockerfile healthchecks used `wget http://localhost/`, and `wget` was resolving `localhost` to `::1` (IPv6) first, while Nginx only listens on `0.0.0.0:80` (IPv4) — a false failure, not a real one. Fixed by using `http://127.0.0.1/` explicitly in both `support-desk-ui/Dockerfile`'s `HEALTHCHECK` and `compose.yaml`'s frontend healthcheck.
+
+### Result
+
+`docker compose up -d --build` brings up all three containers, all reporting `healthy`:
+
+```text
+NAMES                STATUS
+support-desk-ui      Up 13 seconds (healthy)
+support-desk-api     Up 34 seconds (healthy)
+support-desk-mongo   Up 4 minutes (healthy)
+```
+
+Logging in **through the frontend's Nginx proxy** (`http://localhost:8081/api/auth/login`, not talking to the backend directly) returns a real JWT — proving the Day 18 Exercise 2 proxy rule and this exercise's Compose networking work correctly together, end to end, confirmed by testing.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
