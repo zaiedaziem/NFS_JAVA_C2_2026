@@ -254,6 +254,56 @@ PS> docker build -t support-desk-api:day17 .
 
 ---
 
+## Day 17 Exercise 08 - .dockerignore, Secrets, and Run
+
+Run `mvn spring-boot:run` inside `support-desk-api` for the working local version, or see the discovered issue below for the containerized attempt.
+
+### Files created/updated
+
+- `support-desk-api/.dockerignore` — excludes `.env`, `.env.*` (keeping `!.env.example`), `secrets/`, `target/`, `node_modules/`, `*.log`, plus `.git`/`.idea`/`.vscode`/`*.iml`.
+- `support-desk-api/.env.example` — rewritten from the root project's leftover trainer template (which was Asset-Tracker-branded and used a mismatched variable name, `APP_JWT_SECRET`, that didn't match anything the app actually reads) to real placeholders matching `application.properties`: `JWT_SECRET`, `JWT_EXPIRATION_MINUTES`, `SPRING_DATA_MONGODB_URI`.
+- `support-desk-api/.env` — created locally with real values for testing. **Not committed** — confirmed via `git check-ignore -v support-desk-api/.env`, which matches the root `.gitignore`'s `*.env` rule.
+- `support-desk-api/src/main/resources/application.properties` — `spring.data.mongodb.uri` changed from a hardcoded value to `${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/support_desk_db}` so it can be overridden at runtime, matching the pattern already used for `app.jwt.secret`.
+
+### Docker run command used
+
+```bash
+docker run -d --name support-desk-api-day17 --env-file .env -p 18080:8080 support-desk-api:day17
+```
+
+### Result — a real bug found, not just a networking inconvenience
+
+Health and readiness could not be confirmed with a 200 against the containerized app, and this turned out to be more than a `host.docker.internal` inconvenience. Three independent override mechanisms were tested and **none of them changed which MongoDB host the app actually connected to**:
+
+1. `--env-file .env` setting `SPRING_DATA_MONGODB_URI` — no effect.
+2. `-e JAVA_OPTS="-Dspring.data.mongodb.uri=mongodb://host.docker.internal:27017/test"` — confirmed via `docker exec ... cat /proc/1/cmdline` that the flag was genuinely present on the running `java` process's command line — still no effect.
+3. Running MongoDB itself in a sibling container on a dedicated Docker network (`docker network create`, `mongo:7`, backend pointed at it by container name — no `host.docker.internal` involved at all) — still no effect.
+
+In every case, the logs showed the driver attempting `address=localhost:27017` regardless of what was configured. This is the same root cause behind the "data lives in `test` instead of `support_desk_db`" finding from Exercise 4 — the `spring.data.mongodb.uri` setting appears to have no effect at all in this environment, through any override path, and the driver silently falls back to its own hardcoded default (`localhost:27017`, database `test`). This needs deeper investigation than fits in this exercise; documented honestly as an open issue rather than papered over.
+
+Because of this, `UserDataSeeder`'s eager startup query blocks the whole app (as found in Exercise 7) trying to reach an unreachable `localhost:27017` inside the container, so Tomcat never finishes opening its port for external traffic — `/api/health` (which itself needs no database) is unreachable too, not because the endpoint depends on the database, but because Spring Boot doesn't accept external connections until the full application context, including eager Mongo index creation, finishes successfully.
+
+Health/readiness **do** work correctly outside Docker, where the app happens to reach a real local MongoDB at `localhost:27017` directly (see Exercise 2's screenshots) — this exercise specifically surfaced that the containerized path is broken in a way that isn't about Docker networking at all.
+
+### Safe log example
+
+```text
+requestId=800986d8 method=GET path=/api/health status=200 durationMs=50
+```
+
+(From Exercise 1 — the request timing filter never logs anything sensitive, regardless of context.)
+
+### Why real secrets are not committed
+
+`support-desk-api/.env` (containing the real `JWT_SECRET` used for local testing) is excluded by the root `.gitignore`'s `*.env` rule and never appears in `git status`/`git add`. Only `support-desk-api/.env.example`, a template with placeholder values, is tracked — so anyone cloning the repo knows what variables to set without ever seeing a real secret value. If a real JWT secret or database credential were committed, anyone with read access to the repository (including its full history, since git never truly forgets) could impersonate the service or access the database directly, even after the secret was later "removed" from the current file.
+
+### Output Screenshot
+
+![Day 17 Exercise 08 Docker Rebuild](screenshots/day17_exercise8_docker.png)
+*Rebuilding the image after the .env/.dockerignore/application.properties changes — fully cached, 16/16 steps, 3.0s*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
