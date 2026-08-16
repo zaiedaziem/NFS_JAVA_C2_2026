@@ -105,6 +105,29 @@ Run `docker build -t support-desk-ui:day18 .` inside `support-desk-ui` to run th
 
 ---
 
+## Day 18 Exercise 02 - Nginx Config
+
+Run `docker build -t support-desk-ui:day18 .` inside `support-desk-ui` to run this exercise.
+
+### Files created/updated
+
+- `support-desk-ui/nginx.conf` — new custom Nginx server config, replacing the base image's default. `location /api/ { proxy_pass $backend_upstream; }` forwards any `/api/...` request to the backend container (hostname `backend`, port 8080) instead of Nginx trying to serve it as a static file — this is the fix for the 404 from Exercise 1. Uses `resolver 127.0.0.11` (Docker's embedded DNS) plus a `set $backend_upstream` variable so Nginx re-resolves the `backend` hostname per request instead of caching a stale IP if that container restarts. `location / { try_files $uri $uri/ /index.html; }` is the React Router fallback — without it, opening or refreshing a client-side route like `/app/tickets` directly would 404, since Nginx has no idea that path is handled by React Router's JavaScript, not a real file.
+- `support-desk-ui/Dockerfile` — added `COPY nginx.conf /etc/nginx/conf.d/default.conf` in the runtime stage, right before copying the built static files, so the image actually uses this config instead of Nginx's generic default.
+
+### Result
+
+`docker build` completes successfully (15/15 steps), and the container still serves the fully-styled login page correctly. The `/api/` proxy rule can't be fully exercised yet, though — it depends on a hostname called `backend` that only resolves once the frontend and backend containers run together on the same Docker network with that service name, which is exactly what Day 18 Exercise 3 (Compose File) sets up next.
+
+### Output Screenshot
+
+![Day 18 Exercise 02 Docker Build](screenshots/day18_exercise2_1.png)
+*docker build completing all 15 steps, now copying nginx.conf into the image*
+
+![Day 18 Exercise 02 Frontend Serving](screenshots/day18_exercise2_2.png)
+*The containerized frontend still serving the login page correctly after the Nginx config change*
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
