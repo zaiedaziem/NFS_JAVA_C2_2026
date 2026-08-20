@@ -1,0 +1,85 @@
+# Broken Docker Compose file for Day 18 Exercise 5 troubleshooting lab.
+# Adapted from the trainer's reference (which targeted their own root
+# Dockerfile/frontend/ reference project) to use this project's real
+# support-desk-api / support-desk-ui Dockerfiles instead.
+#
+# This file is intentionally wrong in several places.
+# Do not fix it here - diagnose it, then produce compose.fixed.yml.
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: support-desk-mongo-lab
+    restart: unless-stopped
+    ports:
+      # Intentionally risky default: may conflict with a local MongoDB already on 27017.
+      - "${MONGO_HOST_PORT:-27017}:27017"
+    volumes:
+      - mongo_lab_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  backend:
+    build:
+      # This file is inside broken-compose/, so context should point to the
+      # real backend project. This part is correct.
+      context: ../support-desk-api
+      dockerfile: Dockerfile
+    container_name: support-desk-api-lab
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      # BROKEN: localhost inside this container is the backend container itself.
+      # It will not reach the MongoDB container.
+      SPRING_MONGODB_URI: mongodb://localhost:27017/support_desk_db
+
+      # BROKEN: the app reads JWT_SECRET (see application.properties), not APP_JWT_SECRET.
+      APP_JWT_SECRET: ${JWT_SECRET}
+
+      JWT_EXPIRATION_MINUTES: ${JWT_EXPIRATION_MINUTES:-60}
+    ports:
+      # Intentionally may conflict with a local Spring Boot backend on 8080.
+      - "${BACKEND_PORT:-8082}:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 45s
+
+  frontend:
+    build:
+      # This file is inside broken-compose/, so frontend context should point to
+      # the real frontend project. This part is correct.
+      context: ../support-desk-ui
+      dockerfile: Dockerfile
+    container_name: support-desk-ui-lab
+    restart: unless-stopped
+
+    # BROKEN: there is no service named "api" in this file.
+    # The actual backend service name is "backend".
+    depends_on:
+      api:
+        condition: service_healthy
+
+    healthcheck:
+      # BROKEN: curl is not installed in the nginx:alpine base image used by
+      # support-desk-ui/Dockerfile - this check will always fail to even run.
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    ports:
+      # Use a different frontend host port for this lab so it does not
+      # conflict with the normal working stack (which uses 8081).
+      - "${FRONTEND_PORT:-5174}:80"
+
+volumes:
+  mongo_lab_data:

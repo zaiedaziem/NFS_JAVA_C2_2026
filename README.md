@@ -190,6 +190,41 @@ Verified `.env` does not appear in `git status --short`, and `git check-ignore -
 
 ---
 
+## Day 18 Exercise 05 - Broken Compose Troubleshooting Lab
+
+Run `docker compose -f broken-compose/compose.broken.yml --env-file broken-compose/.env.broken up --build` at the repo root to reproduce the broken stack, or use `compose.fixed.yml` for the corrected version.
+
+### Files created/updated
+
+- `broken-compose/.env.broken.example` (new) — this file was referenced throughout the exercise instructions but never actually provided upstream by the trainer; recreated here so the lab could be run at all. `.gitignore` updated with a `!**/.env.broken.example` exception so this template stays tracked while the real `broken-compose/.env.broken` (with actual values) stays excluded.
+- `broken-compose/compose.broken.yml` (new) — adapted from the trainer's reference (which targeted their own root `Dockerfile`/`frontend/` project) to use this project's real `support-desk-api`/`support-desk-ui` instead. Kept the same four categories of intentional bugs, plus one extra drawn from our own real Exercise 3 finding: an invalid `depends_on` service name, a `localhost` Mongo URI inside a container, a misnamed JWT secret env var, a risky default Mongo host port, and a frontend healthcheck using `curl` (not installed in the Alpine Nginx image) against `localhost` (resolves to IPv6, which Nginx doesn't listen on).
+- `broken-compose/compose.fixed.yml` (new) — the corrected version, built up incrementally while actually running and diagnosing each bug in turn (not written from theory).
+- [`docs/day18-broken-compose-troubleshooting-report.md`](docs/day18-broken-compose-troubleshooting-report.md) — the full troubleshooting report in the exercise's requested format, with real logs/commands from this session, plus reflection question answers.
+
+### Result
+
+All four bugs found and fixed using real `docker compose ps`/`logs`/`inspect` output, not guesswork:
+
+1. **Invalid `depends_on`** (`api` instead of `backend`) — blocked the entire stack at parse time, before any container could even be created.
+2. **`localhost` Mongo URI inside a container** — same root-cause pattern as the real Day 17/18 bug hunt, confirmed via `MongoSocketOpenException`/`Connection refused` in backend logs.
+3. **Frontend healthcheck using `curl` + `localhost`** — two stacked issues (missing binary, then IPv6/IPv4 mismatch), same fix already applied to the real `compose.yaml` in Exercise 3.
+4. **Misnamed JWT secret variable** (`APP_JWT_SECRET` set, but the app reads `JWT_SECRET`) — a silent bug that never crashes anything, since the property has a working demo fallback; documented as the most dangerous kind of bug in this lab, since everything *looks* fine.
+
+Also tested and confirmed the `down` vs `down -v` distinction directly: after a plain `down`, `docker volume ls` still showed `broken-compose_mongo_lab_data`; after `down -v`, it was gone, and the next `up` started with a fresh, empty database (`"ticketCount":0` from `/api/readiness`).
+
+Final verification, all real:
+
+```text
+NAME                     STATUS                        PORTS
+support-desk-api-lab     Up About a minute (healthy)   0.0.0.0:8082->8080/tcp
+support-desk-mongo-lab   Up 2 minutes (healthy)        0.0.0.0:27019->27017/tcp
+support-desk-ui-lab      Up About a minute (healthy)   0.0.0.0:5174->80/tcp
+```
+
+Login through the fixed stack's frontend proxy (`http://localhost:5174/api/auth/login`) returned a real JWT, confirming the full stack works end to end — same proof pattern as Exercise 3, now reproduced from a deliberately broken starting point.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
