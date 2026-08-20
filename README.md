@@ -170,6 +170,26 @@ Logging in **through the frontend's Nginx proxy** (`http://localhost:8081/api/au
 
 ---
 
+## Day 18 Exercise 04 - Environment and Secrets
+
+No new code for this exercise — `.env.example` (repo root) was already built as part of Exercise 3, and already satisfies every requirement here.
+
+### Files created/updated
+
+- [`.env.example`](.env.example) (repo root) — already includes placeholders for all four required values: `JWT_SECRET` (JWT secret), `FRONTEND_PORT` (frontend port), `BACKEND_PORT` (backend port), and `MONGO_HOST_PORT` (Mongo host port), plus `JWT_EXPIRATION_MINUTES` as a bonus optional setting.
+
+### Why `.env` should not be committed
+
+`.env` holds real, working secrets — in this project, an actual JWT signing key (`JWT_SECRET`). Anyone who can read that value can forge a valid authentication token for any user, including the seeded admin account, without ever needing a password. Git repositories are typically shared (pushed to GitHub, cloned by teammates, sometimes public) and **git never truly forgets** — even deleting the secret from the current file leaves it recoverable from history unless the entire repo is rewritten. Committing `.env` would mean that secret is now permanently exposed to anyone with read access to the repo, past or present.
+
+`.env.example` solves this safely: it's a template with placeholder values (`your-secure-jwt-secret-minimum-32-characters-here-replace-me`), so anyone cloning the project knows exactly which variables to set without ever seeing a real one. The root `.gitignore`'s `*.env` rule (with an explicit `!.env.example` exception) enforces this automatically — `.env` never even shows up in `git status`, so there's no accidental `git add .` risk either.
+
+### Result
+
+Verified `.env` does not appear in `git status --short`, and `git check-ignore -v .env` confirms it's caught by the `*.env` rule in `.gitignore`, confirmed by testing.
+
+---
+
 ## AI-Assisted Learning Guidelines
 
 
